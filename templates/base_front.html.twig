@@ -251,7 +251,43 @@
 				</div><!--/.section-header-->
 				<div class="works-content">
 					<div class="row">
-						
+						{% block body %}
+							<h1>Pays index</h1>
+							<table class="table">
+								<thead>
+									<tr>
+										<th>idPays</th>
+										<th>Nom_pays</th>
+										<th>Img_pays</th>
+										<th>Desc_pays</th>
+										<th>Langue</th>
+										<th>actions</th>
+									</tr>
+								</thead>
+								<tbody>
+								{% for pay in pays %}
+									<tr>
+										<td>{{ pay.idPays }}</td>
+										<td>{{ pay.nomPays }}</td>
+										<td>{{ pay.imgPays }}</td>
+										<td>{{ pay.descPays }}</td>
+										<td>{{ pay.langue }}</td>
+										<td>
+											<!-- <a href="{{ path('app_pays_show', {'id_pays': pay.idPays}) }}">show</a> -->
+											<!-- <a href="{{ path('app_pays_edit', {'id_pays': pay.idPays}) }}">edit</a> -->
+										</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="6">no records found</td>
+									</tr>
+								{% endfor %}
+								</tbody>
+							</table>
+
+							<a href="{{ path('app_pays_new') }}">Create new</a>
+						{% endblock %}
+
 					</div>
 				</div>
 			</div><!--/.container-->
@@ -275,7 +311,7 @@
 						<div class=" col-md-4 col-sm-6">
 							<div class="single-explore-item">
 								<div class="single-explore-img">
-									<img src="assets/FRONT/images/explore/e1.jpg" alt="explore image">
+									<img src="{{asset('assets/FRONT/images/explore/e1.jpg')}}" alt="explore image">
 									<div class="single-explore-img-info">
 										<button onclick="window.location.href='#'">best rated</button>
 										<div class="single-explore-image-icon-box">
@@ -310,7 +346,7 @@
 											<div class="col-sm-2">
 												<div class="explore-person-img">
 													<a href="#">
-														<img src="assets/FRONT/images/explore/person.png" alt="explore person">
+														<img src="{{asset('assets/FRONT/images/explore/person.png')}}" alt="explore person">
 													</a>
 												</div>
 											</div>
@@ -341,7 +377,7 @@
 						<div class="col-md-4 col-sm-6">
 							<div class="single-explore-item">
 								<div class="single-explore-img">
-									<img src="assets/FRONT/images/explore/e2.jpg" alt="explore image">
+									<img src="{{asset('assets/FRONT/images/explore/e2.jpg')}}" alt="explore image">
 									<div class="single-explore-img-info">
 										<button onclick="window.location.href='#'">featured</button>
 										<div class="single-explore-image-icon-box">
@@ -376,7 +412,7 @@
 											<div class="col-sm-2">
 												<div class="explore-person-img">
 													<a href="#">
-														<img src="assets/FRONT/images/explore/person.png" alt="explore person">
+														<img src="{{asset('assets/FRONT/images/explore/person.png')}}" alt="explore person">
 													</a>
 												</div>
 											</div>
@@ -407,7 +443,7 @@
 						<div class="col-md-4 col-sm-6">
 							<div class="single-explore-item">
 								<div class="single-explore-img">
-									<img src="assets/FRONT/images/explore/e3.jpg" alt="explore image">
+									<img src="{{asset('assets/FRONT/images/explore/e3.jpg')}}" alt="explore image">
 									<div class="single-explore-img-info">
 										<button onclick="window.location.href='#'">best rated</button>
 										<div class="single-explore-image-icon-box">
@@ -442,7 +478,7 @@
 											<div class="col-sm-2">
 												<div class="explore-person-img">
 													<a href="#">
-														<img src="assets/FRONT/images/explore/person.png" alt="explore person">
+														<img src="{{asset('assets/FRONT/images/explore/person.png')}}" alt="explore person">
 													</a>
 												</div>
 											</div>
@@ -473,7 +509,7 @@
 						<div class=" col-md-4 col-sm-6">
 							<div class="single-explore-item">
 								<div class="single-explore-img">
-									<img src="assets/FRONT/images/explore/e4.jpg" alt="explore image">
+									<img src="{{asset('assets/FRONT/images/explore/e4.jpg')}}" alt="explore image">
 									<div class="single-explore-img-info">
 										<button onclick="window.location.href='#'">most view</button>
 										<div class="single-explore-image-icon-box">
@@ -508,7 +544,7 @@
 											<div class="col-sm-2">
 												<div class="explore-person-img">
 													<a href="#">
-														<img src="assets/FRONT/images/explore/person.png" alt="explore person">
+														<img src="{{asset('assets/FRONT/images/explore/person.png')}}" alt="explore person">
 													</a>
 												</div>
 											</div>
@@ -539,7 +575,7 @@
 						<div class="col-md-4 col-sm-6">
 							<div class="single-explore-item">
 								<div class="single-explore-img">
-									<img src="assets/FRONT/images/explore/e5.jpg" alt="explore image">
+									<img src="{{asset('assets/FRONT/images/explore/e5.jpg')}}" alt="explore image">
 									<div class="single-explore-img-info">
 										<button onclick="window.location.href='#'">featured</button>
 										<div class="single-explore-image-icon-box">
@@ -574,7 +610,7 @@
 											<div class="col-sm-2">
 												<div class="explore-person-img">
 													<a href="#">
-														<img src="assets/FRONT/images/explore/person.png" alt="explore person">
+														<img src="{{asset('assets/FRONT/images/explore/person.png')}}" alt="explore person">
 													</a>
 												</div>
 											</div>
@@ -605,7 +641,7 @@
 						<div class="col-md-4 col-sm-6">
 							<div class="single-explore-item">
 								<div class="single-explore-img">
-									<img src="assets/FRONT/images/explore/e6.jpg" alt="explore image">
+									<img src="{{asset('assets/FRONT/images/explore/e6.jpg')}}" alt="explore image">
 									<div class="single-explore-img-info">
 										<button onclick="window.location.href='#'">best rated</button>
 										<div class="single-explore-image-icon-box">
@@ -640,7 +676,7 @@
 											<div class="col-sm-2">
 												<div class="explore-person-img">
 													<a href="#">
-														<img src="assets/FRONT/images/explore/person.png" alt="explore person">
+														<img src="{{asset('assets/FRONT/images/explore/person.png')}}" alt="explore person">
 													</a>
 												</div>
 											</div>
@@ -688,7 +724,7 @@
 						<div class="testimonial-description">
 							<div class="testimonial-info">
 								<div class="testimonial-img">
-									<img src="assets/FRONT/images/clients/c1.png" alt="clients">
+									<img src="{{asset('assets/FRONT/images/clients/c1.png')}}" alt="clients">
 								</div><!--/.testimonial-img-->
 								<div class="testimonial-person">
 									<h2>Tom Leakar</h2>
@@ -713,7 +749,7 @@
 						<div class="testimonial-description">
 							<div class="testimonial-info">
 								<div class="testimonial-img">
-									<img src="assets/FRONT/images/clients/c2.png" alt="clients">
+									<img src="{{asset('assets/FRONT/images/clients/c2.png')}}" alt="clients">
 								</div><!--/.testimonial-img-->
 								<div class="testimonial-person">
 									<h2>monirul islam</h2>
@@ -738,7 +774,7 @@
 						<div class="testimonial-description">
 							<div class="testimonial-info">
 								<div class="testimonial-img">
-									<img src="assets/FRONT/images/clients/c3.png" alt="clients">
+									<img src="{{asset('assets/FRONT/images/clients/c3.png')}}" alt="clients">
 								</div><!--/.testimonial-img-->
 								<div class="testimonial-person">
 									<h2>Shohrab Hossain</h2>
@@ -763,7 +799,7 @@
 						<div class="testimonial-description">
 							<div class="testimonial-info">
 								<div class="testimonial-img">
-									<img src="assets/FRONT/images/clients/c4.png" alt="clients">
+									<img src="{{asset('assets/FRONT/images/clients/c4.png')}}" alt="clients">
 								</div><!--/.testimonial-img-->
 								<div class="testimonial-person">
 									<h2>Tom Leakar</h2>
@@ -788,7 +824,7 @@
 						<div class="testimonial-description">
 							<div class="testimonial-info">
 								<div class="testimonial-img">
-									<img src="assets/FRONT/images/clients/c1.png" alt="clients">
+									<img src="{{asset('assets/FRONT/images/clients/c1.png')}}" alt="clients">
 								</div><!--/.testimonial-img-->
 								<div class="testimonial-person">
 									<h2>Tom Leakar</h2>
@@ -813,7 +849,7 @@
 						<div class="testimonial-description">
 							<div class="testimonial-info">
 								<div class="testimonial-img">
-									<img src="assets/FRONT/images/clients/c2.png" alt="clients">
+									<img src="{{asset('assets/FRONT/images/clients/c2.png')}}" alt="clients">
 								</div><!--/.testimonial-img-->
 								<div class="testimonial-person">
 									<h2>monirul islam</h2>
@@ -838,7 +874,7 @@
 						<div class="testimonial-description">
 							<div class="testimonial-info">
 								<div class="testimonial-img">
-									<img src="assets/FRONT/images/clients/c3.png" alt="clients">
+									<img src="{{asset('assets/FRONT/images/clients/c3.png')}}" alt="clients">
 								</div><!--/.testimonial-img-->
 								<div class="testimonial-person">
 									<h2>Shohrab Hossain</h2>
@@ -863,7 +899,7 @@
 						<div class="testimonial-description">
 							<div class="testimonial-info">
 								<div class="testimonial-img">
-									<img src="assets/FRONT/images/clients/c4.png" alt="clients">
+									<img src="{{asset('assets/FRONT/images/clients/c4.png')}}" alt="clients">
 								</div><!--/.testimonial-img-->
 								<div class="testimonial-person">
 									<h2>Tom Leakar</h2>
@@ -944,7 +980,7 @@
 						<div class="col-md-4 col-sm-6">
 							<div class="single-blog-item">
 								<div class="single-blog-item-img">
-									<img src="assets/FRONT/images/blog/b1.jpg" alt="blog image">
+									<img src="{{asset('assets/FRONT/images/blog/b1.jpg')}}" alt="blog image">
 								</div>
 								<div class="single-blog-item-txt">
 									<h2><a href="#">How to find your Desired Place more quickly</a></h2>
@@ -958,7 +994,7 @@
 						<div class="col-md-4 col-sm-6">
 							<div class="single-blog-item">
 								<div class="single-blog-item-img">
-									<img src="assets/FRONT/images/blog/b2.jpg" alt="blog image">
+									<img src="{{asset('assets/FRONT/images/blog/b2.jpg')}}" alt="blog image">
 								</div>
 								<div class="single-blog-item-txt">
 									<h2><a href="#">How to find your Desired Place more quickly</a></h2>
@@ -972,7 +1008,7 @@
 						<div class="col-md-4 col-sm-6">
 							<div class="single-blog-item">
 								<div class="single-blog-item-img">
-									<img src="assets/FRONT/images/blog/b3.jpg" alt="blog image">
+									<img src="{{asset('assets/FRONT/images/blog/b3.jpg')}}" alt="blog image">
 								</div>
 								<div class="single-blog-item-txt">
 									<h2><a href="#">How to find your Desired Place more quickly</a></h2>

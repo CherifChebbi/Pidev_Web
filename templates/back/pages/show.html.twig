@@ -158,47 +158,47 @@
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>Tableau des Pays</h6>
+            
             </div>
              <div class="card-header pb-0">
-              <h6> <a href="{{ path('app_pays_new') }}">ADD Pays</a></h6>
             </div>
             <div class="card-body px-0 pt-0 pb-2">     
               <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id_pays</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nom_pays</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Img_pays</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Desc_pays</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Langue</th>
-                    
-                      <th class="text-secondary opacity-7"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-							{% for pay in pays %}
-								<tr>
-									<td>{{ pay.idPays }}</td>
-									<td>{{ pay.nomPays }}</td>
-									<td>{{ pay.imgPays }}</td>
-									<td>{{ pay.descPays }}</td>
-									<td>{{ pay.langue }}</td>
-									<td>
-										<a href="{{ path('app_pays_show', {'id_pays': pay.idPays}) }}">Show</a>
-										<a href="{{ path('app_pays_edit', {'id_pays': pay.idPays}) }}">Update</a>
-                    <a href="{{ path('deletePays', {'id_pays': pay.idPays}) }}">Delete</a>
-                    
-									</td>
-								</tr>
-							{% else %}
-								<tr>
-									<td colspan="6">no records found</td>
-								</tr>
-							{% endfor %}
-                  </tbody>
-                </table>
+                {% block body %}
+    
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id_pays</th>
+                <td>{{ pay.idPays }}</td>
+            </tr>
+            <tr>
+                <th>Nom_pays</th>
+                <td>{{ pay.nomPays }}</td>
+            </tr>
+            <tr>
+                <th>Img_pays</th>
+                <td>{{ pay.imgPays }}</td>
+            </tr>
+            <tr>
+                <th>Desc_pays</th>
+                <td>{{ pay.descPays }}</td>
+            </tr>
+            <tr>
+                <th>Langue</th>
+                <td>{{ pay.langue }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('tables') }}">  LISTE PAYS</a>
+    <br>
+    <a href="{{ path('app_pays_edit', {'id_pays': pay.idPays}) }}">EDIT</a>
+
+    {{ include('pays/_delete_form.html.twig') }}
+{% endblock %}
+
               </div>
             </div>
           </div>
