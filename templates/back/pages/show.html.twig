@@ -138,13 +138,13 @@
             <ul class="navbar-nav mx-auto">
               <li class="nav-item">
                 <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="{{ path('tables') }}">
-                  les pays
+                  LISTE PAYS
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link me-2" href="{{ path('app_pays_new') }}">
                   <i class="fas fa-user-edit"></i>   
-                  Ajouter Pays
+                  AJOUTER PAYS
                 </a>
               </li>
             </ul>
@@ -179,7 +179,7 @@
             </tr>
             <tr>
                 <th>Img_pays</th>
-                <td>{{ pay.imgPays }}</td>
+                <td><img src="{{ asset('assets/BACK/img/pays_img/' ~ pay.imgPays ~ '.jpg') }}" alt="" style="max-width: 100px; max-height: 100px;"></td>
             </tr>
             <tr>
                 <th>Desc_pays</th>
