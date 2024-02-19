@@ -138,16 +138,15 @@
             <ul class="navbar-nav mx-auto">
               <li class="nav-item">
                 <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="{{ path('tables') }}">
-                  les pays
+                  LISTE PAYS
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link me-2" href="{{ path('app_pays_new') }}">
                   <i class="fas fa-user-edit"></i>   
-                  Ajouter Pays
+                  AJOUTER PAYS
                 </a>
               </li>
-              
             </ul>
           </div>
         </div>
@@ -158,34 +157,54 @@
       <div class="row">
         <div class="col-12">
           <div class="card mb-4">
-            <div class="card-header pb-0">
+            <div class="card-header pb-2">
               <h6>Add Pays</h6>
             </div>
     {% block content %}
-        <form method="post">
+    <form method="post">
         {{ form_start(form) }}
-        <table class="table align-items-center mb-0">
-            <!-- Display form fields -->
-            <tr>
-                <td>{{ form_row(form.nom_pays) }}</td>
-            </tr>
-            <tr>
-                <td>{{ form_row(form.img_pays) }}</td>
-            </tr>
-            <tr>
-                <td>{{ form_row(form.desc_pays) }}</td>
-            </tr>
-            <tr>
-                <td>{{ form_row(form.langue) }}</td>
-            </tr>
-        </table>
-        <br>
-        <button type="submit" class="btn btn-primary">ADD</button>
-        <a href="{{ path('tables') }}" class="btn btn-secondary">Back to list</a>
+        <div class="card-body px-1 pt-1 pb-4">     
+            <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0" border="1">
+                    <!-- Display form fields -->
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                {{ form_row(form.nom_pays, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                {{ form_row(form.img_pays, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                {{ form_row(form.desc_pays, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                {{ form_row(form.langue, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <button type="submit" class="btn btn-primary">ADD</button>
+                <a href="{{ path('tables') }}" class="btn btn-secondary">Back to list</a>
+            </div>
+        </div>    
         {{ form_end(form) }}
-        </form>
-        <hr>
-    {% endblock %}
+    </form>
+    <hr>
+{% endblock %}
+
 
             </div>
           

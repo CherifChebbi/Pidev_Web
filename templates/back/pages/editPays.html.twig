@@ -162,14 +162,13 @@
             </div>
              <div class="card-header pb-0">
             </div>
-            <div class="card-body px-0 pt-0 pb-2">     
+            <div class="card-body px-2 pt-2 pb-8">     
               <div class="table-responsive p-0">
 {% block body %}
-    <h3>Edit Pays</h3>
-    
+    <h4>Edit Pays</h4>
     {{ include('pays/_form.html.twig', {'button_label': 'Update'}) }}
     {{ include('pays/_delete_form.html.twig') }}
-    <a href="{{ path('app_pays_index') }}">LISTE DES PAYS</a>
+    <a href="{{ path('tables') }}" class="btn btn-warning">LISTE DES PAYS</a>
     
 {% endblock %}
 

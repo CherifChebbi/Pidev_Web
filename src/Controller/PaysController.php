@@ -33,17 +33,25 @@ class PaysController extends AbstractController
     }
     //---------ADD-----------
     #[Route('/new', name: 'app_pays_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, PaysRepository $paysRepository): Response
     {
         $pay = new Pays();
         $form = $this->createForm(PaysType::class, $pay);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($pay);
-            $entityManager->flush();
+            // Vérification de l'unicité du pays
+            $existingPays = $paysRepository->findOneBy(['nom_pays' => $pay->getNomPays()]);
+            if ($existingPays) {
+                $this->addFlash('error', 'Ce pays existe déjà.');
+                return $this->redirectToRoute('app_pays_new'); // Rediriger vers la page d'ajout
+            } else {
+                $entityManager->persist($pay);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('tables', [], Response::HTTP_SEE_OTHER);
+                $this->addFlash('success', 'Pays ajouté avec succès.');
+                return $this->redirectToRoute('tables'); // Rediriger vers la liste des pays
+            }
         }
 
         return $this->renderForm('back/pages/addPays.html.twig', [
