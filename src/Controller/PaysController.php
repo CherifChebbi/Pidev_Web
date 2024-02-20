@@ -11,23 +11,23 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
+#[Route('/pays')]
 class PaysController extends AbstractController
 {
     //---------AFFICHAGE-----------
     //front
-    #[Route('/', name: 'app_pays_index', methods: ['GET'])]
+    #[Route('/', name: 'app_pays_indexF', methods: ['GET'])]
     public function index(PaysRepository $paysRepository): Response
     {
-        return $this->render('pays/index.html.twig', [
+        return $this->render('pays/indexF.html.twig', [
             'pays' => $paysRepository->findAll(),
         ]);
     }
     //Back 
-    #[Route('/tables', name: 'tables', methods: ['GET'])]
+    #[Route('/tables', name: 'app_pays_index', methods: ['GET'])]
     public function indexTables(PaysRepository $paysRepository): Response
     {
-        return $this->render('back/pages/tables.html.twig', [
+        return $this->render('pays/index.html.twig', [
             'pays' => $paysRepository->findAll(),
         ]);
     }
@@ -50,11 +50,11 @@ class PaysController extends AbstractController
                 $entityManager->flush();
 
                 $this->addFlash('success', 'Pays ajouté avec succès.');
-                return $this->redirectToRoute('tables'); // Rediriger vers la liste des pays
+                return $this->redirectToRoute('app_pays_index'); // Rediriger vers la liste des pays
             }
         }
 
-        return $this->renderForm('back/pages/addPays.html.twig', [
+        return $this->renderForm('pays/new.html.twig', [
             'pay' => $pay,
             'form' => $form,
         ]);
@@ -64,7 +64,7 @@ class PaysController extends AbstractController
     #[Route('/{id_pays}', name: 'app_pays_show', methods: ['GET'])]
     public function show(Pays $pay): Response
     {
-        return $this->render('back/pages/show.html.twig', [
+        return $this->render('pays/show.html.twig', [
             'pay' => $pay,
         ]);
     }
@@ -78,10 +78,10 @@ class PaysController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('tables', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_pays_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('back/pages/editPays.html.twig', [
+        return $this->renderForm('pays/edit.html.twig', [
             'pay' => $pay,
             'form' => $form,
         ]);
@@ -95,7 +95,7 @@ class PaysController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('tables', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_pays_index', [], Response::HTTP_SEE_OTHER);
     }
     //---------DELETE SIMPLE----------------
     #[Route('/deletePays/{id_pays}', name: 'deletePays')]
@@ -103,7 +103,7 @@ class PaysController extends AbstractController
     {
         $em->remove($pays);
         $em->flush();
-        return $this->redirectToRoute('tables');
+        return $this->redirectToRoute('app_pays_index');
     }
     
 }

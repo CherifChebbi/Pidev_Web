@@ -1,18 +1,8 @@
-{% block content %}
-    <h1>Add New Pays</h1>
-    {{ form_start(form) }}
-    <table class="table">
-        <!-- Display form fields -->
-        <b>{{ form_row(form.nom_pays) }}</b>
-        <b>{{ form_row(form.img_pays) }}</b>
-        <b>{{ form_row(form.desc_pays) }}</b>
-        <b>{{ form_row(form.langue) }}</b>
-        
-    </table>
-    <br>
-     <button type="submit" ><h3>ADD</h3></button>
-    {{ form_end(form) }}
-    <a href="{{ path('tables') }}">back to list</a>
-   
-<hr>
+{% extends 'back/t_base.html.twig' %}
+{% block body %}
+    <h4>Create new Pays</h4>
+
+    {{ include('pays/_form.html.twig') }}
+
+    <a href="{{ path('app_pays_index') }}" class="btn btn-warning">VIEW LIST</a>
 {% endblock %}

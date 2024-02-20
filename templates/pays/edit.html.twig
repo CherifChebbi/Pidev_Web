@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-
-<title>Edit Pays</title>
-
+{% extends 'back/t_base.html.twig' %}
 {% block body %}
-    <h1>Edit Pays</h1>
+    <h4>Edit Pays</h4>
 
     {{ include('pays/_form.html.twig', {'button_label': 'Update'}) }}
     {{ include('pays/_delete_form.html.twig') }}
-    <a href="{{ path('app_pays_index') }}">LISTE DES PAYS</a>
-    
+
+     <a href="{{ path('app_pays_index') }}" class="btn btn-warning">VIEW LIST</a>
 {% endblock %}
