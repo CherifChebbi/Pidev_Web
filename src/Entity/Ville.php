@@ -16,7 +16,7 @@ class Ville
     private ?int $id_ville = null;
 
     #[ORM\Column(length: 30)]
-    private ?string $nom_ville = null;
+    public ?string $nom_ville = null;
 
     #[ORM\Column(length: 50)]
     private ?string $img_ville = null;

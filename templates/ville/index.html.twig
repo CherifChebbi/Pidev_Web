@@ -1,0 +1,40 @@
+{% extends 'back/t_base.html.twig' %}
+{% block body %}
+    <table class="table align-items-center mb-0" border="1">
+        <thead>
+            <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id_ville</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nom_ville</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Img_ville</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Desc_ville</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pays</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ville in villes %}
+            <tr>
+                <td>{{ ville.idVille }}</td>
+                <td>{{ ville.nomVille }}</td>
+                <td><img src="{{ asset('assets/BACK/img/Pays/ville_img/' ~ ville.imgVille ~ '.jpg') }}" alt="" style="max-width: 100px; max-height: 100px;"></td>                
+                <td>{{ ville.descVille }}</td>
+                <td>{{ ville.Pays.nom_pays }}</td>
+                <td>
+                    <a href="{{ path('app_ville_show', {'id_ville': ville.idVille}) }}" class="btn btn-primary">Show</a>
+                    <a href="{{ path('app_ville_edit', {'id_ville': ville.idVille}) }}" class="btn btn-warning">Update</a>
+                    <a href="{{ path('deleteVille', {'id_ville': ville.idVille}) }}" class="btn btn-danger">Delete</a>         
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="card-header pb-0">
+        <h6> <a href="{{ path('app_ville_new') }}" class="btn btn-success">ADD Ville</a></h6>
+        <h6> <a href="{{ path('app_monument_index') }}" class="btn btn-secondary">List des monuments</a></h6>
+
+    </div>
+    
+{% endblock %}

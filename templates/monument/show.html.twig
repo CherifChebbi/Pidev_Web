@@ -1,0 +1,32 @@
+{% extends 'back/t_base.html.twig' %}
+{% block body %}
+    <div class="card-body px-3 pt-3 pb-4">     
+        <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0" border="1">
+                <tbody>
+                    <tr>
+                        <th>Id_monument</th>
+                        <td>{{ monument.idMonument }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nom_monument</th>
+                        <td>{{ monument.nomMonument }}</td>
+                    </tr>
+                    <tr>
+                        <th>Img_monument</th>
+                        <td>{{ monument.imgMonument }}</td>
+                    </tr>
+                    <tr>
+                        <th>Desc_monument</th>
+                        <td>{{ monument.descMonument }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <a href="{{ path('app_monument_index') }}"class="btn btn-primary">View list</a>
+
+    <a href="{{ path('app_monument_edit', {'id_monument': monument.idMonument}) }}"class="btn btn-warning">EDIT</a>
+
+    {{ include('monument/_delete_form.html.twig') }}
+{% endblock %}

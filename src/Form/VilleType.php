@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Pays;
 use App\Entity\Ville;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +17,12 @@ class VilleType extends AbstractType
             ->add('nom_ville')
             ->add('img_ville')
             ->add('desc_ville')
-            ->add('pays')
+            ->add('pays',EntityType::class,[
+                'class'=>Pays::class,
+                'choice_label'=>'nom_pays',
+                'multiple'=>false,//choix uniq ou mult
+                'expanded'=>false,//liste- false
+            ])
         ;
     }
 

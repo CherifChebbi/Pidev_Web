@@ -17,7 +17,7 @@ class Pays
     private ?int $id_pays = null;
 
     #[ORM\Column(length: 30)]
-    private ?string $nom_pays = null;
+    public ?string $nom_pays = null;
 
     #[ORM\Column(length: 30)]
     private ?string $img_pays = null;
