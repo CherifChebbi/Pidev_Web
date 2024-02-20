@@ -1,9 +1,15 @@
 {% extends 'back/t_base.html.twig' %}
 {% block body %}
- <div class="card-header pb-0">
-        <h6> <a href="{{ path('app_ville_new') }}" class="btn btn-success">ADD Ville</a></h6>
-        <h6> <a href="{{ path('app_monument_index') }}" class="btn btn-secondary">List des monuments</a></h6>
-    </div>
+    <div class="card-header pb-0">
+    <h6>
+        <a href="{{ path('app_ville_new') }}" class="btn btn-success">ADD Ville</a>
+        <a href="{{ path('app_monument_index') }}" class="btn btn-secondary">List des monuments</a>
+    </h6>
+</div>
+
+    <div class="card-header pb-3">
+        <h4>Liste des Villes</h4>
+    </div> 
     <table class="table align-items-center mb-0" border="1">
         <thead>
             <tr>

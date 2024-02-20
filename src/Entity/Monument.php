@@ -1,10 +1,10 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\MonumentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MonumentRepository::class)]
 class Monument
@@ -15,12 +15,21 @@ class Monument
     private ?int $id_monument = null;
 
     #[ORM\Column(length: 30)]
+    #[Assert\NotBlank(message:"Le nom du monument ne peut pas être vide")]
+    #[Assert\Regex(
+        pattern:"/^[A-Za-z\s_]*$/",
+        message:"Le nom du monument doit commencer par une majuscule et ne peut pas contenir de chiffres"
+    )]
+    #[Assert\Length(max:30, maxMessage:"Le nom du monument ne peut pas dépasser {{ limit }} caractères")]
     private ?string $nom_monument = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message:"L'URL de l'image ne peut pas être vide")]
+    #[Assert\Url(message:"L'URL de l'image n'est pas valide")]
     private ?string $img_monument = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message:"La description du monument ne peut pas être vide")]
     private ?string $desc_monument = null;
 
     #[ORM\ManyToOne(inversedBy: 'monuments')]

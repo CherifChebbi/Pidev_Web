@@ -6,6 +6,7 @@ use App\Repository\VilleRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VilleRepository::class)]
 class Ville
@@ -16,13 +17,21 @@ class Ville
     private ?int $id_ville = null;
 
     #[ORM\Column(length: 30)]
+    #[Assert\NotBlank(message:"Le nom du monument ne peut pas être vide")]
+    #[Assert\Regex(
+        pattern:"/^[A-Za-z\s_]*$/",
+        message:"Le nom du monument doit commencer par une majuscule et ne peut pas contenir de chiffres"
+    )]
+    #[Assert\Length(max:30, maxMessage:"Le nom du monument ne peut pas dépasser {{ limit }} caractères")]
     public ?string $nom_ville = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $img_ville = null;
+    #[Assert\NotBlank(message:"L'URL de l'image ne peut pas être vide")]
+    public ?string $img_ville = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $desc_ville = null;
+    #[Assert\NotBlank(message:"La description de la ville ne peut pas être vide")]
+    public ?string $desc_ville = null;
     
     #[ORM\ManyToOne(inversedBy: 'villes')]
     #[ORM\JoinColumn(name: 'id_pays', referencedColumnName: 'id_pays')]
@@ -30,6 +39,7 @@ class Ville
 
     #[ORM\OneToMany(mappedBy: 'ville', targetEntity: Monument::class)]
     private Collection $monuments;
+    
     public function getPays(): ?Pays
     {
         return $this->pays;
@@ -49,7 +59,6 @@ class Ville
     {
         return $this->monuments;
     }
-
     
 
     public function getIdVille(): ?int

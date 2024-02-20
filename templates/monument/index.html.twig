@@ -1,7 +1,12 @@
 {% extends 'back/t_base.html.twig' %}
 {% block body %}
-    <h4>Monument index</h4>
-
+    
+    <div class="card-header pb-0">
+        <a href="{{ path('app_monument_new') }}" class="btn btn-success">Create Monument</a>
+    </div>
+    <div class="card-header pb-3">
+        <h4>Liste des monuments</h4>
+    </div>
     <table class="table align-items-center mb-0" border="1">
         <thead>
             <tr>
@@ -34,5 +39,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_monument_new') }}" class="btn btn-success">Create Monument</a>
+    
 {% endblock %}

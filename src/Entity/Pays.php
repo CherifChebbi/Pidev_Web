@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PaysRepository::class)]
 class Pays
@@ -17,16 +18,25 @@ class Pays
     private ?int $id_pays = null;
 
     #[ORM\Column(length: 30)]
+    #[Assert\NotBlank(message:"Le nom du monument ne peut pas être vide")]
+    #[Assert\Regex(
+        pattern:"/^[A-Za-z\s_]*$/",
+        message:"Le nom du monument doit commencer par une majuscule et ne peut pas contenir de chiffres"
+    )]
+    #[Assert\Length(max:30, maxMessage:"Le nom du monument ne peut pas dépasser {{ limit }} caractères")]
     public ?string $nom_pays = null;
 
     #[ORM\Column(length: 30)]
-    private ?string $img_pays = null;
+    #[Assert\NotBlank(message:"L'URL de l'image ne peut pas être vide")]
+    public ?string $img_pays = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $desc_pays = null;
+    #[Assert\NotBlank(message:"La description du pays ne peut pas être vide")]
+    public ?string $desc_pays = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $langue = null;
+    #[Assert\NotBlank(message:"La langue ne peut pas être vide")]
+    public ?string $langue = null;
 
     #[ORM\OneToMany(mappedBy: 'pays', targetEntity: Ville::class)]
     private Collection $villes;
@@ -95,5 +105,4 @@ class Pays
 
         return $this;
     }
-   
 }

@@ -1,11 +1,14 @@
 {% extends 'back/t_base.html.twig' %}
 {% block body %}
-    <div class="card-header pb-3">
-        <h4>Tableau des Pays</h4>
-    </div>
+    
     <div class="card-header pb-0">
-        <h6> <a href="{{ path('app_pays_new') }}" class="btn btn-success">ADD Pays</a></h6>
-        <h6> <a href="{{ path('app_ville_index') }}" class="btn btn-secondary">List des villes</a></h6>
+    <h6>
+        <a href="{{ path('app_pays_new') }}" class="btn btn-success">ADD Pays</a>    
+        <a href="{{ path('app_ville_index') }}" class="btn btn-secondary">List des villes</a>      
+    </h6>
+</div>
+    <div class="card-header pb-3">
+        <h4><h4>Liste des Pays</h4>
     </div>
 <div class="card-body px-2 pt-2 pb-8">     
     <div class="table-responsive p-0">
