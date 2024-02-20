@@ -27,7 +27,7 @@ class Monument
     #[ORM\JoinColumn(name: 'id_ville', referencedColumnName: 'id_ville')]
     private ?Ville $villes = null;
 
-    public function getVilles(): ?Pays
+    public function getVilles(): ?Ville
     {
         return $this->villes;
     }
