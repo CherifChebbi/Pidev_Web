@@ -37,8 +37,27 @@ class PaysController extends AbstractController
     #[Route('/', name: 'app_pays_indexF', methods: ['GET'])]
     public function index(PaysRepository $paysRepository): Response
     {
-        return $this->render('pays/indexF.html.twig', [
+        return $this->render('indexF.html.twig', [
             'pays' => $paysRepository->findAll(),
+        ]);
+    }
+    //front
+    #[Route('/pays/{id}/villesF', name: 'app_pays_villesF', methods: ['GET'])]
+    public function villesF(int $id, PaysRepository $paysRepository): Response
+    {
+        // Récupérer le pays en fonction de son identifiant
+        $pays = $paysRepository->find($id);
+
+        if (!$pays) {
+            throw $this->createNotFoundException('Pays non trouvé');
+        }
+
+        // Récupérer les villes liées à ce pays
+        $villes = $paysRepository->findVillesByPaysId($id);
+
+        return $this->render('ville/indexF.html.twig', [
+            'pays' => $pays,
+            'villes' => $villes,
         ]);
     }
     //Back 

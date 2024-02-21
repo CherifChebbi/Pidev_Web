@@ -59,7 +59,6 @@
 	<body>
 		<!-- top-area Start -->
 		<section class="top-area">
-       
 			<div class="header-area">
 				<!-- Start Navigation -->
 			    <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"  data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
@@ -99,7 +98,6 @@
 
 		<!--welcome-hero start -->
 		<section id="home" class="welcome-hero">
-       
 			<div class="container">
 				<div class="welcome-hero-txt">
 					<h2>best place to find and explore <br> that all you need </h2>
@@ -214,12 +212,8 @@
 		</section>
 		<!--works end -->
 <!-- .............................................................................................. -->
-
-		
-
 		<!--explore start -->
 		<section id="explore" class="explore">
-         
 			<div class="container">
 				<div class="section-header">
 					<h2>Countries</h2>
@@ -234,7 +228,7 @@
 								<div class="single-explore-img">
 									<img src="{{ asset('assets/BACK/img/Pays/pays_img/' ~ pay.imgPays ~ '.jpg') }}" alt="" width="1200" height="800">
 									<div class="single-explore-img-info">
-										<button onclick="window.location.href='#'"><td>{{ pay.nomPays }}</td></button>
+										<button onclick="window.location.href='{{ path('app_pays_villesF', {'id': pay.idPays}) }}'"><td>{{ pay.nomPays }}</td></button>
 									</div>
 								</div>
 								<div class="single-explore-txt bg-theme-2">
@@ -250,11 +244,12 @@
 									<div class="explore-open-close-part">
 										<div class="row">
 											<div class="col-sm-5">
-												<button class="close-btn open-btn" onclick="window.location.href='#'">EXPLORE</button>
+												<button class="close-btn open-btn" onclick="window.location.href=""">EXPLORE</button>
 											</div>
 											<div class="col-sm-7">
 												<div class="explore-map-icon">
-													<a href="#"><i data-feather="map-pin"></i></a>													<a href="#"><i data-feather="heart"></i></a>
+													<a href=""><i data-feather="map-pin"></i></a>													
+													<a href="#"><i data-feather="heart"></i></a>
 												</div>
 											</div>
 										</div>

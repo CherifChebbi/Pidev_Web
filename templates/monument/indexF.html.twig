@@ -1,0 +1,42 @@
+{% extends 'Fextend.html.twig' %}
+	
+{% block body %}
+<div class="section-header">
+		<h2>MONUMENTS</h2>
+		<p>les monuments de <b>{{ ville.nomVille }}</b></p>
+	</div><!--/.section-header-->
+		 {% for monument in monuments %}
+		<div class="col-md-0 col-sm-3">
+			<div class="single-explore-item">
+				<div class="single-explore-img">
+					<img src="{{ asset('assets/BACK/img/Pays/monument_img/' ~ monument.imgMonument ~ '.jpg') }}" alt="" style="max-width: 100px; max-height: 100px;">               
+					<div class="single-explore-img-info">
+						<button onclick="window.location.href='#'">{{ monument.nomMonument }}</button>
+					</div>
+				</div>
+				<div class="single-explore-txt bg-theme-2">	
+					<div class="explore-person">
+						<div class="row">
+							<div class="col-sm-10">
+								{{ monument.descMonument }}
+							</div>
+						</div>
+					</div>
+					<div class="explore-open-close-part">
+						<div class="row">
+							<div class="col-sm-5">
+								<button class="close-btn open-btn" onclick="window.location.href='#'">EXPLORE</button>
+							</div>
+							<div class="col-sm-7">
+								<div class="explore-map-icon">
+									<a href="#"><i data-feather="map-pin"></i></a>													<a href="#"><i data-feather="heart"></i></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}					
+	
+{% endblock %}

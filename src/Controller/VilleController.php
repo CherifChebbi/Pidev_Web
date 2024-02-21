@@ -15,6 +15,26 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/ville')]
 class VilleController extends AbstractController
 {
+    //FRONT********
+    #[Route('/ville/{id}/monumentsF', name: 'app_ville_monumentsF', methods: ['GET'])]
+    public function monumentF(int $id, VilleRepository $villeRepository): Response
+    {
+        // Récupérer le pays en fonction de son identifiant
+        $villes = $villeRepository->find($id);
+
+        if (!$villes) {
+            throw $this->createNotFoundException('Pays non trouvé');
+        }
+
+        // Récupérer les villes liées à ce pays
+        $monuments = $villeRepository->findMonumentsByVilleId($id);
+
+        return $this->render('monument/indexF.html.twig', [
+            'ville' => $villes,
+            'monuments' => $monuments,
+        ]);
+    }
+    //*********** */
     #[Route('/ville/{id}/monuments', name: 'app_ville_monuments', methods: ['GET'])]
     public function villes(int $id, VilleRepository $villeRepository): Response
     {
