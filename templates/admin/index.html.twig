@@ -1,0 +1,72 @@
+{% extends 'base2.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        /* Custom CSS Styles */
+        .container {
+            margin-top: 50px;
+            margin-left: 20px; /* Adjust the margin-left as needed */
+            margin-right: 20px; /* Optionally, add margin-right for spacing */
+        }
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        th {
+            color: #ffffff;
+        }
+        .btn {
+            margin-right: 5px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Users list</h1>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Password</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Numtel</th>
+                <th>Nationnalite</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                    <td>{{ user.password }}</td>
+                    <td>{{ user.nom }}</td>
+                    <td>{{ user.prenom }}</td>
+                    <td>{{ user.numtel }}</td>
+                    <td>{{ user.Nationnalite }}</td>
+                    <td>
+                        <a href="{{ path('app_admin_show', {'id': user.id}) }}" class="btn btn-primary">Show</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_register') }}" class="btn btn-success">Create new</a>
+    </div>
+{% endblock %}
