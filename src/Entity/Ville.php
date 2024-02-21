@@ -45,7 +45,7 @@ class Ville
     #[ORM\JoinColumn(name: 'id_pays', referencedColumnName: 'id_pays')]
     private ?Pays $pays = null;
 
-    #[ORM\OneToMany(mappedBy: 'ville', targetEntity: Monument::class ,cascade: ['remove'])]
+    #[ORM\OneToMany(mappedBy: 'villes', targetEntity: Monument::class ,cascade: ['remove'])]
     private Collection $monuments;
     
     public function getPays(): ?Pays

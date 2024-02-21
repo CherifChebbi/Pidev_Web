@@ -5,11 +5,12 @@
 		<h2>MONUMENTS</h2>
 		<p>les monuments de <b>{{ ville.nomVille }}</b></p>
 	</div><!--/.section-header-->
+	<br><br><hr>
 		 {% for monument in monuments %}
 		<div class="col-md-0 col-sm-3">
 			<div class="single-explore-item">
 				<div class="single-explore-img">
-					<img src="{{ asset('assets/BACK/img/Pays/monument_img/' ~ monument.imgMonument ~ '.jpg') }}" alt="" style="max-width: 100px; max-height: 100px;">               
+					<img src="{{ asset('assets/BACK/img/Pays/monument_img/' ~ monument.imgMonument ~ '.jpg') }}" alt="" width="1200" height="800">               
 					<div class="single-explore-img-info">
 						<button onclick="window.location.href='#'">{{ monument.nomMonument }}</button>
 					</div>

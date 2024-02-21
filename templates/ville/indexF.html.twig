@@ -5,11 +5,12 @@
 		<h2>Villes</h2>
 		<p>les viles de <b> {{ pays.nomPays }}</b></p>
 	</div><!--/.section-header-->
+	<br><br><hr>
 		{% for ville in villes %}
 		<div class="col-md-0 col-sm-3">
 			<div class="single-explore-item">
 				<div class="single-explore-img">
-					<img src="{{ asset('assets/BACK/img/Pays/ville_img/' ~ ville.imgVille ~ '.jpg') }}" alt="" style="max-width: 100px; max-height: 100px;">                
+					<img src="{{ asset('assets/BACK/img/Pays/ville_img/' ~ ville.imgVille ~ '.jpg') }}" alt=""  width="1200" height="800">                
 					<div class="single-explore-img-info">
 						<button onclick="window.location.href='{{ path('app_ville_monumentsF', {'id': ville.idVille}) }}'"><td>{{ ville.nomVille }}</td></button>
 					</div>
@@ -37,6 +38,8 @@
 				</div>
 			</div>
 		</div>
-		{% endfor %}					
+		
+		{% endfor %}		
+		<hr>			
 	
 {% endblock %}
