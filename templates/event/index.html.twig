@@ -1,20 +1,76 @@
-<!DOCTYPE html>
+{% extends 'base_back.html.twig' %}
 
-<title>Hello EventController!</title>
+{% block css %}
+    {{ parent() }}
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block title %}Event index{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <style>
+        /* Styles CSS personnalisés */
+        .container {
+            margin-top: 50px; /* Marge en haut */
+        }
+        h1 {
+            color: #ffffff; /* Couleur du titre en blanc */
+            text-align: center; /* Centrage horizontal du titre */
+            margin-bottom: 30px; /* Marge en bas */
+        }
+        .table th {
+            color: #ffffff; /* Couleur du texte de l'en-tête du tableau en blanc */
+        }
+    </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="container">
+        <h1>Event index</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/rayen/Desktop/Nouveau dossier/Pidev/src/Controller/EventController.php'|file_link(0) }}">src/Controller/EventController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/rayen/Desktop/Nouveau dossier/Pidev/templates/event/index.html.twig'|file_link(0) }}">templates/event/index.html.twig</a></code></li>
-    </ul>
-</div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Date Début</th>
+                    <th>Date Fin</th>
+                    <th>Lieu</th>
+                    <th>Prix</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                    <tr>
+                        <td>{{ event.id }}</td>
+                        <td>{{ event.titre }}</td>
+                        <td>{{ event.description }}</td>
+                        <td>{{ event.dateDebut ? event.dateDebut|date('Y-m-d') : '' }}</td>
+                        <td>{{ event.dateFin ? event.dateFin|date('Y-m-d') : '' }}</td>
+                        <td>{{ event.lieu }}</td>
+                        <td>{{ event.prix }}</td>
+                        <td>{{ event.imageEvent }}</td>
+                        <td>
+                            <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-primary">Show</a>
+                            <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-warning">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9">No records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_event_new') }}" class="btn btn-success">Create new</a>
+    </div>
 {% endblock %}

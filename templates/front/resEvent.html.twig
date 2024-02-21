@@ -1,0 +1,157 @@
+{% extends 'event.html.twig' %}
+
+{% block js %}
+    {{ parent() }}
+    <script>
+        // Sélectionnez le formulaire de réservation
+        const reservationForm = document.querySelector('.reservation-form form');
+
+        // Écoutez l'événement de soumission du formulaire
+        reservationForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le comportement de soumission par défaut
+
+            // Effectuez une requête AJAX ou une autre logique de traitement de formulaire ici
+            // Par exemple, vous pouvez utiliser Fetch API pour soumettre les données du formulaire
+
+            fetch('{{ path('app_reservation_event_new_front') }}', {
+                method: 'POST',
+                body: new FormData(reservationForm)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Afficher le message de succès
+                    const successMessage = document.querySelector('.reservation-success');
+                    successMessage.style.display = 'block';
+                } else {
+                    // Afficher un message d'erreur si la soumission a échoué
+                    console.error('Submission failed:', response.statusText);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <!-- statistics strat -->
+			
+		<!--/.counter-->
+		<!-- statistics end -->
+
+		<!--blog start -->
+			<section id="blog" class="blog"> <div class="container">
+				<div class="section-header">
+					<h2>news and articles</h2>
+					<p>Always upto date with our latest News and Articles
+					</p>
+				</div>
+				<!--/.section-header-->
+				<div class="blog-content">
+					<div class="row">
+						<div class="col-md-4 col-sm-6">
+							<div class="single-blog-item">
+								<div class="single-blog-item-img">
+									<img src="{{asset('assets/FRONT/img/rio.jpg')}}" alt="blog image">
+								</div>
+								<div class="single-blog-item-txt">
+									<h2>
+										<a href="#">Carnaval de Rio</a>
+									</h2>
+									<h4>posted
+										<span>by</span>
+										<a href="#">admin</a>
+										march 2018</h4>
+									<p>
+										Lorem ipsum dolor sit amet, consectetur de adipisicing elit, sed do eiusmod tempore incididunt ut labore et dolore magna.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-blog-item">
+								<div class="single-blog-item-img">
+									<img src="{{asset('assets/FRONT/img/glastonbury.jpg')}}" alt="blog image">
+								</div>
+								<div class="single-blog-item-txt">
+									<h2>
+										<a href="#">Glastonbury Festival</a>
+									</h2>
+									<h4>posted
+										<span>by</span>
+										<a href="#">admin</a>
+										march 2018</h4>
+									<p>
+										Lorem ipsum dolor sit amet, consectetur de adipisicing elit, sed do eiusmod tempore incididunt ut labore et dolore magna.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-blog-item">
+								<div class="single-blog-item-img">
+									<img src="{{asset('assets/FRONT/img/tomorrowland.jpg')}}" alt="blog image">
+								</div>
+								<div class="single-blog-item-txt">
+									<h2>
+										<a href="#">Tomorrowland</a>
+									</h2>
+									<h4>posted
+										<span>by</span>
+										<a href="#">admin</a>
+										march 2018</h4>
+									<p>
+										Lorem ipsum dolor sit amet, consectetur de adipisicing elit, sed do eiusmod tempore incididunt ut labore et dolore magna.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/.container-->
+    
+    <!-- Make a Reservation Section -->
+<section id="reservation" class="reservation">
+    <div class="container">
+        <div class="reservation-success" style="display: none;">
+            <div class="alert alert-success" role="alert">
+                Reservation successfully completed!
+            </div>
+        </div>
+        <h2 class="section-header">Make a Reservation</h2>
+        <div class="reservation-form">
+            {{ include('reservation_event/_form.html.twig') }}
+        </div>
+    </div>
+    
+</section>
+
+
+    <!-- Contact Subscription Section -->
+    <section id="contact" class="subscription">
+        <div class="container">
+            <div class="subscribe-title text-center">
+                <h2>Do you want to add your business listing with us?</h2>
+                <p>Listrace offer you to list your business with us and we are very much able to promote your Business.</p>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="subscription-input-group">
+                        <form action="#">
+                            <input type="email" class="subscription-input-form" placeholder="Enter your email here">
+                            <button class="appsLand-btn subscribe-btn" onclick="window.location.href='#'">Create Account</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

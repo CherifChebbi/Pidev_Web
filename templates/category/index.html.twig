@@ -1,0 +1,112 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Index des Catégories{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        /* Styles CSS personnalisés */
+        .container {
+            margin-top: 50px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th, .table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .table th {
+            background-color: #f8f9fa;
+            color: #333;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .table td {
+            background-color: #fff;
+            color: #666;
+        }
+        .btn-actions {
+            display: flex;
+            justify-content: center;
+        }
+        .btn {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0069d9;
+            color: #fff;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            color: #fff;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mb-4 text-center">Index des Catégories</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.nom }}</td>
+                    <td class="btn-actions">
+                        <a href="{{ path('app_category_show', {'id': category.id}) }}" class="btn btn-info btn-sm">Voir</a>
+                        <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Aucun enregistrement trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            <a href="{{ path('app_category_new') }}" class="btn btn-success">Créer une nouvelle catégorie</a>
+        </div>
+    </div>
+{% endblock %}

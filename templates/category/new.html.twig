@@ -1,0 +1,61 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Create New Category{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        /* Styles CSS personnalisés */
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ccc;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 15px;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .btn-back {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #6c757d;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .btn-back:hover {
+            background-color: #495057;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Create New Category</h3>
+                </div>
+                <div class="card-body">
+                    {{ include('category/_form.html.twig') }}
+                </div>
+            </div>
+            <a href="{{ path('app_category_index') }}" class="btn btn-back">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

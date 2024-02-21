@@ -1,0 +1,26 @@
+{% extends 'base_back.html.twig' %}
+
+{% block css %}
+ {{ parent() }} 
+{% endblock %}
+
+
+{% block js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block title %}Edit Category{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Edit Category</h1>
+
+    {{ include('category/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_category_index') }}" class="btn btn-secondary">Back to List</a>
+
+    {{ include('category/_delete_form.html.twig') }}
+{% endblock %}
