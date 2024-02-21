@@ -8,6 +8,14 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+/**
+ * @ORM\Entity(repositoryClass=VilleRepository::class)
+ * @UniqueEntity(fields={"nom_ville"}, message="Ce nom de ville est déjà utilisé.")
+ * @IgnoreAnnotation("ORM\Entity")
+ */
 #[ORM\Entity(repositoryClass: VilleRepository::class)]
 class Ville
 {
@@ -37,7 +45,7 @@ class Ville
     #[ORM\JoinColumn(name: 'id_pays', referencedColumnName: 'id_pays')]
     private ?Pays $pays = null;
 
-    #[ORM\OneToMany(mappedBy: 'ville', targetEntity: Monument::class)]
+    #[ORM\OneToMany(mappedBy: 'ville', targetEntity: Monument::class ,cascade: ['remove'])]
     private Collection $monuments;
     
     public function getPays(): ?Pays

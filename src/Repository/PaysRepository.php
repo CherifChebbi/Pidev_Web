@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Repository;
-
+use App\Entity\Ville;
 use App\Entity\Pays;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -45,4 +45,16 @@ class PaysRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findVillesByPaysId(int $paysId): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT v
+            FROM App\Entity\Ville v
+            WHERE v.pays = :paysId'
+        )->setParameter('paysId', $paysId);
+
+        return $query->getResult();
+    }
 }

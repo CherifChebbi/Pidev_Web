@@ -36,6 +36,7 @@
                         <a href="{{ path('app_pays_show', {'id_pays': pay.idPays}) }}" class="btn btn-primary">Show</a>
                         <a href="{{ path('app_pays_edit', {'id_pays': pay.idPays}) }}" class="btn btn-warning">Update</a>
                         <a href="{{ path('deletePays', {'id_pays': pay.idPays}) }}" class="btn btn-danger">Delete</a> 
+                        <a href="{{ path('app_pays_villes', {'id': pay.idPays}) }}" class="btn btn-secondary">V</a> 
                     </td>
                 </tr>
             {% else %}

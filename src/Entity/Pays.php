@@ -9,6 +9,15 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+/**
+ * @ORM\Entity(repositoryClass=PaysRepository::class)
+ * @UniqueEntity(fields={"nom_pays"}, message="Ce nom de pays est déjà utilisé.")
+ * @IgnoreAnnotation("ORM\Entity")
+ */
+
 #[ORM\Entity(repositoryClass: PaysRepository::class)]
 class Pays
 {
@@ -38,7 +47,7 @@ class Pays
     #[Assert\NotBlank(message:"La langue ne peut pas être vide")]
     public ?string $langue = null;
 
-    #[ORM\OneToMany(mappedBy: 'pays', targetEntity: Ville::class)]
+    #[ORM\OneToMany(mappedBy: 'pays', targetEntity: Ville::class, cascade: ['remove'])]
     private Collection $villes;
     
     /**

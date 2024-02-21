@@ -45,5 +45,17 @@ class VilleRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findMonumentsByVilleId(int $villeId): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT m
+            FROM App\Entity\Monument m
+            WHERE m.villes = :villeId'
+        )->setParameter('villeId', $villeId);
+
+        return $query->getResult();
+    }
 
 }

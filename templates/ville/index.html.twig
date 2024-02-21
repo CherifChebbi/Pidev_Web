@@ -32,6 +32,7 @@
                     <a href="{{ path('app_ville_show', {'id_ville': ville.idVille}) }}" class="btn btn-primary">Show</a>
                     <a href="{{ path('app_ville_edit', {'id_ville': ville.idVille}) }}" class="btn btn-warning">Update</a>
                     <a href="{{ path('deleteVille', {'id_ville': ville.idVille}) }}" class="btn btn-danger">Delete</a>         
+                    <a href="{{ path('app_ville_monuments', {'id': ville.idVille}) }}" class="btn btn-secondary">M</a> 
                 </td>
             </tr>
         {% else %}

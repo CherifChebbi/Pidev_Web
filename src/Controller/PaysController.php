@@ -14,6 +14,24 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/pays')]
 class PaysController extends AbstractController
 {
+    #[Route('/pays/{id}/villes', name: 'app_pays_villes', methods: ['GET'])]
+    public function villes(int $id, PaysRepository $paysRepository): Response
+    {
+        // Récupérer le pays en fonction de son identifiant
+        $pays = $paysRepository->find($id);
+
+        if (!$pays) {
+            throw $this->createNotFoundException('Pays non trouvé');
+        }
+
+        // Récupérer les villes liées à ce pays
+        $villes = $paysRepository->findVillesByPaysId($id);
+
+        return $this->render('ville/index.html.twig', [
+            'pays' => $pays,
+            'villes' => $villes,
+        ]);
+    }
     //---------AFFICHAGE-----------
     //front
     #[Route('/', name: 'app_pays_indexF', methods: ['GET'])]
@@ -27,8 +45,10 @@ class PaysController extends AbstractController
     #[Route('/tables', name: 'app_pays_index', methods: ['GET'])]
     public function indexTables(PaysRepository $paysRepository): Response
     {
+        $pays = $paysRepository->findAll();
+
         return $this->render('pays/index.html.twig', [
-            'pays' => $paysRepository->findAll(),
+            'pays' => $pays,
         ]);
     }
     //---------ADD-----------
@@ -99,10 +119,20 @@ class PaysController extends AbstractController
     }
     //---------DELETE SIMPLE----------------
     #[Route('/deletePays/{id_pays}', name: 'deletePays')]
-    public function deleteAuthor(Pays $pays, EntityManagerInterface $em): Response
+    public function deletePays(Pays $pays, EntityManagerInterface $em): Response
     {
+            // Récupérer les villes liées à ce pays
+        $villes = $pays->getVilles();
+
+        // Supprimer chaque ville liée à ce pays
+        foreach ($villes as $ville) {
+            $em->remove($ville);
+        }
+
+        // Supprimer le pays lui-même
         $em->remove($pays);
         $em->flush();
+
         return $this->redirectToRoute('app_pays_index');
     }
     

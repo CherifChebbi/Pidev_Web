@@ -23,7 +23,7 @@ class MonumentController extends AbstractController
             'monuments' => $monumentRepository->findAll(),
         ]);
     }
-    /*
+/*
     //affichage ville_monuement
     #[Route('/{id_ville}', name: 'liste_villes_monuments', methods: ['GET'])]
     public function listeMonumentsParVille(Ville $ville): Response
@@ -37,27 +37,32 @@ class MonumentController extends AbstractController
             'ville' => $ville,
         ]);
     }
-    */
+*/
 
-    #[Route('/new', name: 'app_monument_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $monument = new Monument();
-        $form = $this->createForm(MonumentType::class, $monument);
-        $form->handleRequest($request);
+#[Route('/new', name: 'app_monument_new', methods: ['GET', 'POST'])]
+public function new(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $monument = new Monument();
+    $form = $this->createForm(MonumentType::class, $monument);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($monument);
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->persist($monument);
+        $entityManager->flush();
 
-            return $this->redirectToRoute('app_monument_index', [], Response::HTTP_SEE_OTHER);
-        }
+        // Récupérer l'ID de la ville associée à ce monument
+        $villeId = $monument->getVilles()->getIdVille();
 
-        return $this->renderForm('monument/new.html.twig', [
-            'monument' => $monument,
-            'form' => $form,
-        ]);
+        // Rediriger vers la liste des monuments associés à cette ville spécifique
+        return $this->redirectToRoute('app_ville_monuments', ['id' => $villeId]);
     }
+
+    return $this->renderForm('monument/new.html.twig', [
+        'monument' => $monument,
+        'form' => $form,
+    ]);
+}
+
 
     #[Route('/{id_monument}', name: 'app_monument_show', methods: ['GET'])]
     public function show(Monument $monument): Response
@@ -66,7 +71,7 @@ class MonumentController extends AbstractController
             'monument' => $monument,
         ]);
     }
-
+/*
     #[Route('/{id_monument}/edit', name: 'app_monument_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Monument $monument, EntityManagerInterface $entityManager): Response
     {
@@ -84,6 +89,29 @@ class MonumentController extends AbstractController
             'form' => $form,
         ]);
     }
+*/
+    #[Route('/{id_monument}/edit', name: 'app_monument_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Monument $monument, EntityManagerInterface $entityManager, MonumentRepository $monumentRepository): Response
+    {
+        $form = $this->createForm(MonumentType::class, $monument);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            // Récupérer l'ID de la ville associée à ce monument
+            $villeId = $monument->getVilles()->getIdVille();
+
+            // Rediriger vers la liste des monuments associés à cette ville spécifique
+            return $this->redirectToRoute('app_ville_monuments', ['id' => $villeId]);
+        }
+
+        return $this->renderForm('monument/edit.html.twig', [
+            'monument' => $monument,
+            'form' => $form,
+        ]);
+    }
+
 
     #[Route('/{id_monument}', name: 'app_monument_delete', methods: ['POST'])]
     public function delete(Request $request, Monument $monument, EntityManagerInterface $entityManager): Response
@@ -95,12 +123,17 @@ class MonumentController extends AbstractController
 
         return $this->redirectToRoute('app_monument_index', [], Response::HTTP_SEE_OTHER);
     }
-    //---------DELETE SIMPLE----------------
     #[Route('/deleteMonument/{id_monument}', name: 'deleteMonument')]
-    public function deleteVille(Monument $monument, EntityManagerInterface $em): Response
+    public function deleteMonument(Monument $monument, EntityManagerInterface $em): Response
     {
+        // Récupérer l'ID de la ville associée à ce monument
+        $villeId = $monument->getVilles()->getIdVille();
+    
         $em->remove($monument);
         $em->flush();
-        return $this->redirectToRoute('app_monument_index');
+        
+        // Rediriger vers la liste des monuments associés à cette ville spécifique
+        return $this->redirectToRoute('app_ville_monuments', ['id' => $villeId]);
     }
+    
 }

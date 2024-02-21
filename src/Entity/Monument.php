@@ -6,6 +6,15 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+/**
+ * @ORM\Entity(repositoryClass=MonumentRepository::class)
+ * @UniqueEntity(fields={"nom_monument"}, message="Ce nom de monument est déjà utilisé.")
+ * @IgnoreAnnotation("ORM\Entity")
+ */
+
 #[ORM\Entity(repositoryClass: MonumentRepository::class)]
 class Monument
 {
@@ -25,7 +34,6 @@ class Monument
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank(message:"L'URL de l'image ne peut pas être vide")]
-    #[Assert\Url(message:"L'URL de l'image n'est pas valide")]
     private ?string $img_monument = null;
 
     #[ORM\Column(type: Types::TEXT)]

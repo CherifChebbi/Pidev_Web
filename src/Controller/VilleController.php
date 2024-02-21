@@ -15,6 +15,25 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/ville')]
 class VilleController extends AbstractController
 {
+    #[Route('/ville/{id}/monuments', name: 'app_ville_monuments', methods: ['GET'])]
+    public function villes(int $id, VilleRepository $villeRepository): Response
+    {
+        // Récupérer la ville  en fonction de son identifiant
+        $ville = $villeRepository->find($id);
+
+        if (!$ville) {
+            throw $this->createNotFoundException('ville non trouvé');
+        }
+
+        // Récupérer les monuments liées 
+        $monuments = $villeRepository->findMonumentsByVilleId($id);
+
+        return $this->render('monument/index.html.twig', [
+            'ville' => $ville,
+            'monuments' => $monuments,
+        ]);
+    }
+    //AFFICHAGE
     #[Route('/ville', name: 'app_ville_index', methods: ['GET'])]
     public function index(VilleRepository $villeRepository): Response
     {
@@ -22,7 +41,7 @@ class VilleController extends AbstractController
             'villes' => $villeRepository->findAll(),
         ]);
     }
-    /*
+/*
     //affichage ville_pays
     #[Route('/{id_pays}', name: 'liste_villes_pays', methods: ['GET'])]
     public function listeVillesParPays(Pays $pays): Response
@@ -35,36 +54,43 @@ class VilleController extends AbstractController
             'pays' => $pays,
             'villes' => $villes,
         ]);
-    }*/
+    }
+*/
 
-    #[Route('/new', name: 'app_ville_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $ville = new Ville();
-        $form = $this->createForm(VilleType::class, $ville);
-        $form->handleRequest($request);
+#[Route('/new', name: 'app_ville_new', methods: ['GET', 'POST'])]
+public function new(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $ville = new Ville();
+    $form = $this->createForm(VilleType::class, $ville);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($ville);
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->persist($ville);
+        $entityManager->flush();
 
-            return $this->redirectToRoute('app_ville_index', [], Response::HTTP_SEE_OTHER);
-        }
+        // Récupérer l'ID du pays associé à cette ville
+        $paysId = $ville->getPays()->getIdPays();
 
-        return $this->renderForm('ville/new.html.twig', [
-            'ville' => $ville,
-            'form' => $form,
-        ]);
+        // Rediriger vers la liste des villes associées à ce pays spécifique
+        return $this->redirectToRoute('app_pays_villes', ['id' => $paysId]);
     }
 
-    #[Route('/{id_ville}', name: 'app_ville_show', methods: ['GET'])]
-    public function show(Ville $ville): Response
-    {
-        return $this->render('ville/show.html.twig', [
-            'ville' => $ville,
-        ]);
-    }
+    return $this->renderForm('ville/new.html.twig', [
+        'ville' => $ville,
+        'form' => $form,
+    ]);
+}
+#[Route('/{id_ville}', name: 'app_ville_show', methods: ['GET'])]
+public function show(Ville $ville): Response
+{
+    // Afficher les détails de la ville
+    return $this->render('ville/show.html.twig', [
+        'ville' => $ville,
+    ]);
+}
 
+
+/*
     #[Route('/{id_ville}/edit', name: 'app_ville_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Ville $ville, EntityManagerInterface $entityManager): Response
     {
@@ -82,7 +108,28 @@ class VilleController extends AbstractController
             'form' => $form,
         ]);
     }
+*/
+    #[Route('/{id_ville}/edit', name: 'app_ville_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Ville $ville, EntityManagerInterface $entityManager, VilleRepository $villeRepository): Response
+    {
+        $form = $this->createForm(VilleType::class, $ville);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            // Récupérer l'ID du pays associé à cette ville
+            $paysId = $ville->getPays()->getIdPays();
+
+            // Rediriger vers la liste des villes associées à ce pays spécifique
+            return $this->redirectToRoute('app_pays_villes', ['id' => $paysId]);
+        }
+
+        return $this->renderForm('ville/edit.html.twig', [
+            'ville' => $ville,
+            'form' => $form,
+        ]);
+    }
     #[Route('/{id_ville}', name: 'app_ville_delete', methods: ['POST'])]
     public function delete(Request $request, Ville $ville, EntityManagerInterface $entityManager): Response
     {
@@ -93,12 +140,13 @@ class VilleController extends AbstractController
 
         return $this->redirectToRoute('app_ville_index', [], Response::HTTP_SEE_OTHER);
     }
-     //---------DELETE SIMPLE----------------
-     #[Route('/deleteVille/{id_ville}', name: 'deleteVille')]
-     public function deleteVille(Ville $ville, EntityManagerInterface $em): Response
-     {
-         $em->remove($ville);
-         $em->flush();
-         return $this->redirectToRoute('app_ville_index');
-     }
+    //---------DELETE SIMPLE----------------
+    #[Route('/deleteVille/{id_ville}', name: 'deleteVille')]
+    public function deleteVille(Ville $ville, EntityManagerInterface $em): Response
+    {
+        $em->remove($ville);
+        $em->flush();
+        return $this->redirectToRoute('app_ville_index');
+    }
+
 }
