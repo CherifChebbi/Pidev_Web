@@ -38,6 +38,8 @@ class ReservationEventType extends AbstractType
     ])
     ->add('date_reservation', DateTimeType::class, [
         'label' => 'Date de réservation',
+        'widget' => 'single_text', // Affiche un champ de texte avec un calendrier
+        'placeholder' => 'Select a date', // Placeholder du champ de texte
         'attr' => [
             'placeholder' => 'Sélectionnez la date de réservation'
         ]
