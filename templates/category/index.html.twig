@@ -1,37 +1,41 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
 {% block title %}Category index{% endblock %}
 
 {% block body %}
-    <h1>Category index</h1>
+    <div class="container mt-5">
+        <h1 class="mb-4">Category Index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Hotel</th>
-                <th>Maison_dhote</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for category in categories %}
-            <tr>
-                <td>{{ category.id }}</td>
-                <td>{{ category.hotel }}</td>
-                <td>{{ category.maisonDhote }}</td>
-                <td>
-                    <a href="{{ path('app_category_show', {'id': category.id}) }}">show</a>
-                    <a href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Hotel</th>
+                        <th>Maison Dhote</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <td>{{ category.id }}</td>
+                            <td>{{ category.hotel }}</td>
+                            <td>{{ category.maisonDhote }}</td>
+                            <td>
+                                <a href="{{ path('app_category_show', {'id': category.id}) }}" class="btn btn-primary btn-sm">Show</a>
+                                <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-secondary btn-sm">Edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">No records found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-    <a href="{{ path('app_category_new') }}">Create new</a>
+        <a href="{{ path('app_category_new') }}" class="btn btn-success">Create New</a>
+    </div>
 {% endblock %}
