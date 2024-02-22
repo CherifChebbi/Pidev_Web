@@ -25,9 +25,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_hebergement_index') }}">back to list</a>
+    <a href="{{ path('app_hebergement_index') }}" class="btn btn-primary">Back to List</a>
 
-    <a href="{{ path('app_hebergement_edit', {'id': hebergement.id}) }}">edit</a>
+    <a href="{{ path('app_hebergement_edit', {'id': hebergement.id}) }}" class="btn btn-warning">Edit</a>
 
     {{ include('hebergement/_delete_form.html.twig') }}
 {% endblock %}
