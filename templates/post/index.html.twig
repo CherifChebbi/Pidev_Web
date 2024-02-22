@@ -1,0 +1,54 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Post index{% endblock %}
+
+{% block body %}
+<div style="padding-left: 25%;">
+        <!-- Your content goes here -->
+    <h1>Post index</h1>
+
+    <table class="table">
+        <head>
+            <style>
+        table {
+            width: 100%;
+            margin-top: 8%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+    </style>
+        </head>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Image</th>
+                <th>Statut</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for post in posts %}
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>{{ post.image }}</td>
+                <td>{{ post.statut }}</td>
+                <td>
+                    <a href="{{ path('app_post_show', {'id': post.id}) }}"><button type="button" class="btn btn-success">Afficher</button></a>
+                    <a href="{{ path('app_post_edit', {'id': post.id}) }}"><button type="button" class="btn btn-success">Modifier</button></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_post_new') }}"><button type="button" class="btn btn-outline-success">Ajouter Post</button></a>
+{% endblock %}

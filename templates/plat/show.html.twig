@@ -1,0 +1,37 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Plat{% endblock %}
+
+{% block body %}
+<div style="padding-left: 25%;">
+
+<div style="padding-top: 8%;">
+    <h1>Plat</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ plat.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ plat.nom }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ plat.image }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ plat.prix }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_plat_index') }}"><button type="button" class="btn btn-outline-success">Retour</button></a>
+
+    <a href="{{ path('app_plat_edit', {'id': plat.id}) }}"><button type="button" class="btn btn-outline-success">Modifier Plat</button></a>
+
+    {{ include('plat/_delete_form.html.twig') }}
+{% endblock %}

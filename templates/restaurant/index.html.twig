@@ -1,0 +1,66 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Restaurant index{% endblock %}
+
+{% block body %}
+
+<div style="padding-left: 25%;">
+        <!-- Your content goes here -->
+         
+   
+    <h1>Restaurant index</h1>
+  
+
+    <table class="table">
+        <head>
+            <style>
+        table {
+            width: 100%;
+            margin-top: 8%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+    </style>
+        </head>
+       
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Localisation</th>
+                <th>Image</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for restaurant in restaurants %}
+            <tr>
+                <td>{{ restaurant.id }}</td>
+                <td>{{ restaurant.nom }}</td>
+                <td>{{ restaurant.localisation }}</td>
+                <td>{{ restaurant.image }}</td>
+                
+                <td>{{ restaurant.description }}</td>
+                <td>
+                    <a href="{{ path('app_restaurant_show', {'id': restaurant.id}) }}"><button type="button" class="btn btn-success">Afficher</button></a>
+                    <a href="{{ path('app_restaurant_edit', {'id': restaurant.id}) }}"><button type="button" class="btn btn-success">Modifier</button></a>
+                    
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_restaurant_new') }}"><button type="button" class="btn btn-outline-success">Ajouter Restaurant</button></a>
+     </div>
+{% endblock %}

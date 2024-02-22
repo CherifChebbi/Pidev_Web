@@ -1,0 +1,48 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Post{% endblock %}
+
+{% block body %}
+<div style="padding-left: 25%;">
+    <h1>Post</h1>
+
+    <table class="table">
+        <head>
+            <style>
+        table {
+            width: 100%;
+            margin-top: 8%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+    </style>
+        </head>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ post.id }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>
+        <img style="width:50px; heigth:50px" src="{{ asset('public/upload/' ~ post.image)}}" >
+    </td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ post.statut }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_post_index') }}"><button type="button" class="btn btn-outline-success">Retour</button></a>
+
+    <a href="{{ path('app_post_edit', {'id': post.id}) }}"><button type="button" class="btn btn-outline-success">Modifier</button></a>
+
+    {{ include('post/_delete_form.html.twig') }}
+{% endblock %}

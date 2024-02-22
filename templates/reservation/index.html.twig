@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reservation index{% endblock %}
+
+{% block body %}
+
+    <style>
+        .reservation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8%;
+        }
+
+        .reservation-table th, .reservation-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .reservation-actions a {
+            display: inline-block;
+            margin-right: 10px;
+            text-decoration: none;
+            padding: 6px 12px;
+            background-color: #4CAF50;
+            color: #fff;
+            border-radius: 3px;
+        }
+
+        .reservation-actions a:hover {
+            background-color: #45a049;
+        }
+
+        .create-new-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+
+        .create-new-link:hover {
+            background-color: #45a049;
+        }
+    </style>
+
+    <h1>Votre reservation</h1>
+
+    <table class="reservation-table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Date</th>
+                <th>Nombre_personne</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.id }}</td>
+                <td>{{ reservation.nom }}</td>
+                <td>{{ reservation.email }}</td>
+                <td>{{ reservation.date ? reservation.date|date('Y-m-d') : '' }}</td>
+                <td>{{ reservation.nombrePersonne }}</td>
+                <td class="reservation-actions">
+                    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+
+{% endblock %}

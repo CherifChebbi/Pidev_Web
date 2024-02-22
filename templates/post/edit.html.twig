@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Post{% endblock %}
+
+{% block body %}
+<div style="padding-left: 25%;">
+    <h1>Edit Post</h1>
+
+    {{ include('post/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_post_index') }}"><button type="button" class="btn btn-outline-success">Retour</button></a>
+
+    {{ include('post/_delete_form.html.twig') }}
+{% endblock %}

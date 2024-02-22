@@ -1,0 +1,41 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Restaurant{% endblock %}
+
+{% block body %}
+<div style="padding-left: 25%;">
+
+
+    <h1>Restaurant</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ restaurant.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ restaurant.nom }}</td>
+            </tr>
+            <tr>
+                <th>Localisation</th>
+                <td>{{ restaurant.localisation }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ restaurant.image }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ restaurant.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_restaurant_index') }}"><button type="button" class="btn btn-outline-success">Retour</button></a>
+
+    <a href="{{ path('app_restaurant_edit', {'id': restaurant.id}) }}"><button type="button" class="btn btn-outline-success">Modifier Restaurant</button></a>
+
+    {{ include('restaurant/_delete_form.html.twig') }}
+{% endblock %}
