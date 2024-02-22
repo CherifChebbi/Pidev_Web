@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hebergement index{% endblock %}
+
+{% block body %}
+    <h1>Hebergement index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Lieu</th>
+                <th>Prix</th>
+                <th>Image</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for hebergement in hebergements %}
+            <tr>
+                <td>{{ hebergement.id }}</td>
+                <td>{{ hebergement.nom }}</td>
+                <td>{{ hebergement.description }}</td>
+                <td>{{ hebergement.lieu }}</td>
+                <td>{{ hebergement.prix }}</td>
+                <td>{{ hebergement.image }}</td>
+                <td>
+                    <a href="{{ path('app_hebergement_show', {'id': hebergement.id}) }}">show</a>
+                    <a href="{{ path('app_hebergement_edit', {'id': hebergement.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_hebergement_new') }}">Create new</a>
+{% endblock %}
