@@ -79,6 +79,18 @@ class PaysController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            //upload de l image
+            $imageFile = $form->get('img_pays')->getData();     
+            if ($imageFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+
+                $pay->setImgPays($newFilename);
+                $imageFile->move(
+                    $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
+                    $newFilename
+                );
+            }
             // Vérification de l'unicité du pays
             $existingPays = $paysRepository->findOneBy(['nom_pays' => $pay->getNomPays()]);
             if ($existingPays) {

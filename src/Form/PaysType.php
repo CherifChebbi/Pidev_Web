@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Pays;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,7 +14,11 @@ class PaysType extends AbstractType
     {
         $builder
             ->add('nom_pays')
-            ->add('img_pays')
+            ->add('img_pays', FileType::class, [
+                'label' => 'Image',
+                'required' => false,
+                'mapped' => false,
+            ])
             ->add('desc_pays')
             ->add('langue')
         ;

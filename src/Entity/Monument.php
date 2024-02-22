@@ -33,7 +33,6 @@ class Monument
     private ?string $nom_monument = null;
 
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank(message:"L'URL de l'image ne peut pas être vide")]
     private ?string $img_monument = null;
 
     #[ORM\Column(type: Types::TEXT)]

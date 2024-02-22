@@ -36,7 +36,6 @@ class Pays
     public ?string $nom_pays = null;
 
     #[ORM\Column(length: 30)]
-    #[Assert\NotBlank(message:"L'URL de l'image ne peut pas être vide")]
     public ?string $img_pays = null;
 
     #[ORM\Column(type: Types::TEXT)]

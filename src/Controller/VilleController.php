@@ -85,6 +85,19 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+
+        //upload de l image
+        $imageFile = $form->get('img_ville')->getData();     
+        if ($imageFile) {
+            $newFilename = uniqid().'.'.$imageFile->guessExtension();
+
+            $ville->setImgVille($newFilename);
+            $imageFile->move(
+                $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
+                $newFilename
+            );
+        }
+
         $entityManager->persist($ville);
         $entityManager->flush();
 

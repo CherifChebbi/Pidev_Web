@@ -34,7 +34,6 @@ class Ville
     public ?string $nom_ville = null;
 
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank(message:"L'URL de l'image ne peut pas être vide")]
     public ?string $img_ville = null;
 
     #[ORM\Column(type: Types::TEXT)]

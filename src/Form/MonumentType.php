@@ -6,6 +6,7 @@ use App\Entity\Monument;
 use App\Entity\Ville;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,7 +16,11 @@ class MonumentType extends AbstractType
     {
         $builder
             ->add('nom_monument')
-            ->add('img_monument')
+            ->add('img_monument', FileType::class, [
+                'label' => 'Image',
+                'required' => false,
+                'mapped' => false,
+            ])
             ->add('desc_monument')
             ->add('villes',EntityType::class,[
                 'class'=>Ville::class,
