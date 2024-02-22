@@ -22,6 +22,17 @@ class RestaurantController extends AbstractController
         ]);
     }
 
+    #[Route('/front', name: 'app_restaurant_front', methods: ['GET'])]
+    public function front(RestaurantRepository $restaurantRepository): Response
+    {
+        return $this->render('front/index.html.twig', [
+            'restaurants' => $restaurantRepository->findAll(),
+        ]);
+    }
+
+   
+    
+
     #[Route('/new', name: 'app_restaurant_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
