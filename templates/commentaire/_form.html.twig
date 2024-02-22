@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+    <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 20px;">
+        <div>
+            {{ form_row(form.comment) }}
+        </div>
+        <div>
+            {{ form_row(form.post_id) }}
+        </div>
+    </div>
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
