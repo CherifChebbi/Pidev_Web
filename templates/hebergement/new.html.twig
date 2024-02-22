@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Hebergement{% endblock %}
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 13%;">
+
+    <h1>Create new Hebergement</h1>
+
+    {{ include('hebergement/_form.html.twig') }}
+
+    <a href="{{ path('app_hebergement_index') }}">back to list</a>
+{% endblock %}
