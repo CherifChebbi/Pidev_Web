@@ -1,8 +1,16 @@
 {% extends 'event.html.twig' %}
 
 {% block js %}
-    {{ parent() }}
+  {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr('.datepicker', {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+            });
+        });
+
         // Sélectionnez le formulaire de réservation
         const reservationForm = document.querySelector('.reservation-form form');
 
@@ -30,6 +38,7 @@
             .catch(error => console.error('Error:', error));
         });
     </script>
+
 {% endblock %}
 
 {% block css %}
