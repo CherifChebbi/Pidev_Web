@@ -4,38 +4,42 @@
 
 {% block body %}
     <div class="container mt-5">
-        <h1 class="mb-4">Category Index</h1>
+        <div class="row justify-content-center"> {# Center the container #}
+            <div class="col-md-8"> {# Set the width of the container #}
+                <h1 class="mb-4">Category Index</h1>
 
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Hotel</th>
-                        <th>Maison Dhote</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for category in categories %}
-                        <tr>
-                            <td>{{ category.id }}</td>
-                            <td>{{ category.hotel }}</td>
-                            <td>{{ category.maisonDhote }}</td>
-                            <td>
-                                <a href="{{ path('app_category_show', {'id': category.id}) }}" class="btn btn-primary btn-sm">Show</a>
-                                <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-secondary btn-sm">Edit</a>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="4">No records found</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Hotel</th>
+                                <th>Maison Dhote</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for category in categories %}
+                                <tr>
+                                    <td>{{ category.id }}</td>
+                                    <td>{{ category.hotel }}</td>
+                                    <td>{{ category.maisonDhote }}</td>
+                                    <td>
+                                        <a href="{{ path('app_category_show', {'id': category.id}) }}" class="btn btn-primary btn-sm">Show</a>
+                                        <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">No records found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <a href="{{ path('app_category_new') }}" class="btn btn-success">Create New</a>
+            </div>
         </div>
-
-        <a href="{{ path('app_category_new') }}" class="btn btn-success">Create New</a>
     </div>
 {% endblock %}

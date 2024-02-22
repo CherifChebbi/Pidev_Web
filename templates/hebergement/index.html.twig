@@ -3,45 +3,43 @@
 {% block title %}Hebergement index{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1 class="mb-4">Hebergement Index</h1>
+<div style="padding-top: 150px;"
+<div style="padding-left: 350px;"
+    <h1>Hebergement index</h1>
 
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Lieu</th>
-                    <th>Prix</th>
-                    <th>Image</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for hebergement in hebergements %}
-                <tr>
-                    <td>{{ hebergement.id }}</td>
-                    <td>{{ hebergement.nom }}</td>
-                    <td>{{ hebergement.description }}</td>
-                    <td>{{ hebergement.lieu }}</td>
-                    <td>{{ hebergement.prix }}</td>
-                    <td>{{ hebergement.image }}</td>
-                    <td>
-                        <a href="{{ path('app_hebergement_show', {'id': hebergement.id}) }}" class="btn btn-primary btn-sm">Show</a>
-                        <a href="{{ path('app_hebergement_edit', {'id': hebergement.id}) }}" class="btn btn-secondary btn-sm">Edit</a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="7">No records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    <table class="table text-center">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Lieu</th>
+                <th>Prix</th>
+                <th>Image</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for hebergement in hebergements %}
+            <tr>
+                <td>{{ hebergement.id }}</td>
+                <td>{{ hebergement.nom }}</td>
+                <td>{{ hebergement.description }}</td>
+                <td>{{ hebergement.lieu }}</td>
+                <td>{{ hebergement.prix }}</td>
+                <td>{{ hebergement.image }}</td>
+                <td>
+                    <a href="{{ path('app_hebergement_show', {'id': hebergement.id}) }}">show</a>
+                    <a href="{{ path('app_hebergement_edit', {'id': hebergement.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-    <a href="{{ path('app_hebergement_new') }}" class="btn btn-success">Create New</a>
-</div>
+    <a href="{{ path('app_hebergement_new') }}"><button type="button" class="btn btn-success btn-lg">Create New</button></a>
 {% endblock %}
