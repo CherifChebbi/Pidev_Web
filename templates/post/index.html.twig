@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Post Index{% endblock %}
+
 
 {% block body %}
 <div style="padding-left: 25%;">
 <div style="padding-top: 13%;">
 
 <div class="container mt-4">
-    <h1>Post Index</h1>
+    <h1>List Des Publication</h1>
 
     <table class="table table-striped">
         <thead class="thead-dark">
@@ -45,6 +45,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_post_new') }}" class="btn btn-success">Create New</a>
+    <a href="{{ path('app_post_new') }}" class="btn btn-success">Ajouter publication</a>
 </div>
 {% endblock %}

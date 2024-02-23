@@ -87,7 +87,7 @@
 									<a href="#explore">Hébergement</a>
 								</li>
 								<li class="scroll">
-									<a href="#reviews">Restaurants</a>
+									<a href="{{path('app_restaurant_front')}}">Restaurants</a>
 								</li>
 								<li class="scroll">
 									<a href="#blog">Events</a>
@@ -169,7 +169,7 @@
 									<i class="flaticon-restaurant"></i>
 								</div>
 								<h2>
-									<a href="#">resturent</a>
+									<a href="{{path('app_restaurant_front')}}">resturent</a>
 								</h2>
 								<p>150 listings</p>
 							</div>
@@ -789,8 +789,8 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ restaurant.nom }}</h5>
                         <p class="card-text">{{ restaurant.description }}</p>
-                        <a href="{{ path('app_restaurant_show', {'id': restaurant.id}) }}" class="btn btn-info btn-sm">Show</a>
-                        <a href="{{ path('app_restaurant_edit', {'id': restaurant.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{{ path('app_reservation_new', {'id': restaurant.id}) }}" class="btn btn-info btn-sm">Reserver</a>
+                        
                     </div>
                 </div>
             </div>
@@ -802,7 +802,7 @@
     </div>
 
     <div class="text-center mt-4">
-        <a href="{{ path('app_restaurant_new') }}" class="btn btn-success">Create New</a>
+        
     </div>
 </div>
 		<!--/.reviews-->
