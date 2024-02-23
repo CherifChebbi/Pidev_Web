@@ -16,7 +16,7 @@ class Hebergement
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    public  ?string $nom = null;
 
     #[ORM\Column(length: 255)]
     private ?string $description = null;
@@ -70,7 +70,7 @@ class Hebergement
         return $this->categorie;
     }
 
-    public function addCategorie(Category $categorie): static
+    public function addCategorie( Category $categorie): static
     {
         if (!$this->categorie->contains($categorie)) {
             $this->categorie->add($categorie);

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Proxies\__CG__\App\Entity\Hebergement;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -27,7 +28,7 @@ class Reservation
     private ?int $nbr_personne = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'id')]
     private ?Hebergement $hebergement = null;
 
     public function getId(): ?int
@@ -93,5 +94,8 @@ class Reservation
         $this->hebergement = $hebergement;
 
         return $this;
+    }
+    public function __toString(){
+        return $this->hebergement;
     }
 }

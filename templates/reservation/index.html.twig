@@ -13,7 +13,9 @@
                 <th>Email</th>
                 <th>Date</th>
                 <th>Nbr_personne</th>
+                <th>Hebergement</th>
                 <th>actions</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -24,7 +26,7 @@
                 <td>{{ reservation.email }}</td>
                 <td>{{ reservation.date ? reservation.date|date('Y-m-d') : '' }}</td>
                 <td>{{ reservation.nbrPersonne }}</td>
-                <td>
+                <td>{{reservation.hebergement.nom}}</td>
                     <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">show</a>
                     <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
                 </td>
