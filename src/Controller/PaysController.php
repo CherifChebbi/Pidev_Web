@@ -62,9 +62,15 @@ class PaysController extends AbstractController
     }
     //Back 
     #[Route('/tables', name: 'app_pays_index', methods: ['GET'])]
-    public function indexTables(PaysRepository $paysRepository): Response
+    public function indexTables(PaysRepository $paysRepository,Request $request): Response
     {
         $pays = $paysRepository->findAll();
+        
+        $searchTerm = $request->query->get('q');
+        if ($searchTerm) {
+            $pays = $paysRepository->search($searchTerm);
+        }
+       
 
         return $this->render('pays/index.html.twig', [
             'pays' => $pays,
@@ -138,7 +144,7 @@ class PaysController extends AbstractController
         ]);
     }
     //---------DELETE NOTIFIE-----------
-    #[Route('/{id_pays}', name: 'app_pays_delete', methods: ['POST'])]
+    #[Route('/{id_pays}', name: 'app_pays_delete',)]
     public function delete(Request $request, Pays $pay, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$pay->getIdPays(), $request->request->get('_token'))) {
