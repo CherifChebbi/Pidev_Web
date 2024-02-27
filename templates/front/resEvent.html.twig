@@ -1,47 +1,50 @@
 {% extends 'event.html.twig' %}
 
-{% block js %}
-  {{ parent() }}
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            flatpickr('.datepicker', {
-                enableTime: true,
-                dateFormat: "Y-m-d H:i",
-            });
-        });
-
-        // Sélectionnez le formulaire de réservation
-        const reservationForm = document.querySelector('.reservation-form form');
-
-        // Écoutez l'événement de soumission du formulaire
-        reservationForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Empêche le comportement de soumission par défaut
-
-            // Effectuez une requête AJAX ou une autre logique de traitement de formulaire ici
-            // Par exemple, vous pouvez utiliser Fetch API pour soumettre les données du formulaire
-
-            fetch('{{ path('app_reservation_event_new_front') }}', {
-                method: 'POST',
-                body: new FormData(reservationForm)
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Afficher le message de succès
-                    const successMessage = document.querySelector('.reservation-success');
-                    successMessage.style.display = 'block';
-                } else {
-                    // Afficher un message d'erreur si la soumission a échoué
-                    console.error('Submission failed:', response.statusText);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    </script>
-
+{% block css %}
+    {{ parent() }}
+     <style>
+        /* Ajoutez vos styles personnalisés ici */
+        .event-box {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px; /* Réduire l'espacement intérieur */
+            margin-bottom: 20px;
+            height: 350px; /* Hauteur fixe pour une meilleure présentation */
+            background-color: #fff; /* Fond blanc pour une meilleure lisibilité */
+            transition: box-shadow 0.3s; /* Effet de transition pour une meilleure expérience utilisateur */
+            display: flex; /* Utilisation de flexbox pour centrer le contenu */
+            flex-direction: column; /* Alignement vertical */
+            justify-content: center; /* Alignement vertical */
+            align-items: center; /* Alignement horizontal */
+            text-align: center; /* Alignement horizontal */
+        }
+        .event-box:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère au survol pour une interaction visuelle */
+        }
+        .event-image {
+            max-width: 100%;
+            height: 150px; /* Réduire la hauteur de l'image */
+            margin-bottom: 10px;
+            object-fit: cover; /* Ajustement de l'image à la taille de son conteneur */
+            border-radius: 5px; /* Coins arrondis pour une meilleure esthétique */
+        }
+        .event-title {
+            font-weight: bold;
+            margin-bottom: 5px; /* Réduire l'espacement entre le titre et la description */
+            color: #333; /* Couleur du titre pour une meilleure visibilité */
+        }
+        .event-description {
+            margin-bottom: 10px; /* Espacement supplémentaire pour une meilleure lisibilité */
+            color: #666; /* Couleur de la description pour une meilleure visibilité */
+        }
+        .event-price {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
 {% endblock %}
 
-{% block css %}
+{% block js %}
     {{ parent() }}
 {% endblock %}
 
@@ -49,118 +52,39 @@
     {{ parent() }}
 {% endblock %}
 
+{% block footer %}
+    {{ parent() }}
+{% endblock %}
+
 {% block body %}
-    <!-- statistics strat -->
-			
-		<!--/.counter-->
-		<!-- statistics end -->
-
-		<!--blog start -->
-			<section id="blog" class="blog"> <div class="container">
-				<div class="section-header">
-					<h2>news and articles</h2>
-					<p>Always upto date with our latest News and Articles
-					</p>
-				</div>
-				<!--/.section-header-->
-				<div class="blog-content">
-					<div class="row">
-						<div class="col-md-4 col-sm-6">
-							<div class="single-blog-item">
-								<div class="single-blog-item-img">
-									<img src="{{asset('assets/FRONT/img/rio.jpg')}}" alt="blog image">
-								</div>
-								<div class="single-blog-item-txt">
-									<h2>
-										<a href="#">Carnaval de Rio</a>
-									</h2>
-									<h4>posted
-										<span>by</span>
-										<a href="#">admin</a>
-										march 2018</h4>
-									<p>
-										Lorem ipsum dolor sit amet, consectetur de adipisicing elit, sed do eiusmod tempore incididunt ut labore et dolore magna.
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6">
-							<div class="single-blog-item">
-								<div class="single-blog-item-img">
-									<img src="{{asset('assets/FRONT/img/glastonbury.jpg')}}" alt="blog image">
-								</div>
-								<div class="single-blog-item-txt">
-									<h2>
-										<a href="#">Glastonbury Festival</a>
-									</h2>
-									<h4>posted
-										<span>by</span>
-										<a href="#">admin</a>
-										march 2018</h4>
-									<p>
-										Lorem ipsum dolor sit amet, consectetur de adipisicing elit, sed do eiusmod tempore incididunt ut labore et dolore magna.
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-6">
-							<div class="single-blog-item">
-								<div class="single-blog-item-img">
-									<img src="{{asset('assets/FRONT/img/tomorrowland.jpg')}}" alt="blog image">
-								</div>
-								<div class="single-blog-item-txt">
-									<h2>
-										<a href="#">Tomorrowland</a>
-									</h2>
-									<h4>posted
-										<span>by</span>
-										<a href="#">admin</a>
-										march 2018</h4>
-									<p>
-										Lorem ipsum dolor sit amet, consectetur de adipisicing elit, sed do eiusmod tempore incididunt ut labore et dolore magna.
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!--/.container-->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('app_event_index_front') }}">Accueil</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Events</li>
+        </ol>
+    </nav>
     
-    <!-- Make a Reservation Section -->
-<section id="reservation" class="reservation">
     <div class="container">
-        <div class="reservation-success" style="display: none;">
-            <div class="alert alert-success" role="alert">
-                Reservation successfully completed!
-            </div>
-        </div>
-        <h2 class="section-header">Make a Reservation</h2>
-        <div class="reservation-form">
-            {{ include('reservation_event/_form.html.twig') }}
-        </div>
-    </div>
-    
-</section>
-
-
-    <!-- Contact Subscription Section -->
-    <section id="contact" class="subscription">
-        <div class="container">
-            <div class="subscribe-title text-center">
-                <h2>Do you want to add your business listing with us?</h2>
-                <p>Listrace offer you to list your business with us and we are very much able to promote your Business.</p>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="subscription-input-group">
-                        <form action="#">
-                            <input type="email" class="subscription-input-form" placeholder="Enter your email here">
-                            <button class="appsLand-btn subscribe-btn" onclick="window.location.href='#'">Create Account</button>
-                        </form>
-                    </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Events</h1>
+                <p>
+                    Vous souhaitez assister à un événement de votre artiste préféré avec vos amis, offrir un billet à l'un de vos proches? Avec Terranova, trouvez facilement en quelques clics un billet pour l'événement de votre choix !
+                </p>
+                <!-- Liste des événements -->
+                <div class="row">
+                    {% for event in events %}
+                        <div class="col-md-4">
+                            <div class="event-box">
+                                <img src="{{ asset('uploads/' ~ event.imageEvent) }}" alt="{{ event.titre }}" class="event-image">
+                                <div class="event-title">{{ event.titre }}</div>
+                                <div class="event-description">{{ event.description }}</div>
+                                <!-- Ajoutez d'autres détails de l'événement si nécessaire -->
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 {% endblock %}

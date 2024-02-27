@@ -1,9 +1,8 @@
 {% extends 'base_back.html.twig' %}
 
 {% block css %}
- {{ parent() }} 
+    {{ parent() }}
 {% endblock %}
-
 
 {% block js %}
     {{ parent() }}
@@ -47,7 +46,5 @@
         <a href="{{ path('app_reservation_event_index') }}" class="btn btn-secondary">Back to list</a>
 
         <a href="{{ path('app_reservation_event_edit', {'id': reservation_event.id}) }}" class="btn btn-primary">Edit</a>
-
-        {{ include('reservation_event/_delete_form.html.twig') }}
     </div>
 {% endblock %}

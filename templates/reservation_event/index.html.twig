@@ -1,72 +1,78 @@
 {% extends 'base_back.html.twig' %}
 
 {% block css %}
-    {{ parent() }}
-    <style>
-        /* Styles CSS personnalisés */
-        .container {
-            margin-top: 50px; /* Marge en haut */
-        }
-        h1 {
-            color: #ffffff; /* Couleur du titre en blanc */
-            text-align: center; /* Centrage horizontal du titre */
-            margin-bottom: 30px; /* Marge en bas */
-        }
-        th {
-            color: #ffffff; /* Couleur du texte de l'en-tête du tableau en blanc */
-        }
-        .btn {
-            margin-right: 5px; /* Marge à droite pour les boutons */
-        }
-    </style>
+	{{ parent() }}
+	<style>
+		/* Styles CSS personnalisés */
+		.container {
+			margin-top: 50px; /* Marge en haut */
+		}
+		h1 {
+			color: #ffffff; /* Couleur du titre en blanc */
+			text-align: center; /* Centrage horizontal du titre */
+			margin-bottom: 30px; /* Marge en bas */
+		}
+		th {
+			color: #000000; /* Couleur du texte de l'en-tête du tableau en noir */
+			background-color: #f0f0f0; /* Couleur de fond de l'en-tête du tableau */
+		}
+		.btn {
+			margin-right: 5px; /* Marge à droite pour les boutons */
+		}
+	</style>
 {% endblock %}
 
 {% block js %}
-    {{ parent() }}
+	{{ parent() }}
 {% endblock %}
 
 {% block navbar %}
-    {{ parent() }}
+	{{ parent() }}
 {% endblock %}
 
-{% block title %}ReservationEvent index{% endblock %}
+{% block title %}ReservationEvent index
+{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1>ReservationEvent </h1>
+	<div class="container">
+		<h1>Liste des réservations</h1>
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nom</th>
-                    <th>Email</th>
-                    <th>Numéro de téléphone</th>
-                    <th>Date de réservation</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for reservation_event in reservation_events %}
-                    <tr>
-                        <td>{{ reservation_event.id }}</td>
-                        <td>{{ reservation_event.nom }}</td>
-                        <td>{{ reservation_event.email }}</td>
-                        <td>{{ reservation_event.numTel }}</td>
-                        <td>{{ reservation_event.dateReservation ? reservation_event.dateReservation|date('Y-m-d') : '' }}</td>
-                        <td>
-                            <a href="{{ path('app_reservation_event_show', {'id': reservation_event.id}) }}" class="btn btn-primary">Show</a>
-                            <a href="{{ path('app_reservation_event_edit', {'id': reservation_event.id}) }}" class="btn btn-secondary">Edit</a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="6">No records found</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nom</th>
+					<th>Email</th>
+					<th>Numéro de téléphone</th>
+					<th>Date de réservation</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for reservation_event in reservation_events %}
+					<tr>
+						<td>{{ reservation_event.id }}</td>
+						<td>{{ reservation_event.nom }}</td>
+						<td>{{ reservation_event.email }}</td>
+						<td>{{ reservation_event.numTel }}</td>
+						<td>{{ reservation_event.dateReservation ? reservation_event.dateReservation|date('Y-m-d') : '' }}</td>
+						<td>
+							<a href="{{ path('app_reservation_event_show', {'id': reservation_event.id}) }}" class="btn btn-primary">Show</a>
+							<a href="{{ path('app_reservation_event_edit', {'id': reservation_event.id}) }}" class="btn btn-warning">Edit</a>
+							<form action="{{ path('app_reservation_event_delete', {'id': reservation_event.id}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this reservation?')">
+								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation_event.id) }}">
+								<button type="submit" class="btn btn-danger">Delete</button>
+							</form>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="6">No records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 
-        <a href="{{ path('app_reservation_event_new') }}" class="btn btn-success">Create new</a>
-    </div>
+		<a href="{{ path('app_reservation_event_new') }}" class="btn btn-success">Create new</a>
+	</div>
 {% endblock %}

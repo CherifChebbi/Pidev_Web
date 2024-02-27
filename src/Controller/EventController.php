@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Controller\Filexception;
+
 #[Route('/event')]
 class EventController extends AbstractController
 {
@@ -19,6 +20,16 @@ class EventController extends AbstractController
     {
         return $this->render('event/index.html.twig', [
             'events' => $eventRepository->findAll(),
+        ]);
+    }
+    
+    #[Route('/front', name: 'app_event_index_front', methods: ['GET'])]
+    public function indexfront(EventRepository $eventRepository): Response
+    {
+        $events = $eventRepository->findAll();
+
+        return $this->render('front/resEvent.html.twig', [
+            'events' => $events,
         ]);
     }
 
@@ -104,4 +115,7 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    
+
 }

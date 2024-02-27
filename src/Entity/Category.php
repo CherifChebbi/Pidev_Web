@@ -18,7 +18,7 @@ class Category
 
     #[ORM\Column(length: 20)]
     #[Assert\NotBlank(message: 'Le nom ne peut pas être vide')]
-    #[Assert\Length(max: 255, maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères')]
+    #[Assert\Length(max: 30, maxMessage: 'Le nom ne peut pas dépasser {{ limit }} caractères')]
     #[Assert\Regex(
         pattern: '/^[a-zA-Z\- ]+$/',
         message: 'Le nom ne peut contenir que des lettres, des tirets et des espaces'

@@ -1,76 +1,82 @@
 {% extends 'base_back.html.twig' %}
 
 {% block css %}
-    {{ parent() }}
+	{{ parent() }}
 {% endblock %}
 
 {% block js %}
-    {{ parent() }}
+	{{ parent() }}
 {% endblock %}
 
 {% block navbar %}
-    {{ parent() }}
+	{{ parent() }}
 {% endblock %}
 
-{% block title %}Event index{% endblock %}
+{% block title %}Liste des événements
+{% endblock %}
 
 {% block body %}
-    <style>
-        /* Styles CSS personnalisés */
-        .container {
-            margin-top: 50px; /* Marge en haut */
-        }
-        h1 {
-            color: #ffffff; /* Couleur du titre en blanc */
-            text-align: center; /* Centrage horizontal du titre */
-            margin-bottom: 30px; /* Marge en bas */
-        }
-        .table th {
-            color: #ffffff; /* Couleur du texte de l'en-tête du tableau en blanc */
-        }
-    </style>
 
-    <div class="container">
-        <h1>Event index</h1>
+	<style>
+		/* Styles CSS personnalisés */
+		.container {
+			margin-top: 50px; /* Marge en haut */
+		}
+		h1 {
+			color: #ffffff; /* Couleur du titre en blanc */
+			text-align: center; /* Centrage horizontal du titre */
+			margin-bottom: 30px; /* Marge en bas */
+		}
+		.table th {
+			color: #000000; /* Couleur du texte de l'en-tête du tableau en noir */
+		}
+	</style>
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Titre</th>
-                    <th>Description</th>
-                    <th>Date Début</th>
-                    <th>Date Fin</th>
-                    <th>Lieu</th>
-                    <th>Prix</th>
-                    <th>Image</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for event in events %}
-                    <tr>
-                        <td>{{ event.id }}</td>
-                        <td>{{ event.titre }}</td>
-                        <td>{{ event.description }}</td>
-                        <td>{{ event.dateDebut ? event.dateDebut|date('Y-m-d') : '' }}</td>
-                        <td>{{ event.dateFin ? event.dateFin|date('Y-m-d') : '' }}</td>
-                        <td>{{ event.lieu }}</td>
-                        <td>{{ event.prix }}</td>
-                        <td>{{ event.imageEvent }}</td>
-                        <td>
-                            <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-primary">Show</a>
-                            <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-warning">Edit</a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="9">No records found</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+	<div class="container">
+		<h1>Liste des événements</h1>
 
-        <a href="{{ path('app_event_new') }}" class="btn btn-success">Create new</a>
-    </div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Titre</th>
+					<th>Description</th>
+					<th>Date Début</th>
+					<th>Date Fin</th>
+					<th>Lieu</th>
+					<th>Prix</th>
+					<th>Image</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for event in events %}
+					<tr>
+						<td>{{ event.id }}</td>
+						<td>{{ event.titre }}</td>
+						<td>{{ event.description }}</td>
+						<td>{{ event.dateDebut ? event.dateDebut|date('Y-m-d') : '' }}</td>
+						<td>{{ event.dateFin ? event.dateFin|date('Y-m-d') : '' }}</td>
+						<td>{{ event.lieu }}</td>
+						<td>{{ event.prix }}</td>
+						<td>{{ event.imageEvent }}</td>
+						<td>
+							<a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-primary">Show</a>
+							<a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-warning">Edit</a>
+							<form method="post" action="{{ path('app_event_delete', {'id': event.id}) }}" onsubmit="return confirm('Are you sure you want to delete this event?');">
+								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event.id) }}">
+								<button type="submit" class="btn btn-danger">Delete</button>
+							</form>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="9">No records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<a href="{{ path('app_event_new') }}" class="btn btn-success">Create new</a>
+	</div>
 {% endblock %}
