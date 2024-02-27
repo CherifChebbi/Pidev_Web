@@ -57,5 +57,25 @@ class VilleRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+    //SEARCH
+    public function search($searchTerm)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.nom_ville LIKE :searchTerm')
+            ->setParameter('searchTerm', '%'.$searchTerm.'%')
+            ->getQuery()
+            ->getResult();
+    }
+    //count mon_ville
+    public function countMonByVille(int $villeId): int
+    {
+        return $this->createQueryBuilder('p')
+            ->select('COUNT(v)')
+            ->join('p.monuments', 'v')
+            ->where('p.id_ville = :villeId')
+            ->setParameter('villeId', $villeId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 
 }

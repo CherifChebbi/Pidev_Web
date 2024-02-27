@@ -62,15 +62,17 @@ class PaysController extends AbstractController
     }
     //Back 
     #[Route('/tables', name: 'app_pays_index', methods: ['GET'])]
-    public function indexTables(PaysRepository $paysRepository,Request $request): Response
+    public function indexTables(PaysRepository $paysRepository, Request $request): Response
     {
-        $pays = $paysRepository->findAll();
+        $sortBy = $request->query->get('sortBy', 'nomPays');
         $searchTerm = $request->query->get('q');
+        $pays = $paysRepository->findAllOrderedBy($sortBy);
         if ($searchTerm) {
             $pays = $paysRepository->search($searchTerm);
         }
         return $this->render('pays/index.html.twig', [
             'pays' => $pays,
+            'sortBy' => $sortBy,
         ]);
     }
     //---------ADD-----------
@@ -168,7 +170,7 @@ class PaysController extends AbstractController
     #[Route('/deletePays/{id_pays}', name: 'deletePays')]
     public function deletePays(Pays $pays, EntityManagerInterface $em): Response
     {
-            // Récupérer les villes liées à ce pays
+        // Récupérer les villes liées à ce pays
         $villes = $pays->getVilles();
 
         // Supprimer chaque ville liée à ce pays

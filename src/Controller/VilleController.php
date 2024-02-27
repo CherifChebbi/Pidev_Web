@@ -56,10 +56,15 @@ class VilleController extends AbstractController
     }
     //AFFICHAGE
     #[Route('/ville', name: 'app_ville_index', methods: ['GET'])]
-    public function index(VilleRepository $villeRepository): Response
+    public function index(VilleRepository $villeRepository,Request $request): Response
     {
+        $villes = $villeRepository->findAll();
+        $searchTerm = $request->query->get('q');
+        if ($searchTerm) {
+            $villes = $villeRepository->search($searchTerm);
+        }
         return $this->render('ville/index.html.twig', [
-            'villes' => $villeRepository->findAll(),
+            'villes' =>$villes,
         ]);
     }
 /*
@@ -79,35 +84,35 @@ class VilleController extends AbstractController
 */
 
 #[Route('/new', name: 'app_ville_new', methods: ['GET', 'POST'])]
-public function new(Request $request, EntityManagerInterface $entityManager): Response
+public function new(Request $request, EntityManagerInterface $entityManager, VilleRepository $villeRepository): Response
 {
     $ville = new Ville();
     $form = $this->createForm(VilleType::class, $ville);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-
-        // Récupérez le pays associé a la ville 
-        $pays = $ville->getPays();
-
-        // NBR ville ++
-        $pays->setNbVilles($pays->getNbVilles() + 1);
-
-
-        //upload de l image
+        //upload de l'image de la ville
         $imageFile = $form->get('img_ville')->getData();     
         if ($imageFile) {
             $newFilename = uniqid().'.'.$imageFile->guessExtension();
 
             $ville->setImgVille($newFilename);
             $imageFile->move(
-                $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
+                $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Villes/',
                 $newFilename
             );
         }
-        // Le nombre de villes est initialisé à 0
+
+        // Récupérez le pays associé à la ville
+        $pays = $ville->getPays();
+
+        // Augmenter le nombre de villes du pays
+        $pays->setNbVilles($pays->getNbVilles() + 1);
+
+        // Le nombre de monuments est initialisé à 0
         $ville->setNbMonuments(0);
 
+        
         $entityManager->persist($ville);
         $entityManager->persist($pays);
         $entityManager->flush();

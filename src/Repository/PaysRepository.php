@@ -77,4 +77,15 @@ class PaysRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+    //tri
+    public function findAllOrderedBy($sortBy)
+    {
+        $qb = $this->createQueryBuilder('p');
+        if ($sortBy === 'nb_villes') {
+            $qb->orderBy('p.nb_villes', 'DESC');
+        } else {
+            $qb->orderBy('p.nom_pays', 'ASC');
+        }
+        return $qb->getQuery()->getResult();
+    }
 }

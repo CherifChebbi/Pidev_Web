@@ -7,6 +7,7 @@ use App\Entity\Ville;
 use App\Entity\Monument;
 use App\Form\MonumentType;
 use App\Repository\MonumentRepository;
+use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +18,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class MonumentController extends AbstractController
 {
     #[Route('/', name: 'app_monument_index', methods: ['GET'])]
-    public function index(MonumentRepository $monumentRepository): Response
+    public function index(MonumentRepository $monumentRepository,Request $request): Response
     {
+        $monuments = $monumentRepository->findAll();
+        $searchTerm = $request->query->get('q');
+        if ($searchTerm) {
+            $monuments = $monumentRepository->search($searchTerm);
+        }
         return $this->render('monument/index.html.twig', [
-            'monuments' => $monumentRepository->findAll(),
+            'monuments' =>  $monuments,
         ]);
     }
 /*
@@ -49,17 +55,22 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
     if ($form->isSubmitted() && $form->isValid()) {
 
          //upload de l image
-         $imageFile = $form->get('img_monument')->getData();     
-         if ($imageFile) {
-             $newFilename = uniqid().'.'.$imageFile->guessExtension();
+        $imageFile = $form->get('img_monument')->getData();     
+            if ($imageFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+                $monument->setImgMonument($newFilename);
+                $imageFile->move(
+                    $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
+                    $newFilename
+                );
+            }
+        // Récupérez le pays associé à la ville
+        $ville = $monument->getVilles();
 
-             $monument->setImgMonument($newFilename);
-             $imageFile->move(
-                 $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
-                 $newFilename
-             );
-         }
-
+        // Augmenter le nombre de villes du pays
+        $ville->setNbMonuments($ville->getNbMonuments() + 1);
+ 
+        $entityManager->persist($ville);
         $entityManager->persist($monument);
         $entityManager->flush();
 
@@ -103,38 +114,61 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         ]);
     }
 */
-    #[Route('/{id_monument}/edit', name: 'app_monument_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Monument $monument, EntityManagerInterface $entityManager, MonumentRepository $monumentRepository): Response
-    {
-        $form = $this->createForm(MonumentType::class, $monument);
-        $form->handleRequest($request);
+#[Route('/{id_monument}/edit', name: 'app_monument_edit', methods: ['GET', 'POST'])]
+public function edit(Request $request, Monument $monument, EntityManagerInterface $entityManager, MonumentRepository $monumentRepository, VilleRepository $villeRepository): Response
+{
+    $form = $this->createForm(MonumentType::class, $monument);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            //upload de l image
-         $imageFile = $form->get('img_monument')->getData();     
-         if ($imageFile) {
-             $newFilename = uniqid().'.'.$imageFile->guessExtension();
-             $monument->setImgMonument($newFilename);
-             $imageFile->move(
-                 $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
-                 $newFilename
-             );
-         }
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        //upload de l'image du monument
+        $imageFile = $form->get('img_monument')->getData();     
+        if ($imageFile) {
+            $newFilename = uniqid().'.'.$imageFile->guessExtension();
 
-            // Récupérer l'ID de la ville associée à ce monument
-            $villeId = $monument->getVilles()->getIdVille();
+            $monument->setImgMonument($newFilename);
+            $imageFile->move(
+                $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Monuments/',
+                $newFilename
+            );
+        }
+        // Récupérer l'ancienne ville associée au monument avant les modifications
+        $oldVille = $entityManager->getUnitOfWork()->getOriginalEntityData($monument)['villes'];
 
-            // Rediriger vers la liste des monuments associés à cette ville spécifique
-            return $this->redirectToRoute('app_ville_monuments', ['id' => $villeId]);
+        // Récupérer l'ID de la nouvelle ville associée au monument après les modifications
+        $newVilleId = $monument->getVilles()->getIdVille();
+
+        // Si la ville associée au monument a été modifiée
+        if ($oldVille->getIdVille() !== $newVilleId) {
+            // Décrémenter le nombre de monuments de l'ancienne ville
+            $oldVille->setNbMonuments($oldVille->getNbMonuments() - 1);
+
+            // Récupérer la nouvelle ville associée au monument
+            $newVille = $villeRepository->findOneBy(['id_ville' => $newVilleId]);
+
+            // Incrémenter le nombre de monuments de la nouvelle ville
+            $newVille->setNbMonuments($newVille->getNbMonuments() + 1);
+
+            $entityManager->persist($oldVille);
+            $entityManager->persist($newVille);
         }
 
-        return $this->renderForm('monument/edit.html.twig', [
-            'monument' => $monument,
-            'form' => $form,
-        ]);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Monument modifié avec succès.');
+
+        // Récupérer l'ID de la ville associée à ce monument
+        $villeId = $monument->getVilles()->getIdVille();
+
+        // Rediriger vers la liste des monuments associés à cette ville spécifique
+        return $this->redirectToRoute('app_ville_monuments', ['id' => $villeId]);
     }
 
+    return $this->renderForm('monument/edit.html.twig', [
+        'monument' => $monument,
+        'form' => $form,
+    ]);
+}
 
     #[Route('/{id_monument}', name: 'app_monument_delete', methods: ['POST'])]
     public function delete(Request $request, Monument $monument, EntityManagerInterface $entityManager): Response
@@ -147,14 +181,21 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         return $this->redirectToRoute('app_monument_index', [], Response::HTTP_SEE_OTHER);
     }
     #[Route('/deleteMonument/{id_monument}', name: 'deleteMonument')]
-    public function deleteMonument(Monument $monument, EntityManagerInterface $em): Response
+    public function deleteMonument(Monument $monument, EntityManagerInterface $em, VilleRepository $villeRepository): Response
     {
         // Récupérer l'ID de la ville associée à ce monument
         $villeId = $monument->getVilles()->getIdVille();
     
+        // Récupérer la ville associée à ce monument
+        $ville = $villeRepository->findOneBy(['id_ville' => $villeId]);
+    
+        // Décrémenter le nombre de monuments de la ville
+        $ville->setNbMonuments($ville->getNbMonuments() - 1);
+    
+        $em->persist($ville);
         $em->remove($monument);
         $em->flush();
-        
+    
         // Rediriger vers la liste des monuments associés à cette ville spécifique
         return $this->redirectToRoute('app_ville_monuments', ['id' => $villeId]);
     }

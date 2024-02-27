@@ -10,6 +10,11 @@
     <div class="card-header pb-3">
         <h4>Liste des Villes</h4>
     </div> 
+     <form action="{{ path('app_ville_index') }}" method="get" class="d-flex">
+            <input class="form-control me-2" placeholder="Taper le nom..." name="q" style="width: 20%;; height: 45px;">
+            <button type="submit" class="btn btn-warning">Search</button>
+            <a href="{{ path('app_ville_index') }}" class="btn btn-primary ms-2">View All</a>
+        </form>
     <table class="table align-items-center mb-0" border="1">
         <thead>
             <tr>
@@ -18,6 +23,8 @@
                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Img_ville</th>
                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Desc_ville</th>
                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pays</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nb_monuments</th>
+
             </tr>
         </thead>
         <tbody>
@@ -28,6 +35,7 @@
                 <td><img src="{{ asset('assets/BACK/img/Pays/' ~ ville.imgVille ) }}" alt="" style="max-width: 100px; max-height: 100px;"></td>                
                 <td>{{ ville.descVille }}</td>
                 <td>{{ ville.Pays.nom_pays }}</td>
+                <td>{{ ville.nb_monuments }}</td>
                 <td>
                     <a href="{{ path('app_ville_show', {'id_ville': ville.idVille}) }}" class="btn btn-primary">Show</a>
                     <a href="{{ path('app_ville_edit', {'id_ville': ville.idVille}) }}" class="btn btn-warning">Update</a>

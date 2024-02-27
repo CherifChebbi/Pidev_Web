@@ -45,4 +45,13 @@ class MonumentRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+//SEARCH
+public function search($searchTerm)
+{
+    return $this->createQueryBuilder('p')
+        ->andWhere('p.nom_monument LIKE :searchTerm')
+        ->setParameter('searchTerm', '%'.$searchTerm.'%')
+        ->getQuery()
+        ->getResult();
+}
 }

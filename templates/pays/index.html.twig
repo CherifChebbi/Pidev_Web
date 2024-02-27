@@ -16,6 +16,15 @@
             <input class="form-control me-2" placeholder="Taper le nom..." name="q" style="width: 20%;; height: 45px;">
             <button type="submit" class="btn btn-warning">Search</button>
             <a href="{{ path('app_pays_index') }}" class="btn btn-primary ms-2">View All</a>
+        </form>  
+        <form action="{{ path('app_pays_index') }}" method="get" class="d-flex">
+            <div>   
+                <label for="sortBy">Trier par:</label>
+                <select name="sortBy" onchange="this.form.submit()" class="form-control me-2">
+                    <option value="nom_pays" {% if sortBy == 'nom_pays' %}selected{% endif %}>Nom du pays</option>
+                    <option value="nb_villes" {% if sortBy == 'nb_villes' %}selected{% endif %}>Nombre de villes</option>
+                </select>
+            </div>
         </form>
         <table class="table align-items-center mb-0" border="1">
             <thead>

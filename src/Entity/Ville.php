@@ -45,7 +45,7 @@ class Ville
     private ?Pays $pays = null;
 
     #[ORM\Column]
-    private ?int $nb_monuments = null;
+    public ?int $nb_monuments = null;
 
     #[ORM\OneToMany(mappedBy: 'villes', targetEntity: Monument::class ,cascade: ['remove'])]
     private Collection $monuments;
