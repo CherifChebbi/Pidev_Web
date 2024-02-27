@@ -6,6 +6,7 @@ use App\Entity\Pays;
 use App\Entity\Ville;
 use App\Form\VilleType;
 use App\Repository\VilleRepository;
+use App\Repository\PaysRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,6 +87,13 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
 
     if ($form->isSubmitted() && $form->isValid()) {
 
+        // Récupérez le pays associé a la ville 
+        $pays = $ville->getPays();
+
+        // NBR ville ++
+        $pays->setNbVilles($pays->getNbVilles() + 1);
+
+
         //upload de l image
         $imageFile = $form->get('img_ville')->getData();     
         if ($imageFile) {
@@ -97,8 +105,11 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
                 $newFilename
             );
         }
+        // Le nombre de villes est initialisé à 0
+        $ville->setNbMonuments(0);
 
         $entityManager->persist($ville);
+        $entityManager->persist($pays);
         $entityManager->flush();
 
         // Récupérer l'ID du pays associé à cette ville
@@ -142,27 +153,54 @@ public function show(Ville $ville): Response
         ]);
     }
 */
-    #[Route('/{id_ville}/edit', name: 'app_ville_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Ville $ville, EntityManagerInterface $entityManager, VilleRepository $villeRepository): Response
-    {
-        $form = $this->createForm(VilleType::class, $ville);
-        $form->handleRequest($request);
+#[Route('/{id_ville}/edit', name: 'app_ville_edit', methods: ['GET', 'POST'])]
+public function edit(Request $request, Ville $ville, EntityManagerInterface $entityManager, VilleRepository $villeRepository, PaysRepository $paysRepository): Response
+{
+    $form = $this->createForm(VilleType::class, $ville);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+    if ($form->isSubmitted() && $form->isValid()) {
+         //upload de l image
+        $imageFile = $form->get('img_ville')->getData();     
+        if ($imageFile) {
+            $newFilename = uniqid().'.'.$imageFile->guessExtension();
+
+            $ville->setImgVille($newFilename);
+            $imageFile->move(
+                $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
+                $newFilename
+            );
+        }
+        // Récupères l'ancien pays associé à la ville avant les modifications
+        $oldPays = $entityManager->getUnitOfWork()->getOriginalEntityData($ville)['pays'];
+        $entityManager->flush();
+
+        // Récupére l'ID du pays associé à cette ville
+        $paysId = $ville->getPays()->getIdPays();
+
+        // Si le nom du pays a été modifié
+        if ($oldPays->getIdPays() !== $ville->getPays()->getIdPays()) {
+            // Incrémente le nombre de villes pour le nouveau pays
+            $newPays = $ville->getPays();
+            $newPays->setNbVilles($newPays->getNbVilles() + 1);
+            $entityManager->persist($newPays);
+
+            // Décrémente le nombre de villes pour l'ancien pays
+            $oldPays->setNbVilles($oldPays->getNbVilles() - 1);
+            $entityManager->persist($oldPays);
+
             $entityManager->flush();
-
-            // Récupérer l'ID du pays associé à cette ville
-            $paysId = $ville->getPays()->getIdPays();
-
-            // Rediriger vers la liste des villes associées à ce pays spécifique
-            return $this->redirectToRoute('app_pays_villes', ['id' => $paysId]);
         }
 
-        return $this->renderForm('ville/edit.html.twig', [
-            'ville' => $ville,
-            'form' => $form,
-        ]);
+        // Rediriger vers la liste des villes associées à ce pays spécifique
+        return $this->redirectToRoute('app_pays_villes', ['id' => $paysId]);
     }
+
+    return $this->renderForm('ville/edit.html.twig', [
+        'ville' => $ville,
+        'form' => $form,
+    ]);
+}
     #[Route('/{id_ville}', name: 'app_ville_delete', methods: ['POST'])]
     public function delete(Request $request, Ville $ville, EntityManagerInterface $entityManager): Response
     {
@@ -177,9 +215,29 @@ public function show(Ville $ville): Response
     #[Route('/deleteVille/{id_ville}', name: 'deleteVille')]
     public function deleteVille(Ville $ville, EntityManagerInterface $em): Response
     {
-        $em->remove($ville);
-        $em->flush();
-        return $this->redirectToRoute('app_ville_index');
-    }
+        
+        //Récupérez l'auteur associé au ville
+        $pays = $ville->getPays();
 
+        if ($pays) {
+            // nbr ville-- >0
+            $nb_villes = $pays->getNbVilles();
+            if ($nb_villes > 0) {
+                $pays->setNbVilles($nb_villes - 1);
+            }
+
+            // Dissociez le ville de l'auteur
+            $ville->setPays(null);
+
+            // Persistez les modifications
+            $em->persist($pays);
+            $em->persist($ville);
+            
+            // Supprimez ville
+            $em->remove($ville);
+            $em->flush();
+            
+            return $this->redirectToRoute('app_ville_index');
+        }
+    }
 }

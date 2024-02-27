@@ -65,13 +65,10 @@ class PaysController extends AbstractController
     public function indexTables(PaysRepository $paysRepository,Request $request): Response
     {
         $pays = $paysRepository->findAll();
-        
         $searchTerm = $request->query->get('q');
         if ($searchTerm) {
             $pays = $paysRepository->search($searchTerm);
         }
-       
-
         return $this->render('pays/index.html.twig', [
             'pays' => $pays,
         ]);
@@ -103,6 +100,8 @@ class PaysController extends AbstractController
                 $this->addFlash('error', 'Ce pays existe déjà.');
                 return $this->redirectToRoute('app_pays_new'); // Rediriger vers la page d'ajout
             } else {
+                // Le nombre de villes est initialisé à 0
+                $pay->setNbVilles(0);
                 $entityManager->persist($pay);
                 $entityManager->flush();
 
@@ -131,13 +130,24 @@ class PaysController extends AbstractController
     {
         $form = $this->createForm(PaysType::class, $pay);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle file upload
+            $imageFile = $form->get('img_pays')->getData();
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = uniqid('', true).'.'.$imageFile->guessExtension();
+                $imageFile->move(
+                    $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',$newFilename
+                );
+                $pay->setImgPays($newFilename);
+            }
+    
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_pays_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->renderForm('pays/edit.html.twig', [
             'pay' => $pay,
             'form' => $form,

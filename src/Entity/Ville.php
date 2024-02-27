@@ -44,6 +44,9 @@ class Ville
     #[ORM\JoinColumn(name: 'id_pays', referencedColumnName: 'id_pays')]
     private ?Pays $pays = null;
 
+    #[ORM\Column]
+    private ?int $nb_monuments = null;
+
     #[ORM\OneToMany(mappedBy: 'villes', targetEntity: Monument::class ,cascade: ['remove'])]
     private Collection $monuments;
     
@@ -105,6 +108,18 @@ class Ville
     public function setDescVille(string $desc_ville): static
     {
         $this->desc_ville = $desc_ville;
+
+        return $this;
+    }
+
+    public function getNbMonuments(): ?int
+    {
+        return $this->nb_monuments;
+    }
+
+    public function setNbMonuments(int $nb_monuments): static
+    {
+        $this->nb_monuments = $nb_monuments;
 
         return $this;
     }

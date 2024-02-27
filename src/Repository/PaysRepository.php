@@ -66,4 +66,15 @@ class PaysRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    //count villes_pays
+    public function countVillesByPaysId(int $paysId): int
+    {
+        return $this->createQueryBuilder('p')
+            ->select('COUNT(v)')
+            ->join('p.villes', 'v')
+            ->where('p.id_pays = :paysId')
+            ->setParameter('paysId', $paysId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

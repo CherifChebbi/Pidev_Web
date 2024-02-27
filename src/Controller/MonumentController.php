@@ -110,6 +110,16 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //upload de l image
+         $imageFile = $form->get('img_monument')->getData();     
+         if ($imageFile) {
+             $newFilename = uniqid().'.'.$imageFile->guessExtension();
+             $monument->setImgMonument($newFilename);
+             $imageFile->move(
+                 $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
+                 $newFilename
+             );
+         }
             $entityManager->flush();
 
             // Récupérer l'ID de la ville associée à ce monument

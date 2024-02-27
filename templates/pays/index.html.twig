@@ -25,6 +25,7 @@
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Img_pays</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Desc_pays</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Langue</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nb_villes</th>
                 
                     <th class="text-secondary opacity-7"></th>
                 </tr>
@@ -37,6 +38,7 @@
                     <td><img src="{{ asset('assets/BACK/img/Pays/' ~ pay.imgPays) }}" alt="image_pay" style="max-width: 100px; max-height: 100px;"></td>
                     <td>{{ pay.descPays }}</td>
                     <td>{{ pay.langue }}</td>
+                    <td>{{ pay.nb_villes }}</td>
                     <td>
                         <a href="{{ path('app_pays_show', {'id_pays': pay.idPays}) }}" class="btn btn-primary">Show</a>
                         <a href="{{ path('app_pays_edit', {'id_pays': pay.idPays}) }}" class="btn btn-warning">Update</a>

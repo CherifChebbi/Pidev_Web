@@ -46,6 +46,9 @@ class Pays
     #[Assert\NotBlank(message:"La langue ne peut pas être vide")]
     public ?string $langue = null;
 
+    #[ORM\Column]
+    public ?int $nb_villes = null;
+
     #[ORM\OneToMany(mappedBy: 'pays', targetEntity: Ville::class, cascade: ['remove'])]
     private Collection $villes;
     
@@ -113,4 +116,16 @@ class Pays
 
         return $this;
     }
+    public function getNbVilles(): ?int
+    {
+        return $this->nb_villes;
+    }
+
+    public function setNbVilles(int $nb_villes): static
+    {
+        $this->nb_villes = $nb_villes;
+
+        return $this;
+    }
+
 }
