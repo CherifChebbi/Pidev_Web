@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/monument')]
 class MonumentController extends AbstractController
 {
-    #[Route('/', name: 'app_monument_index', methods: ['GET'])]
+    #[Route('/monument', name: 'app_monument_index', methods: ['GET'])]
     public function index(MonumentRepository $monumentRepository,Request $request): Response
     {
         $monuments = $monumentRepository->findAll();
@@ -26,6 +26,18 @@ class MonumentController extends AbstractController
             $monuments = $monumentRepository->search($searchTerm);
         }
         return $this->render('monument/index.html.twig', [
+            'monuments' =>  $monuments,
+        ]);
+    }
+    #[Route('/', name: 'app_monument_indexF', methods: ['GET'])]
+    public function indexF(MonumentRepository $monumentRepository,Request $request): Response
+    {
+        $monuments = $monumentRepository->findAll();
+        $searchTerm = $request->query->get('q');
+        if ($searchTerm) {
+            $monuments = $monumentRepository->search($searchTerm);
+        }
+        return $this->render('monument/indexF.html.twig', [
             'monuments' =>  $monuments,
         ]);
     }

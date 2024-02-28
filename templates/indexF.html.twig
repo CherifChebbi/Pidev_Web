@@ -221,6 +221,28 @@
 				</div><!--/.section-header-->
 				<div class="explore-content">
 					<div class="row">
+						<div class="col-sm-12">
+							<div class="subscription-input-group d-flex">
+								<form action="{{ path('app_pays_indexF') }}#explore" method="get" class="d-flex">
+									<input class="subscription-input-form" placeholder="Taper le nom..." name="q">
+									<button type="submit" class="appsLand-btn subscribe-btn">Find</button>
+								</form>
+								<a href="{{ path('app_pays_indexF') }}#explore" class="appsLand-btn subscribe-btn" style="width: 20%; height: 60px;left: 650px;">View All</a>							
+							</div>
+							<br><br>
+								<form action="{{ path('app_pays_indexF') }}#explore" method="get" class="d-flex">								
+									<div>   
+										<label for="sortBy">Trier par:</label>
+										<select name="sortBy" onchange="this.form.submit()" style="width: 15%;; height: 25px;">
+											<option value="nom_pays" {% if sortBy == 'nom_pays' %}selected{% endif %}>Nom du pays</option>
+											<option value="nb_villes" {% if sortBy == 'nb_villes' %}selected{% endif %}>Nombre de villes</option>
+										</select>
+									</div>
+								</form>  
+						</div>  
+					</div>
+					<br>
+					<div class="row">
 						{% for pay in pays %}
 						<tr>
 						<div class="col-md-0 col-sm-3">
@@ -236,8 +258,17 @@
 									<div class="explore-person">
 										<div class="row">
 											<div class="col-sm-10">
+												<p><b>Description:</b></p>
 												{{ pay.descPays }}
+												
+											</div>
+											<div class="col-sm-10">
+												<p><b>Langue:</b></p>
 												{{ pay.langue }}
+											</div>
+											<div class="col-sm-10">
+												<p><b>Nombre de villes:</b></p>
+												{{ pay.nb_villes }}
 											</div>
 										</div>
 									</div>

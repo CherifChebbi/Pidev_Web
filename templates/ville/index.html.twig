@@ -10,11 +10,12 @@
     <div class="card-header pb-3">
         <h4>Liste des Villes</h4>
     </div> 
-     <form action="{{ path('app_ville_index') }}" method="get" class="d-flex">
-            <input class="form-control me-2" placeholder="Taper le nom..." name="q" style="width: 20%;; height: 45px;">
-            <button type="submit" class="btn btn-warning">Search</button>
-            <a href="{{ path('app_ville_index') }}" class="btn btn-primary ms-2">View All</a>
-        </form>
+    <form action="{{ path('app_ville_index') }}" method="get" class="d-flex">
+        <input class="form-control me-2" placeholder="Taper le nom..." name="q" style="width: 20%;; height: 45px;">
+        <button type="submit" class="btn btn-warning">Search</button>
+        <a href="{{ path('app_ville_index') }}" class="btn btn-primary ms-2">View All</a>
+    </form>
+    
     <table class="table align-items-center mb-0" border="1">
         <thead>
             <tr>
@@ -32,7 +33,7 @@
             <tr>
                 <td>{{ ville.idVille }}</td>
                 <td>{{ ville.nomVille }}</td>
-                <td><img src="{{ asset('assets/BACK/img/Pays/' ~ ville.imgVille ) }}" alt="" style="max-width: 100px; max-height: 100px;"></td>                
+                <td><img src="{{ asset('assets/BACK/img/Pays/' ~ ville.imgVille ) }}" alt="image_ville" style="max-width: 100px; max-height: 100px;"></td>                
                 <td>{{ ville.descVille }}</td>
                 <td>{{ ville.Pays.nom_pays }}</td>
                 <td>{{ ville.nb_monuments }}</td>

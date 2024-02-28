@@ -67,6 +67,18 @@ class VilleController extends AbstractController
             'villes' =>$villes,
         ]);
     }
+    #[Route('/', name: 'app_ville_indexF', methods: ['GET'])]
+    public function indexf(VilleRepository $villeRepository,Request $request): Response
+    {
+        $villes = $villeRepository->findAll();
+        $searchTerm = $request->query->get('q');
+        if ($searchTerm) {
+            $villes = $villeRepository->search($searchTerm);
+        }
+        return $this->render('ville/indexf.html.twig', [
+            'villes' =>$villes,
+        ]);
+    }
 /*
     //affichage ville_pays
     #[Route('/{id_pays}', name: 'liste_villes_pays', methods: ['GET'])]
@@ -98,7 +110,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Vil
 
             $ville->setImgVille($newFilename);
             $imageFile->move(
-                $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Villes/',
+                $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
                 $newFilename
             );
         }

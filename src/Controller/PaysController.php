@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Pays;
 use App\Form\PaysType;
 use App\Repository\PaysRepository;
+use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,15 +36,22 @@ class PaysController extends AbstractController
     //---------AFFICHAGE-----------
     //front
     #[Route('/', name: 'app_pays_indexF', methods: ['GET'])]
-    public function index(PaysRepository $paysRepository): Response
+    public function index(PaysRepository $paysRepository, Request $request): Response
     {
+        $sortBy = $request->query->get('sortBy', 'nomPays');
+        $searchTerm = $request->query->get('q');
+        $pays = $paysRepository->findAllOrderedBy($sortBy);
+        if ($searchTerm) {
+            $pays = $paysRepository->search($searchTerm);
+        }
         return $this->render('indexF.html.twig', [
-            'pays' => $paysRepository->findAll(),
+            'pays' => $pays,
+            'sortBy' => $sortBy,
         ]);
     }
     //front
     #[Route('/pays/{id}/villesF', name: 'app_pays_villesF', methods: ['GET'])]
-    public function villesF(int $id, PaysRepository $paysRepository): Response
+    public function villesF(VilleRepository $villeRepository,int $id, PaysRepository $paysRepository,Request $request): Response
     {
         // Récupérer le pays en fonction de son identifiant
         $pays = $paysRepository->find($id);
@@ -54,7 +62,10 @@ class PaysController extends AbstractController
 
         // Récupérer les villes liées à ce pays
         $villes = $paysRepository->findVillesByPaysId($id);
-
+        $searchTerm = $request->query->get('q');
+        if ($searchTerm) {
+            $villes = $villeRepository->search($searchTerm);
+        }
         return $this->render('ville/indexF.html.twig', [
             'pays' => $pays,
             'villes' => $villes,
@@ -89,7 +100,6 @@ class PaysController extends AbstractController
             $imageFile = $form->get('img_pays')->getData();     
             if ($imageFile) {
                 $newFilename = uniqid().'.'.$imageFile->guessExtension();
-
                 $pay->setImgPays($newFilename);
                 $imageFile->move(
                     $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
@@ -106,12 +116,10 @@ class PaysController extends AbstractController
                 $pay->setNbVilles(0);
                 $entityManager->persist($pay);
                 $entityManager->flush();
-
                 $this->addFlash('success', 'Pays ajouté avec succès.');
                 return $this->redirectToRoute('app_pays_index'); // Rediriger vers la liste des pays
             }
         }
-
         return $this->renderForm('pays/new.html.twig', [
             'pay' => $pay,
             'form' => $form,
