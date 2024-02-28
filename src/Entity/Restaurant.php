@@ -34,10 +34,14 @@ class Restaurant
     #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: Reservation::class)]
     private Collection $reservations;
 
+    #[ORM\OneToMany(mappedBy: 'restauran', targetEntity: Commentaire::class)]
+    private Collection $commentaires;
+
     public function __construct()
     {
         $this->plats = new ArrayCollection();
         $this->reservations = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -151,6 +155,36 @@ class Restaurant
             // set the owning side to null (unless already changed)
             if ($reservation->getRestaurant() === $this) {
                 $reservation->setRestaurant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): static
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setRestauran($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): static
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getRestauran() === $this) {
+                $commentaire->setRestauran(null);
             }
         }
 

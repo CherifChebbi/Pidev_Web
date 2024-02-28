@@ -20,6 +20,9 @@ class Commentaire
     #[ORM\JoinColumn(nullable: false)]
     private ?Post $post_id = null;
 
+    #[ORM\ManyToOne(inversedBy: 'commentaires')]
+    private ?Restaurant $restauran = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,5 +54,17 @@ class Commentaire
     public function __toString()
     {
         return $this->post_id;
+    }
+
+    public function getRestauran(): ?Restaurant
+    {
+        return $this->restauran;
+    }
+
+    public function setRestauran(?Restaurant $restauran): static
+    {
+        $this->restauran = $restauran;
+
+        return $this;
     }
 }
