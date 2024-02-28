@@ -13,8 +13,17 @@
     <form action="{{ path('app_ville_index') }}" method="get" class="d-flex">
         <input class="form-control me-2" placeholder="Taper le nom..." name="q" style="width: 20%;; height: 45px;">
         <button type="submit" class="btn btn-warning">Search</button>
-        <a href="{{ path('app_ville_index') }}" class="btn btn-primary ms-2">View All</a>
     </form>
+    {% if app.request.query.get('q') %}
+        <button onclick="goBack()" class="btn btn-warning" style="width: 20%;; height: 45px;">View All</button>
+    {% endif %}
+    <script>
+        function goBack() {
+            console.log("Bouton View All cliqué");
+            window.history.back();
+        }
+    </script>
+
     
     <table class="table align-items-center mb-0" border="1">
         <thead>
