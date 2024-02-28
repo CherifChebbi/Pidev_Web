@@ -1,0 +1,38 @@
+{{ form_start(form) }}
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.image, 'Image') }}
+                    {{ form_widget(form.image, {'attr': {'class': 'form-control'}, 'help': 'Téléchargez une image pour le post (format: jpg, jpeg, png)'}) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.description, 'Description') }}
+                    {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la description du post'}}) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.rate, 'Rate') }}
+                    {{ form_widget(form.rate, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le rate du post'}}) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">{{ button_label|default('Save') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{ form_end(form) }}
