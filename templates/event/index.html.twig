@@ -2,6 +2,26 @@
 
 {% block css %}
 	{{ parent() }}
+	<style>
+		/* Custom CSS styles */
+		.container {
+			margin-top: 50px; /* Top margin */
+		}
+		h1 {
+			color: #ffffff; /* White title color */
+			text-align: center; /* Center align title */
+			margin-bottom: 30px; /* Bottom margin */
+		}
+		.table th {
+			color: #000000; /* Black text color for table header */
+		}
+		.table td {
+			max-width: 200px; /* Maximum width for table cells */
+			overflow: hidden;
+			text-overflow: ellipsis; /* Truncate text if it overflows */
+			white-space: nowrap; /* Prevent text from wrapping */
+		}
+	</style>
 {% endblock %}
 
 {% block js %}
@@ -12,29 +32,15 @@
 	{{ parent() }}
 {% endblock %}
 
-{% block title %}Liste des événements
+{% block title %}
+	Liste des événements
 {% endblock %}
 
 {% block body %}
-
-	<style>
-		/* Styles CSS personnalisés */
-		.container {
-			margin-top: 50px; /* Marge en haut */
-		}
-		h1 {
-			color: #ffffff; /* Couleur du titre en blanc */
-			text-align: center; /* Centrage horizontal du titre */
-			margin-bottom: 30px; /* Marge en bas */
-		}
-		.table th {
-			color: #000000; /* Couleur du texte de l'en-tête du tableau en noir */
-		}
-	</style>
-
 	<div class="container">
 		<h1>Liste des événements</h1>
 
+		<!-- Tableau des événements -->
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -59,7 +65,13 @@
 						<td>{{ event.dateFin ? event.dateFin|date('Y-m-d') : '' }}</td>
 						<td>{{ event.lieu }}</td>
 						<td>{{ event.prix }}</td>
-						<td>{{ event.imageEvent }}</td>
+						<td>
+							{% if event.imageEvent %}
+								<img src="{{ asset('uploads/' ~ event.imageEvent) }}" alt="{{ event.id }}" class="img-thumbnail" style="max-height: 50px;">
+							{% else %}
+								No Image
+							{% endif %}
+						</td>
 						<td>
 							<a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-primary">Show</a>
 							<a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-warning">Edit</a>

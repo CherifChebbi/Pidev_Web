@@ -10,7 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Controller\Filexception;
+use App\Repository\CategoryRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/event')]
 class EventController extends AbstractController
@@ -22,16 +23,21 @@ class EventController extends AbstractController
             'events' => $eventRepository->findAll(),
         ]);
     }
-    
-    #[Route('/front', name: 'app_event_index_front', methods: ['GET'])]
-    public function indexfront(EventRepository $eventRepository): Response
-    {
-        $events = $eventRepository->findAll();
 
-        return $this->render('front/resEvent.html.twig', [
-            'events' => $events,
-        ]);
-    }
+    #[Route('/front', name: 'app_event_index_front', methods: ['GET'])]
+    public function indexfront(EventRepository $eventRepository, CategoryRepository $categoryRepository): Response
+{
+    $events = $eventRepository->findAll();
+    $categories = $categoryRepository->findAll();
+
+    return $this->render('front/resEvent.html.twig', [
+        'events' => $events,
+        'categories' => $categories,
+    ]);
+}
+
+
+
 
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -64,7 +70,6 @@ class EventController extends AbstractController
         ]);
     }
 
-
     #[Route('/{id}', name: 'app_event_show', methods: ['GET'])]
     public function show(Event $event): Response
     {
@@ -75,35 +80,34 @@ class EventController extends AbstractController
 
     #[Route('/{id}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Event $event, EntityManagerInterface $entityManager): Response
-{
-    $form = $this->createForm(EventType::class, $event);
-    $form->handleRequest($request);
+    {
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Gérer l'éventuelle modification de l'image
-        $imageFile = $form->get('image_event')->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Gérer l'éventuelle modification de l'image
+            $imageFile = $form->get('image_event')->getData();
 
-        if ($imageFile) {
-            $newFilename = uniqid().'.'.$imageFile->guessExtension();
+            if ($imageFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
 
-            $event->setImageEvent($newFilename);
-            $imageFile->move(
-                $this->getParameter('kernel.project_dir').'/public/uploads',
-                $newFilename
-            );
+                $event->setImageEvent($newFilename);
+                $imageFile->move(
+                    $this->getParameter('kernel.project_dir').'/public/uploads',
+                    $newFilename
+                );
+            }
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
+        return $this->renderForm('event/edit.html.twig', [
+            'event' => $event,
+            'form' => $form,
+        ]);
     }
-
-    return $this->renderForm('event/edit.html.twig', [
-        'event' => $event,
-        'form' => $form,
-    ]);
-}
-
 
     #[Route('/{id}', name: 'app_event_delete', methods: ['POST'])]
     public function delete(Request $request, Event $event, EntityManagerInterface $entityManager): Response
@@ -116,6 +120,6 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    
 
+    
 }

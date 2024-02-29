@@ -51,6 +51,7 @@ class Event
     #[Assert\NotBlank(message: 'Le prix ne peut pas être vide')]
     #[Assert\GreaterThan(value: 0, message: 'Le prix doit être supérieur à 0')]
     private ?float $prix = null;
+    
 
     #[ORM\Column(length: 255)]
     private ?string $image_event = null;
@@ -196,10 +197,14 @@ class Event
         }
         return $this;
     }
+    
+    
 
 
     public function __toString() {
-        return $this->idCategory;
-    }
+    return $this->nom;
+}
+
+    
 
 }

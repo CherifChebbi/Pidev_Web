@@ -2,50 +2,195 @@
 
 {% block css %}
     {{ parent() }}
-     <style>
+    <style>
         /* Ajoutez vos styles personnalisés ici */
+        .sidebar {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .filter-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .filter-option {
+            margin-bottom: 20px; /* Augmentation de l'espacement entre les options de filtrage */
+        }
         .event-box {
             border: 1px solid #ccc;
             border-radius: 5px;
-            padding: 10px; /* Réduire l'espacement intérieur */
+            padding: 20px;
             margin-bottom: 20px;
-            height: 350px; /* Hauteur fixe pour une meilleure présentation */
+            max-height: 400px; /* Hauteur maximale */
+            overflow-y: auto; /* Défilement vertical si nécessaire */
             background-color: #fff; /* Fond blanc pour une meilleure lisibilité */
             transition: box-shadow 0.3s; /* Effet de transition pour une meilleure expérience utilisateur */
             display: flex; /* Utilisation de flexbox pour centrer le contenu */
             flex-direction: column; /* Alignement vertical */
-            justify-content: center; /* Alignement vertical */
-            align-items: center; /* Alignement horizontal */
-            text-align: center; /* Alignement horizontal */
+            justify-content: space-between; /* Espacement vertical égal */
         }
         .event-box:hover {
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère au survol pour une interaction visuelle */
         }
         .event-image {
             max-width: 100%;
-            height: 150px; /* Réduire la hauteur de l'image */
+            height: 200px; /* Hauteur fixe pour l'image */
             margin-bottom: 10px;
             object-fit: cover; /* Ajustement de l'image à la taille de son conteneur */
             border-radius: 5px; /* Coins arrondis pour une meilleure esthétique */
         }
         .event-title {
             font-weight: bold;
-            margin-bottom: 5px; /* Réduire l'espacement entre le titre et la description */
+            margin-bottom: 5px; /* Espacement supplémentaire pour une meilleure lisibilité */
             color: #333; /* Couleur du titre pour une meilleure visibilité */
+        }
+        .event-date {
+            margin-bottom: 10px;
+            color: #666; /* Couleur de la date pour une meilleure visibilité */
         }
         .event-description {
             margin-bottom: 10px; /* Espacement supplémentaire pour une meilleure lisibilité */
             color: #666; /* Couleur de la description pour une meilleure visibilité */
         }
-        .event-price {
+        .event-price-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .price-label {
             font-weight: bold;
-            color: #007bff;
+        }
+        .lieu-filter-checkboxes label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .price-control-button {
+            background-color: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .event-text {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .dropdown-menu {
+            right: 0;
+            left: auto;
+        }
+        .dropdown-toggle::after {
+            display: inline-block;
+            margin-left: 0.255em;
+            vertical-align: 0.255em;
+            content: "";
+            border-top: 0.3em solid;
+            border-right: 0.3em solid transparent;
+            border-bottom: 0;
+            border-left: 0.3em solid transparent;
         }
     </style>
 {% endblock %}
 
 {% block js %}
     {{ parent() }}
+    <script>
+        $(function () { // Filtrage par catégorie
+            $("#category-filter").on("change", function () {
+                var selectedCategory = $(this).val();
+                $(".event-box").hide(); // Masquer tous les événements
+                $(".event-box[data-category='" + selectedCategory + "']").show(); // Afficher les événements de la catégorie sélectionnée
+            });
+
+            // Filtrage par prix
+            $("#price-slider").on("input", function () {
+                var value = $(this).val();
+                $("#current-price").text(value + " €");
+                filterEventsByPrice(parseInt(value));
+            });
+
+            $("#increase-price").click(function () {
+                var currentValue = parseInt($("#price-slider").val());
+                if (currentValue < 500) {
+                    $("#price-slider").val(currentValue + 5).trigger("input");
+                }
+            });
+
+            $("#decrease-price").click(function () {
+                var currentValue = parseInt($("#price-slider").val());
+                if (currentValue > 0) {
+                    $("#price-slider").val(currentValue - 5).trigger("input");
+                }
+            });
+
+            $("#set-price-range").click(function () {
+                var minPrice = parseInt($("#min-price").val());
+                var maxPrice = parseInt($("#max-price").val());
+                $("#price-slider").val(minPrice).trigger("input");
+                $("#current-price").text(minPrice + " €");
+                filterEventsByPrice(minPrice, maxPrice);
+            });
+
+            // Filtrage par date
+            $("#date-filter").on("change", function () {
+                var selectedDate = $(this).val();
+                $(".event-box").hide(); // Masquer tous les événements
+                $(".event-box[data-date='" + selectedDate + "']").show(); // Afficher les événements de la date sélectionnée
+            });
+
+            // Filtrage par lieu
+            $("[id^='lieu-']").on("change", function () {
+                var selectedLieux = [];
+                $("[id^='lieu-']:checked").each(function () {
+                    selectedLieux.push($(this).val());
+                });
+                if (selectedLieux.length === 0) {
+                    $(".event-box").show(); // Afficher tous les événements si aucun lieu n'est sélectionné
+                } else {
+                    $(".event-box").hide(); // Masquer tous les événements
+                    selectedLieux.forEach(function (lieuId) {
+                        $(".event-box[data-lieu='" + lieuId + "']").show(); // Afficher les événements du lieu sélectionné
+                    });
+                }
+            });
+
+            // Recherche d'événements
+            $("#search-input").on("keyup", function () {
+                var searchText = $(this).val().toLowerCase();
+                $(".event-box").each(function () {
+                    var eventTitle = $(this).find('.event-title').text().toLowerCase();
+                    if (eventTitle.includes(searchText)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+
+        function filterEventsByPrice(minPrice, maxPrice) {
+            $(".event-box").each(function () {
+                var eventPrice = parseInt($(this).find('.event-price').text());
+                if (eventPrice >= minPrice && eventPrice <= maxPrice) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+    </script>
 {% endblock %}
 
 {% block navbar %}
@@ -57,30 +202,120 @@
 {% endblock %}
 
 {% block body %}
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ path('app_event_index_front') }}">Accueil</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Events</li>
-        </ol>
-    </nav>
-    
     <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ path('app_event_index_front') }}">Accueil/Events</a>
+                </li>
+            </ol>
+        </nav>
+        <div class="event-text">
+            <h1>Events</h1>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Trier par : Pertinence
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Pertinence</a>
+                    <a class="dropdown-item" href="#">Date la plus proche</a>
+                    <a class="dropdown-item" href="#">Prix croissant</a>
+                    <a class="dropdown-item" href="#">Prix décroissant</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">A-Z</a>
+                    <!-- Ajoutez d'autres options de tri si nécessaire -->
+                </div>
+            </div>
+        </div>
+        <p>
+            Vous souhaitez assister à un événement de votre artiste préféré avec vos amis, offrir un billet à l'un de vos proches? Avec Terranova, trouvez facilement en quelques clics un billet pour l'événement de votre choix !
+        </p>
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Rechercher un événement...">
+        </div>
         <div class="row">
-            <div class="col-md-12">
-                <h1>Events</h1>
-                <p>
-                    Vous souhaitez assister à un événement de votre artiste préféré avec vos amis, offrir un billet à l'un de vos proches? Avec Terranova, trouvez facilement en quelques clics un billet pour l'événement de votre choix !
-                </p>
-                <!-- Liste des événements -->
+            <div class="col-md-3">
+                <div class="sidebar">
+                    <h2 class="filter-title">Filtrer les événements</h2>
+                    <!-- Filtrage par catégorie -->
+                    <div class="filter-option">
+                        <label for="category-filter">Catégorie :</label>
+                        <select id="category-filter">
+                            <option value="">Toutes les catégories</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.nom }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- Filtrage par prix -->
+                    <div class="filter-option">
+                        <label for="price-filter">Prix :</label>
+                        <div class="event-price-container">
+                            <button id="decrease-price" class="price-control-button">-</button>
+                            <input type="range" id="price-slider" min="0" max="500" step="5">
+                            <button id="increase-price" class="price-control-button">+</button>
+                        </div>
+                        <span id="current-price">0 €</span>
+                        <div class="price-range-inputs">
+                            <input type="number" id="min-price" placeholder="Min">
+                            <input type="number" id="max-price" placeholder="Max">
+                            <button id="set-price-range" class="price-control-button">Appliquer</button>
+                        </div>
+                    </div>
+                    <!-- Filtrage par date -->
+                    <div class="filter-option">
+                        <label for="date-filter">Date :</label>
+                        <input type="date" id="date-filter">
+                    </div>
+                    <!-- Filtrage par lieu -->
+                    <div class="filter-option">
+                        <label>Lieu :</label>
+                        <div>
+                            <input type="checkbox" id="lieu-paris" value="Paris">
+                            <label for="lieu-paris">Paris</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="lieu-marseille" value="Marseille">
+                            <label for="lieu-marseille">Marseille</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="lieu-barcelone" value="Barcelone">
+                            <label for="lieu-barcelone">Barcelone</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="lieu-madrid" value="Madrid">
+                            <label for="lieu-madrid">Madrid</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="lieu-lisbonne" value="Lisbonne">
+                            <label for="lieu-lisbonne">Lisbonne</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="lieu-new-york" value="New York">
+                            <label for="lieu-new-york">New York</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="lieu-berlin" value="Berlin">
+                            <label for="lieu-berlin">Berlin</label>
+                        </div>
+                        <!-- Ajoutez d'autres villes selon vos besoins -->
+                    </div>
+                    <!-- Ajoutez d'autres options de filtrage si nécessaire -->
+                </div>
+            </div>
+            <div class="col-md-9">
                 <div class="row">
                     {% for event in events %}
-                        <div class="col-md-4">
-                            <div class="event-box">
-                                <img src="{{ asset('uploads/' ~ event.imageEvent) }}" alt="{{ event.titre }}" class="event-image">
-                                <div class="event-title">{{ event.titre }}</div>
-                                <div class="event-description">{{ event.description }}</div>
-                                <!-- Ajoutez d'autres détails de l'événement si nécessaire -->
+                        <div class="col-md-4 event-box" data-category="{{ event.Idcategory }}" data-date="{{ event.dateDebut | date('Y-m-d') }}" data-lieu="{{ event.lieu }}">
+                            <img src="{{ asset('uploads/' ~ event.imageEvent) }}" alt="{{ event.titre }}" class="event-image">
+                            <div class="event-title">{{ event.titre }}</div>
+                            <div class="event-date">{{ event.dateDebut | date('Y-m-d') }}</div>
+                            <div class="event-description">{{ event.description }}</div>
+                            <div class="event-price-container">
+                                <span class="price-label">Prix :</span>
+                                <span class="event-price">{{ event.prix }}</span>
                             </div>
+                            <button class="reserve-button">Réserver</button>
                         </div>
                     {% endfor %}
                 </div>
