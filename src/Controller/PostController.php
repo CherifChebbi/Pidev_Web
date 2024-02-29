@@ -20,7 +20,7 @@ class PostController extends AbstractController
         return $this->render('post/index.html.twig', [
             'posts' => $postRepository->findAll(),
         ]);
-    }
+    }      
 
     #[Route('/new', name: 'app_post_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

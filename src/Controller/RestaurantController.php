@@ -23,20 +23,27 @@ class RestaurantController extends AbstractController
     }
 
     #[Route('/front', name: 'app_restaurant_front', methods: ['GET'])]
-    public function front(Request $request, RestaurantRepository $restaurantRepository): Response
-    {
-        $searchTerm = $request->query->get('search');
-    
-        // Ensure $searchTerm is not null
-        $searchTerm = $searchTerm ?? '';
-    
-        $restaurants = $restaurantRepository->searchByName($searchTerm);
-    
-        return $this->render('front/index.html.twig', [
-            'restaurants' => $restaurants,
-            'searchTerm' => $searchTerm,
-        ]);
-    }
+public function front(Request $request, RestaurantRepository $restaurantRepository): Response
+{
+    $searchTerm = $request->query->get('search');
+    $location = $request->query->get('location');
+    $minPrice = $request->query->get('minPrice');
+    $maxPrice = $request->query->get('maxPrice');
+
+    // Ensure $searchTerm is not null
+    $searchTerm = $searchTerm ?? '';
+    $location = $location ?? ''; // Set a default value if null
+    $minPrice = $minPrice ?? null; // Set a default value if null
+    $maxPrice = $maxPrice !== '' ? (int)$maxPrice : null; // Ensure maxPrice is either null or an integer
+
+    // Add $location and $priceRange to your repository method
+    $restaurants = $restaurantRepository->advancedSearch($searchTerm, $location, $minPrice, $maxPrice);
+
+    return $this->render('front/index.html.twig', [
+        'restaurants' => $restaurants,
+        'searchTerm' => $searchTerm,
+    ]);
+}
    
 
    
@@ -116,7 +123,6 @@ class RestaurantController extends AbstractController
 
         return $this->redirectToRoute('app_restaurant_index', [], Response::HTTP_SEE_OTHER);
     }
-
 
 
 

@@ -2,63 +2,48 @@
 
 {% block body %}
 
-<section>
-    <style>
-        .card {
-            border: none;
-            margin-bottom: 20px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s ease-in-out;
-        }
-
-        .card:hover {
-            box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .card img {
-            max-height: 300px;
-            object-fit: cover;
-        }
-
-        .card-body {
-            padding: 20px;
-        }
-
-        .btn-info {
-            background-color: #17a2b8;
-            border-color: #17a2b8;
-            padding: 10px 20px;
-            font-size: 16px;
-        }
-
-        .btn-info:hover {
-            background-color: #117a8b;
-            border-color: #117a8b;
-        }
-    </style>
-
-    <div class="container mt-4">
-        <div class="card">
-            {% if restaurant.image %}
-                <img src="{{ asset('uploads/' ~ restaurant.image) }}" alt="{{ restaurant.nom }}" class="card-img-top">
-            {% else %}
-                <div class="text-center py-3">
-                    No Image
-                </div>
-            {% endif %}
-            <div class="card-body">
-                <h2 class="card-title">{{ restaurant.nom }}</h2>
-                <p class="card-text">{{ restaurant.description }}</p>
-                <p class="card-text"><strong>Localisation:</strong> {{ restaurant.localisation }}</p>
-                <strong>Plats:</strong>
-                <ul>
-                    {% for plat in restaurant.getPlats() %}
-                        <li>{{ plat.nom }} <img src="{{ asset('uploads/' ~ plat.image) }}" alt="{{ plat.nom }}" class="img-thumbnail" style="max-height: 50px;"></li>
-                    {% endfor %}
-                </ul>
-                <a href="{{ path('app_reservation_new', {'id': restaurant.id}) }}" class="btn btn-info">Reserve Now</a>
+<section style="padding-top: 50px; text-align: center;">
+    
+    <div class="container">
+    <div style="background-color: #fff; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); padding: 20px; margin-bottom: 20px;">
+        <h3 style="color: #17a2b8; font-size: 28px; margin-bottom: 20px;">{{ restaurant.nom }}</h3>
+    </div>
+        {% if restaurant.image %}
+            <img src="{{ asset('uploads/' ~ restaurant.image) }}" alt="{{ restaurant.nom }}" style="max-height: 500px; width: 100%; object-fit: cover; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+        {% else %}
+            <div class="text-center py-3">
+                No Image
             </div>
+        {% endif %}
+        <div>
+            <p style="color: #555; font-size: 18px; margin-bottom: 20px;">{{ restaurant.description }}</p>
+        </div>
+        <div style="background-color: #fff; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); padding: 20px; margin-bottom: 20px;">
+            <h3 style="color: #17a2b8; font-size: 28px; margin-bottom: 20px;">{{ restaurant.localisation }}</h3>
+        </div>
+        <div class="row">
+            {% for plat in restaurant.getPlats() %}
+                <div class="col-md-4 mb-4">
+                    <div class="card" style="box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s ease-in-out;">
+                        {% if plat.image %}
+                            <img src="{{ asset('uploads/' ~ plat.image) }}" alt="{{ plat.nom }}" class="card-img-top" style="max-height: 300px; object-fit: cover; border-radius: 10px 10px 0 0;">
+                        {% else %}
+                            <div class="text-center py-3">
+                                No Image
+                            </div>
+                        {% endif %}
+                        <div class="card-body" style="padding: 20px;">
+                            <h5 class="card-title" style="font-size: 18px; color: #333;">{{ plat.nom }}</h5>
+                            <p class="card-text" style="color: #777;">Price: {{ plat.prix }} $</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div style="margin-top: 20px;">
+            <a href="{{ path('app_reservation_new', {'id': restaurant.id}) }}" class="btn btn-info" style="background-color: #17a2b8; border-color: #17a2b8; padding: 10px 30px; font-size: 18px; transition: background-color 0.3s;">Reserve Now</a>
         </div>
     </div>
 </section>
+
 {% endblock %}

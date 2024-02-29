@@ -30,7 +30,32 @@ class RestaurantRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+   
 
+
+
+    public function advancedSearch(string $searchTerm, string $location, ?int $minPrice, ?int $maxPrice): array
+    {
+        $queryBuilder = $this->createQueryBuilder('r')
+            ->leftJoin('r.plats', 'p') // Assuming 'plats' is the property representing the association with Plat entity
+            ->where('r.nom LIKE :searchTerm')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%');
+    
+        if ($location) {
+            $queryBuilder->andWhere('r.localisation LIKE :location')
+                ->setParameter('location', '%' . $location . '%');
+        }
+    
+        if ($minPrice !== null && $maxPrice !== null) {
+            // Apply filtering for the price range based on the associated Plats
+            $queryBuilder->andWhere('p.prix >= :minPrice')
+                ->andWhere('p.prix <= :maxPrice')
+                ->setParameter('minPrice', $minPrice)
+                ->setParameter('maxPrice', $maxPrice);
+        }
+    
+        return $queryBuilder->getQuery()->getResult();
+    }
 
 //    /**
 //     * @return Restaurant[] Returns an array of Restaurant objects
