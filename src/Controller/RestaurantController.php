@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 #[Route('/restaurant')]
 class RestaurantController extends AbstractController
 {
@@ -23,12 +23,21 @@ class RestaurantController extends AbstractController
     }
 
     #[Route('/front', name: 'app_restaurant_front', methods: ['GET'])]
-    public function front(RestaurantRepository $restaurantRepository): Response
+    public function front(Request $request, RestaurantRepository $restaurantRepository): Response
     {
+        $searchTerm = $request->query->get('search');
+    
+        // Ensure $searchTerm is not null
+        $searchTerm = $searchTerm ?? '';
+    
+        $restaurants = $restaurantRepository->searchByName($searchTerm);
+    
         return $this->render('front/index.html.twig', [
-            'restaurants' => $restaurantRepository->findAll(),
+            'restaurants' => $restaurants,
+            'searchTerm' => $searchTerm,
         ]);
     }
+   
 
    
     
@@ -64,6 +73,13 @@ class RestaurantController extends AbstractController
         ]);
     }
 
+    #[Route('/front/{id}', name: 'app_restaurant_front_show', methods: ['GET'])]
+    public function detail(Restaurant $restaurant): Response
+    {   
+    return $this->render('front/detail.html.twig', [
+        'restaurant' => $restaurant,
+    ]);
+}
     #[Route('/{id}', name: 'app_restaurant_show', methods: ['GET'])]
     public function show(Restaurant $restaurant): Response
     {
@@ -100,4 +116,19 @@ class RestaurantController extends AbstractController
 
         return $this->redirectToRoute('app_restaurant_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
 }

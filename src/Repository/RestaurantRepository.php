@@ -16,10 +16,21 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class RestaurantRepository extends ServiceEntityRepository
 {
+    
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Restaurant::class);
     }
+
+    public function searchByName(string $searchTerm): array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.nom LIKE :searchTerm')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
 
 //    /**
 //     * @return Restaurant[] Returns an array of Restaurant objects

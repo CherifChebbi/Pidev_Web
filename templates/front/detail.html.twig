@@ -1,0 +1,64 @@
+{% extends 'front.html.twig' %}
+
+{% block body %}
+
+<section>
+    <style>
+        .card {
+            border: none;
+            margin-bottom: 20px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .card img {
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .btn-info:hover {
+            background-color: #117a8b;
+            border-color: #117a8b;
+        }
+    </style>
+
+    <div class="container mt-4">
+        <div class="card">
+            {% if restaurant.image %}
+                <img src="{{ asset('uploads/' ~ restaurant.image) }}" alt="{{ restaurant.nom }}" class="card-img-top">
+            {% else %}
+                <div class="text-center py-3">
+                    No Image
+                </div>
+            {% endif %}
+            <div class="card-body">
+                <h2 class="card-title">{{ restaurant.nom }}</h2>
+                <p class="card-text">{{ restaurant.description }}</p>
+                <p class="card-text"><strong>Localisation:</strong> {{ restaurant.localisation }}</p>
+                <strong>Plats:</strong>
+                <ul>
+                    {% for plat in restaurant.getPlats() %}
+                        <li>{{ plat.nom }} <img src="{{ asset('uploads/' ~ plat.image) }}" alt="{{ plat.nom }}" class="img-thumbnail" style="max-height: 50px;"></li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ path('app_reservation_new', {'id': restaurant.id}) }}" class="btn btn-info">Reserve Now</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
