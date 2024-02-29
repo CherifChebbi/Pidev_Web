@@ -3,14 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Pays;
+use App\Form\CountryExportType;
 use App\Form\PaysType;
 use App\Repository\PaysRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 #[Route('/pays')]
 class PaysController extends AbstractController
@@ -193,4 +198,98 @@ class PaysController extends AbstractController
         return $this->redirectToRoute('app_pays_index');
     }
     
+//---------PDF----------------
+    #[Route('/export/pdf', name: 'app_pays_export_pdf', methods: ['GET'])]
+    public function exportPdf(PaysRepository $paysRepository): Response
+    {
+        // Récupérer les données des pays depuis la base de données
+        $pays = $paysRepository->findAll();
+    
+        // Générer le contenu à exporter
+        $content = '<h2 style="text-align: center; color: blue;">Liste des pays</h2>'; // Ajout du titre
+    
+        // Ajout de la date d'exportation
+        $content .= '<p style="text-align: right;">Date d\'exportation : ' . date('d/m/Y H:i:s') . '</p>';
+    
+        $content .= '<table border="1" style="border-collapse: collapse; width: 100%;">';
+        $content .= '<tr style="background-color: #f0f0f0;"><th>ID</th><th>Nom</th><th>Image</th><th>Description</th><th>Nombre de villes</th><th>Langue</th></tr>';
+        foreach ($pays as $paysItem) {
+            $content .= '<tr>';
+            $content .= '<td style="padding: 5px;">' . $paysItem->getIdPays() . '</td>';
+            $content .= '<td style="padding: 5px;">' . $paysItem->getNomPays() . '</td>';
+            $content .= '<td style="padding: 5px;"><img src="' . $this->getImagePath($paysItem->getImgPays()) . '" width="50" height="50"></td>';
+            $content .= '<td style="padding: 5px;">' . $paysItem->getDescPays() . '</td>';
+            $content .= '<td style="padding: 5px;">' . $paysItem->getNbVilles() . '</td>';
+            $content .= '<td style="padding: 5px;">' . $paysItem->getLangue() . '</td>';
+            $content .= '</tr>';
+        }
+        $content .= '</table>';
+    
+        // Générer et télécharger le fichier PDF
+        $pdf = new \TCPDF;
+        $pdf->AddPage();
+    
+        // Ajout du contenu au PDF
+        $pdf->writeHTML($content);
+    
+        // Génération de la date d'exportation
+        $dateExport = date('d/m/Y H:i:s');
+    
+        // Ajout de la date d'exportation en pied de page
+        $pdf->SetY(-15);
+        $pdf->SetFont('helvetica', 'I', 8);
+        $pdf->Cell(0, 10, 'Date d\'exportation : ' . $dateExport, 0, false, 'C', 0, '', 0, false, 'T', 'M');
+    
+        // Téléchargement du fichier PDF
+        $pdf->Output('pays_export.pdf', 'D');
+    
+        return new Response();
+    }
+    
+    // Fonction pour obtenir le chemin complet de l'image à partir de l'URL stockée en base de données
+    private function getImagePath($imageName) {
+        // Chemin vers le répertoire où les images sont stockées
+        $imageDirectory = $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/';
+        return $imageDirectory . $imageName;
+    }
+
+//---------EXCEL----------------
+
+    #[Route('/export/excel', name: 'app_pays_export_excel', methods: ['GET'])]
+    public function exportExcel(PaysRepository $paysRepository): Response
+    {
+        // Récupérer les données des pays depuis la base de données
+        $pays = $paysRepository->findAll();
+    
+        // Créer un nouveau fichier Excel
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+    
+        // Ajouter les en-têtes
+        $sheet->setCellValue('A1', 'ID');
+        $sheet->setCellValue('B1', 'Nom');
+        $sheet->setCellValue('C1', 'Image');
+        $sheet->setCellValue('D1', 'Description');
+        $sheet->setCellValue('E1', 'Nombre de villes');
+        $sheet->setCellValue('F1', 'Langue');
+    
+        // Remplir les données
+        $row = 2;
+        foreach ($pays as $paysItem) {
+            $sheet->setCellValue('A' . $row, $paysItem->getIdPays());
+            $sheet->setCellValue('B' . $row, $paysItem->getNomPays());
+            // Ajouter le lien vers l'image
+            $sheet->setCellValue('C' . $row, $this->getImagePath($paysItem->getImgPays()));
+            $sheet->setCellValue('D' . $row, $paysItem->getDescPays());
+            $sheet->setCellValue('E' . $row, $paysItem->getNbVilles());
+            $sheet->setCellValue('F' . $row, $paysItem->getLangue());
+            $row++;
+        }
+        // Créer le writer pour Excel
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        // Enregistrer le fichier Excel
+        $writer->save('pays_export.xlsx');
+        // Retourner une réponse avec le fichier Excel
+        return $this->file('pays_export.xlsx');
+    }  
 }

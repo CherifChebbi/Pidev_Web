@@ -12,11 +12,19 @@
     </div>
 <div class="card-body px-2 pt-2 pb-8">     
     <div class="table-responsive p-0">
+        <!--Exporter-->
+        {# Ajoutez un lien pour télécharger le fichier PDF #}
+        <a href="{{ path('app_pays_export_pdf') }}" class="btn btn-danger">Exporter en PDF</a>
+        {# Ajoutez un lien pour télécharger le fichier Excel #}
+        <a href="{{ path('app_pays_export_excel') }}" class="btn btn-success">Exporter en Excel</a>
+        
+        <!--Search-->
         <form action="{{ path('app_pays_index') }}" method="get" class="d-flex">
             <input class="form-control me-2" placeholder="Taper le nom..." name="q" style="width: 20%;; height: 45px;">
             <button type="submit" class="btn btn-warning">Search</button>
             <a href="{{ path('app_pays_index') }}" class="btn btn-primary ms-2">View All</a>
-        </form>  
+        </form> 
+        <!--Tri--> 
         <form action="{{ path('app_pays_index') }}" method="get" class="d-flex">
             <div>   
                 <label for="sortBy">Trier par:</label>
