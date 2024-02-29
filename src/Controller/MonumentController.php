@@ -211,5 +211,20 @@ public function edit(Request $request, Monument $monument, EntityManagerInterfac
         // Rediriger vers la liste des monuments associés à cette ville spécifique
         return $this->redirectToRoute('app_ville_monuments', ['id' => $villeId]);
     }
+
+    //-----------------------MAPS--------------------
+    #[Route('monument/{id}/maps', name: 'afficher_monument_sur_maps')]
+    public function afficherMonumentSurMaps(int $id, MonumentRepository $monumentRepository): Response
+    {
+        // Récupérer les données du pays depuis la base de données
+        $monument = $monumentRepository->find($id); // récupérer le pays correspondant à l'ID $id depuis la base de données
+        $nomVille = $monument->getNomMonument(); // Supposons que vous avez une méthode getNomPays() dans votre entité Pays
+        
+        // Générer l'URL Google Maps avec les coordonnées du pays
+        $urlGoogleMaps = "https://www.google.com/maps/search/?api=1&query=" . urlencode($nomVille);
+        
+        // Rediriger vers l'URL Google Maps
+        return $this->redirect($urlGoogleMaps);
+    }
     
 }

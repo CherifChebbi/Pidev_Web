@@ -292,4 +292,19 @@ class PaysController extends AbstractController
         // Retourner une réponse avec le fichier Excel
         return $this->file('pays_export.xlsx');
     }  
+    
+//-----------------------MAPS--------------------
+    #[Route('pays/{id}/maps', name: 'afficher_pays_sur_maps')]
+    public function afficherPaysSurMaps(int $id, PaysRepository $paysRepository,): Response
+    {
+        // Récupérer les données du pays depuis la base de données
+        $pays =  $pays = $paysRepository->find($id); // récupérer le pays correspondant à l'ID $id depuis la base de données
+        $nomPays = $pays->getNomPays(); // Supposons que vous avez une méthode getNomPays() dans votre entité Pays
+        
+        // Générer l'URL Google Maps avec les coordonnées du pays
+        $urlGoogleMaps = "https://www.google.com/maps/search/?api=1&query=" . urlencode($nomPays);
+        
+        // Rediriger vers l'URL Google Maps
+        return $this->redirect($urlGoogleMaps);
+    }
 }

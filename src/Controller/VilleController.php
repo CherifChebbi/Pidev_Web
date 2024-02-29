@@ -257,4 +257,18 @@ public function edit(Request $request, Ville $ville, EntityManagerInterface $ent
             return $this->redirectToRoute('app_ville_index');
         }
     }
+    //-----------------------MAPS--------------------
+    #[Route('ville/{id}/maps', name: 'afficher_ville_sur_maps')]
+    public function afficherVilleSurMaps(int $id, VilleRepository $villeRepository,): Response
+    {
+        // Récupérer les données du pays depuis la base de données
+        $ville =  $ville = $villeRepository->find($id); // récupérer le pays correspondant à l'ID $id depuis la base de données
+        $nomVille = $ville->getNomVille(); // Supposons que vous avez une méthode getNomPays() dans votre entité Pays
+        
+        // Générer l'URL Google Maps avec les coordonnées du pays
+        $urlGoogleMaps = "https://www.google.com/maps/search/?api=1&query=" . urlencode($nomVille);
+        
+        // Rediriger vers l'URL Google Maps
+        return $this->redirect($urlGoogleMaps);
+    }
 }
