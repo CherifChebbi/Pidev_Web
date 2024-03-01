@@ -24,24 +24,59 @@
 
 {% block js %}
 	{{ parent() }}
+	<script>
+		function searchReservation() {
+var input,
+filter,
+table,
+tr,
+td,
+i,
+txtValue;
+input = document.getElementById("searchInput");
+filter = input.value.toUpperCase();
+table = document.getElementById("reservationTable");
+tr = table.getElementsByTagName("tr");
+for (i = 0; i < tr.length; i++) {
+td = tr[i].getElementsByTagName("td")[1]; // Index 1 for column with reservation name, adjust if needed
+if (td) {
+txtValue = td.textContent || td.innerText;
+if (txtValue.toUpperCase().indexOf(filter) > -1) {
+tr[i].style.display = "";
+} else {
+tr[i].style.display = "none";
+}
+}
+}
+}
+	</script>
 {% endblock %}
 
 {% block navbar %}
 	{{ parent() }}
 {% endblock %}
 
-{% block title %}ReservationEvent index
+{% block title %}
+	ReservationEvent index
 {% endblock %}
 
 {% block body %}
 	<div class="container">
 		<h1>Liste des réservations</h1>
 
-		<table class="table table-striped">
+		<!-- Barre de recherche -->
+		<div class="input-group mb-3">
+			<input type="text" id="searchInput" class="form-control" placeholder="Rechercher par nom" aria-label="Rechercher par nom" aria-describedby="button-addon2">
+			<div class="input-group-append">
+				<button class="btn btn-primary" type="button" id="button-addon2" onclick="searchReservation()">Rechercher</button>
+			</div>
+		</div>
+
+		<table class="table table-striped" id="reservationTable">
 			<thead>
 				<tr>
 					<th>Id</th>
-					<th>Nom</th>
+					<th>Nom de l'événement</th>
 					<th>Email</th>
 					<th>Numéro de téléphone</th>
 					<th>Date de réservation</th>
@@ -52,6 +87,7 @@
 				{% for reservation_event in reservation_events %}
 					<tr>
 						<td>{{ reservation_event.id }}</td>
+						<td>{{ reservation_event.idEvent.titre }}</td>
 						<td>{{ reservation_event.nom }}</td>
 						<td>{{ reservation_event.email }}</td>
 						<td>{{ reservation_event.numTel }}</td>

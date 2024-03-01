@@ -17,9 +17,9 @@ class MailerController extends AbstractController
 
     #[Route('/email')]
     public function sendEmail(
-        $to = 'terranova.noreply@gmail.com',
+        $to = 'rayensghir7@gmail.com',
         $content = '<p>See Twig integration for better HTML integration!</p>'
-    ): Response  
+    ): Response
     {
         $email = (new Email())
             ->from('terranova.noreply@gmail.com')

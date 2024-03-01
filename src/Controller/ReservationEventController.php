@@ -19,8 +19,15 @@ class ReservationEventController extends AbstractController
     #[Route('/', name: 'app_reservation_event_index', methods: ['GET'])]
     public function index(ReservationEventRepository $reservationEventRepository): Response
     {
+        // Récupérer les réservations avec les événements associés
+        $reservationEvents = $reservationEventRepository->createQueryBuilder('r')
+            ->leftJoin('r.id_event', 'e') // Faire une jointure avec la table des événements
+            ->addSelect('e') // Sélectionner également les données de la table des événements
+            ->getQuery()
+            ->getResult();
+
         return $this->render('reservation_event/index.html.twig', [
-            'reservation_events' => $reservationEventRepository->findAll(),
+            'reservation_events' => $reservationEvents,
         ]);
     }
 
@@ -71,7 +78,7 @@ class ReservationEventController extends AbstractController
             return $this->redirectToRoute('app_reservation_event_new_front');
         }
 
-        return $this->render('front/ResEvent.html.twig', [
+        return $this->render('front/ReservationEvent.html.twig', [
             'form' => $form->createView(),
             
         ]);

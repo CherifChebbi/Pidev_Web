@@ -1,0 +1,29 @@
+{% extends 'event.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <h1>Réserver un événement</h1>
+    {{ form_start(form) }}
+        {{ form_row(form.nom) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.num_tel) }}
+        {{ form_row(form.date_reservation) }}
+        {{ form_row(form.id_event) }}
+        <button type="submit" class="btn btn-primary">Valider</button>
+    {{ form_end(form) }}
+{% endblock %}

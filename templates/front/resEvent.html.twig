@@ -166,18 +166,7 @@
                 }
             });
 
-            // Recherche d'événements
-            $("#search-input").on("keyup", function () {
-                var searchText = $(this).val().toLowerCase();
-                $(".event-box").each(function () {
-                    var eventTitle = $(this).find('.event-title').text().toLowerCase();
-                    if (eventTitle.includes(searchText)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            });
+           
         });
 
         function filterEventsByPrice(minPrice, maxPrice) {
@@ -221,6 +210,8 @@
                     <a class="dropdown-item" href="#">Date la plus proche</a>
                     <a class="dropdown-item" href="#">Prix croissant</a>
                     <a class="dropdown-item" href="#">Prix décroissant</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">A-Z</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">A-Z</a>
                     <!-- Ajoutez d'autres options de tri si nécessaire -->
@@ -315,7 +306,7 @@
                                 <span class="price-label">Prix :</span>
                                 <span class="event-price">{{ event.prix }}</span>
                             </div>
-                            <button class="reserve-button">Réserver</button>
+                            <button class="btn btn-primary reserve-button">Réserver</button>
                         </div>
                     {% endfor %}
                 </div>
