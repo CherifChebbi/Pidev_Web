@@ -242,7 +242,7 @@
 						</div>  
 					</div>
 					<br>
-					<div class="row">
+					<div class="row">					
 						{% for pay in pays %}
 						<tr>
 						<div class="col-md-4 col-sm-6">
@@ -259,8 +259,8 @@
 										<div class="row">
 											<div class="col-sm-10">
 												<p><b>Description:</b></p>
-												{{ pay.descPays }}
-												
+												<p onclick="toggleQRCode({{ pay.idPays }})" style="color: red; cursor: pointer;">CLIQUER ICI</p>
+												<img id="qrCode{{ pay.idPays }}" src="{{ path('pays_qr_code', { 'id': pay.idPays }) }}" style="display: none;">
 											</div>
 											<div class="col-sm-10">
 												<p><b>Langue:</b></p>
@@ -279,10 +279,12 @@
 											</div>
 											<div class="col-sm-7">
 												<div class="explore-map-icon">
+													<a href="{{ path('afficher_pays_sur_carte', {'id': pay.idPays}) }}" target="_blank">
+														<i data-feather="map"></i>
+													</a>
 													<a href="{{ path('afficher_pays_sur_maps', {'id': pay.idPays}) }}" target="_blank">
 														<i data-feather="map-pin"></i>
 													</a>
-													<a href="#"><i data-feather="heart"></i></a>
 												</div>
 											</div>
 										</div>
@@ -293,6 +295,8 @@
 						{% endfor %}
 					</div>					
 			</div><!--/.container-->
+			<div id="map"></div>
+
 		</section><!--/.explore-->
 		<!--explore end -->
 
@@ -693,6 +697,19 @@
 		<!--footer end-->
 		
         {% block js %}
+		 <!-- QRCODE -->
+		<script>
+			function toggleQRCode(paysId) {
+				var qrCodeImg = document.getElementById('qrCode' + paysId);
+				if (qrCodeImg.style.display === 'none') {
+					qrCodeImg.style.display = 'block';
+				} else {
+					qrCodeImg.style.display = 'none';
+				}
+			}
+		</script>
+		 <!-- API MAPS-->
+		
             <!-- Include all js compiled plugins (below), or include individual files as needed -->
 
             <script src="{{asset('assets/FRONT/js/jquery.js')}}"></script>

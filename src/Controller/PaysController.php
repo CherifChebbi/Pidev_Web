@@ -3,19 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\Pays;
-use App\Form\CountryExportType;
 use App\Form\PaysType;
 use App\Repository\PaysRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Endroid\QrCode\Writer\PngWriter;
+use App\Service\OpenWeatherMapService;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 #[Route('/pays')]
 class PaysController extends AbstractController
@@ -293,12 +294,13 @@ class PaysController extends AbstractController
         return $this->file('pays_export.xlsx');
     }  
     
-//-----------------------MAPS--------------------
+//---------MAPS--------------------
+    
     #[Route('pays/{id}/maps', name: 'afficher_pays_sur_maps')]
-    public function afficherPaysSurMaps(int $id, PaysRepository $paysRepository,): Response
+    public function afficherPaysSurMaps(int $id, PaysRepository $paysRepository): Response
     {
         // Récupérer les données du pays depuis la base de données
-        $pays =  $pays = $paysRepository->find($id); // récupérer le pays correspondant à l'ID $id depuis la base de données
+        $pays = $paysRepository->find($id); // récupérer le pays correspondant à l'ID $id depuis la base de données
         $nomPays = $pays->getNomPays(); // Supposons que vous avez une méthode getNomPays() dans votre entité Pays
         
         // Générer l'URL Google Maps avec les coordonnées du pays
@@ -307,4 +309,66 @@ class PaysController extends AbstractController
         // Rediriger vers l'URL Google Maps
         return $this->redirect($urlGoogleMaps);
     }
+    
+//---------QR CODE--------------------
+    #[Route('/pays/qr-code/{id}', name: 'pays_qr_code')]
+    public function generateQRCode(int $id, PaysRepository $paysRepository): Response
+    {
+        $pays = $paysRepository->find($id); // récupérer le pays correspondant à l'ID $id depuis la base de données
+        $qrCodeContent = $pays->getDescPays();
+
+        $builder = Builder::create()
+        ->writer(new PngWriter())
+        ->data($qrCodeContent)
+        ->encoding(new Encoding('UTF-8'))
+        ->size(200)
+        ->margin(10)
+        ->build();
+
+    return new Response($builder->getString());
+    }
+
+//---------API MAP carte/WEATHER-----------------------
+    #[Route('pays/{id}', name: 'afficher_pays_sur_carte')]
+    public function afficherPaysSurCarte(int $id, PaysRepository $paysRepository, OpenWeatherMapService $weatherService,): Response
+    {
+        // Récupérer les données du pays depuis la base de données
+        $pays = $paysRepository->find($id);
+        
+        $cityName = $pays->getNomPays(); 
+        //$cityName = $request->query->get('city');
+        $weatherData = $weatherService->getWeatherByCityName($cityName);
+
+        // Générer la carte Google Maps avec les coordonnées du pays
+        $map = $this->generateMap($pays);
+
+        // Retourner la vue avec la carte
+        return $this->render('pays/map.html.twig', [
+            'pays' => $pays,
+            'map' => $map,
+            
+            'temperature' => $weatherData['main']['temp'] ?? null,
+            'weather_condition' => $weatherData['weather'][0]['description'] ?? null,
+            'feels_like' => $weatherData['main']['feels_like'] ?? null,
+            'pressure' => $weatherData['main']['pressure'] ?? null,
+            'humidity' => $weatherData['main']['humidity'] ?? null,
+            'wind_speed' => $weatherData['wind']['speed'] ?? null,
+            'wind_direction' => $weatherData['wind']['deg'] ?? null,
+            'sunrise' => $weatherData['sys']['sunrise'] ?? null,
+            'sunset' => $weatherData['sys']['sunset'] ?? null,
+      ]);
+    }
+    private function generateMap(Pays $pays): array
+    {
+        $map = [
+            'center' => [
+                'lat' => $pays->getLatitude(),
+                'lng' => $pays->getLongitude(),
+            ],
+            'zoom' => 8,
+        ];
+
+        return $map;
+    }
+//-------------------------------
 }

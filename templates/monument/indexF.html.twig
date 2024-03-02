@@ -41,7 +41,8 @@
 						<div class="row">
 							<div class="col-sm-10">
 								<p><b>Description:</b></p>
-								{{ monument.descMonument }}
+								<p onclick="toggleQRCode({{ monument.idMonument }})" style="color: red; cursor: pointer;">CLIQUER ICI</p>
+								<img id="qrCode{{ monument.idMonument }}" src="{{ path('monument_qr_code', { 'id': monument.idMonument}) }}" style="display: none;">
 							</div>
 						</div>
 					</div>
@@ -55,7 +56,7 @@
 									<a href="{{ path('afficher_monument_sur_maps', {'id': monument.idMonument}) }}" target="_blank">
 										<i data-feather="map-pin"></i>
 									</a>
-									<a href="#"><i data-feather="heart"></i></a>
+									<a href="#"><i data-feather="cloud-drizzle"></i></a>
 								</div>
 							</div>
 						</div>

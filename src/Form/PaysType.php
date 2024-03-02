@@ -21,6 +21,8 @@ class PaysType extends AbstractType
             ])
             ->add('desc_pays')
             ->add('langue')
+            ->add('latitude')
+            ->add('longitude')
         ;
     }
 

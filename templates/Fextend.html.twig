@@ -127,6 +127,16 @@
 		<!--footer end-->
 		
         {% block js %}
+		<script>
+			function toggleQRCode(paysId) {
+				var qrCodeImg = document.getElementById('qrCode' + paysId);
+				if (qrCodeImg.style.display === 'none') {
+					qrCodeImg.style.display = 'block';
+				} else {
+					qrCodeImg.style.display = 'none';
+				}
+			}
+		</script>
             <!-- Include all js compiled plugins (below), or include individual files as needed -->
 
             <script src="{{asset('assets/FRONT/js/jquery.js')}}"></script>

@@ -22,12 +22,12 @@
 						window.history.back();
 					}
 				</script>
-
 			</div>
 		</div>  
 	</div>
 	<br><br><hr>
 		{% for ville in villes %}
+		
 		<div class="col-md-4 col-sm-6">
 			<div class="single-explore-item">
 				<div class="single-explore-img">
@@ -41,7 +41,8 @@
 						<div class="row">
 							<div class="col-sm-10">
 								<p><b>Description:</b></p>
-								{{ ville.descVille }}
+								<p onclick="toggleQRCode({{ ville.idVille }})" style="color: red; cursor: pointer;">CLIQUER ICI</p>
+								<img id="qrCode{{ ville.idVille }}" src="{{ path('ville_qr_code', { 'id': ville.idVille}) }}" style="display: none;">
 							</div>
 							<div class="col-sm-10">
 								<p><b>Nombre de monuments:</b></p>
@@ -59,7 +60,7 @@
 									<a href="{{ path('afficher_ville_sur_maps', {'id': ville.idVille}) }}" target="_blank">
 										<i data-feather="map-pin"></i>
 									</a>
-									<a href="#"><i data-feather="heart"></i></a>
+									<a href="#"><i data-feather="cloud-drizzle"></i></a>
 								</div>
 							</div>
 						</div>

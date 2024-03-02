@@ -38,12 +38,20 @@
             </tr>
         </thead>
         <tbody>
+        <style>
+                    .description {
+                        max-width: 200px; /* ajustez cette valeur en fonction de vos besoins */
+                        overflow: hidden;
+                        text-overflow: ellipsis; /* ajout d'une ellipse (...) pour indiquer qu'il y a du contenu coupé */
+                        white-space: nowrap; /* empêche le texte de se retourner à la ligne */
+                    }
+                </style>
         {% for ville in villes %}
             <tr>
                 <td>{{ ville.idVille }}</td>
                 <td>{{ ville.nomVille }}</td>
                 <td><img src="{{ asset('assets/BACK/img/Pays/' ~ ville.imgVille ) }}" alt="image_ville" style="max-width: 100px; max-height: 100px;"></td>                
-                <td>{{ ville.descVille }}</td>
+                <td class="description">{{ ville.descVille }}</td>
                 <td>{{ ville.Pays.nom_pays }}</td>
                 <td>{{ ville.nb_monuments }}</td>
                 <td>

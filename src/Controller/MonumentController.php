@@ -9,6 +9,9 @@ use App\Form\MonumentType;
 use App\Repository\MonumentRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\Writer\PngWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -140,7 +143,7 @@ public function edit(Request $request, Monument $monument, EntityManagerInterfac
 
             $monument->setImgMonument($newFilename);
             $imageFile->move(
-                $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Monuments/',
+                $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
                 $newFilename
             );
         }
@@ -225,6 +228,23 @@ public function edit(Request $request, Monument $monument, EntityManagerInterfac
         
         // Rediriger vers l'URL Google Maps
         return $this->redirect($urlGoogleMaps);
+    }
+    //----------------------- QR CODE--------------------
+    #[Route('/monument/qr-code/{id}', name: 'monument_qr_code')]
+    public function generateQRCode(int $id, MonumentRepository $monumentRepository): Response
+    {
+        $monument = $monumentRepository->find($id); // récupérer le pays correspondant à l'ID $id depuis la base de données
+        $qrCodeContent = $monument->getDescMonument();
+
+        $builder = Builder::create()
+        ->writer(new PngWriter())
+        ->data($qrCodeContent)
+        ->encoding(new Encoding('UTF-8'))
+        ->size(200)
+        ->margin(10)
+        ->build();
+
+    return new Response($builder->getString());
     }
     
 }

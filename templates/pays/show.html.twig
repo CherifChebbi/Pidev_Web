@@ -1,5 +1,11 @@
 {% extends 'back/t_base.html.twig' %}
+
 {% block body %}
+    <style>
+    td.paragraph-wrap {
+    white-space: pre-wrap;
+    }
+    </style>
     <div class="card-body px-3 pt-3 pb-4">     
             <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0" border="1">
@@ -18,7 +24,7 @@
             </tr>
             <tr>
                 <th>Desc_pays</th>
-                <td>{{ pay.descPays }}</td>
+                <td style="white-space: pre-wrap;"><p>{{ pay.descPays }}</p></td>
             </tr>
             <tr>
                 <th>Langue</th>

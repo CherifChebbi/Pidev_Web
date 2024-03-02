@@ -31,12 +31,20 @@
             </tr>
         </thead>
         <tbody>
+        <style>
+                    .description {
+                        max-width: 200px; /* ajustez cette valeur en fonction de vos besoins */
+                        overflow: hidden;
+                        text-overflow: ellipsis; /* ajout d'une ellipse (...) pour indiquer qu'il y a du contenu coupé */
+                        white-space: nowrap; /* empêche le texte de se retourner à la ligne */
+                    }
+                </style>
         {% for monument in monuments %}
             <tr>
                 <td>{{ monument.idMonument }}</td>
                 <td>{{ monument.nomMonument }}</td>
                 <td><img src="{{ asset('assets/BACK/img/Pays/' ~ monument.imgMonument ) }}" alt="" style="max-width: 100px; max-height: 100px;"></td>                
-                <td>{{ monument.descMonument }}</td>
+                <td class="description">{{ monument.descMonument }}</td>
                 <td>{{ monument.villes.nom_ville }}</td>
                 <td>
                     <a href="{{ path('app_monument_show', {'id_monument': monument.idMonument}) }}"class="btn btn-primary">Show</a>
