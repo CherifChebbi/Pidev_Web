@@ -21,6 +21,59 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
+    public function findByCategory($categoryId)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.Idcategory = :categoryId')
+            ->setParameter('categoryId', $categoryId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByLieu($lieu)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.lieu = :lieu')
+            ->setParameter('lieu', $lieu)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findEventsByClosestDate()
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.date_debut >= :currentDate') // Récupérer les événements dont la date est supérieure ou égale à la date actuelle
+            ->setParameter('currentDate', new \DateTime()) // Date actuelle
+            ->orderBy('e.date_debut', 'ASC') // Trier par date croissante (la plus proche en premier)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByPriceAscending()
+    {
+        return $this->createQueryBuilder('e')
+            ->orderBy('e.prix', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByPriceDescending()
+    {
+        return $this->createQueryBuilder('e')
+            ->orderBy('e.prix', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByTitleAscending()
+    {
+        return $this->createQueryBuilder('e')
+            ->orderBy('e.titre', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
 //    /**
 //     * @return Event[] Returns an array of Event objects

@@ -6,6 +6,36 @@
 
 {% block js %}
     {{ parent() }}
+     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr('.datepicker', {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+            });
+        });
+
+        const reservationForm = document.querySelector('.reservation-form form');
+
+        reservationForm.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+
+            fetch('{{ path('app_reservation_event_new_front') }}', {
+                method: 'POST',
+                body: new FormData(reservationForm)
+            })
+            .then(response => {
+                if (response.ok) {
+                    const successMessage = document.querySelector('.reservation-success');
+                    successMessage.style.display = 'block';
+                } else {
+                    console.error('Submission failed:', response.statusText);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
 {% endblock %}
 
 {% block navbar %}
@@ -19,11 +49,23 @@
 {% block body %}
     <h1>Réserver un événement</h1>
     {{ form_start(form) }}
+    {{ form_errors(form) }}
+
         {{ form_row(form.nom) }}
+        {{ form_errors(form.nom) }}
+
         {{ form_row(form.email) }}
+        {{ form_errors(form.email) }}
+
         {{ form_row(form.num_tel) }}
+        {{ form_errors(form.num_tel) }}
+
         {{ form_row(form.date_reservation) }}
+        {{ form_errors(form.date_reservation) }}
+
         {{ form_row(form.id_event) }}
+        {{ form_errors(form.id_event) }}
+
         <button type="submit" class="btn btn-primary">Valider</button>
     {{ form_end(form) }}
 {% endblock %}

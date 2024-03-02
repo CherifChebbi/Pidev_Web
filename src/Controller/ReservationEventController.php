@@ -11,6 +11,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use App\Entity\Event;
+use App\Entity\Category;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+
+
+
+
 
 
 #[Route('/reservation/event')]
@@ -84,6 +94,9 @@ class ReservationEventController extends AbstractController
         ]);
     }
 
+    
+
+
     #[Route('/{id}', name: 'app_reservation_event_show', methods: ['GET'])]
     public function show(ReservationEvent $reservationEvent): Response
     {
@@ -120,4 +133,38 @@ class ReservationEventController extends AbstractController
 
         return $this->redirectToRoute('app_reservation_event_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+    #[Route('/pdf', name: 'reservation_pdf', methods: ['GET'])]
+    public function pdf(ReservationEventRepository $ReservationEventRepository)
+    {
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('reservation_event/pdf.html.twig', [
+            'reservationEvent' => $ReservationEventRepository->findAll(),
+        ]);
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A3', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+        // Output the generated PDF to Browser (inline view)
+        $dompdf->stream("reservation.pdf", [
+            "reservationEvent" => true
+        ]);
+    }
+
+
+    
+
+
 }
+

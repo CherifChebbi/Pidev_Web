@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
-class Event
+class Event 
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -202,6 +202,8 @@ class Event
     public function __toString() {
     return $this->nom;
 }
+
+
 
 
 

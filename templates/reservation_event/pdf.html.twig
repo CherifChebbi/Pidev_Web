@@ -1,0 +1,37 @@
+<table>
+	<thead>
+		<tr>
+
+			<th>Id</th>
+			<th>Nom et Prénom</th>
+			<th>Email</th>
+			<th>Téléphone</th>
+			<th>Date de la réservation</th>
+			<th>Prix</th>
+			<th>Lieu</th>
+			<th>Image</th>
+
+
+		</tr>
+	</thead>
+	<tbody>
+		{% for voyage in voyages %}
+			<tr>
+				<td>{{ Event.id }}</td>
+				<td>{{ Event.nom }}</td>
+				<td>{{ reservationEvent.email }}</td>
+				<td>{{ reservationEvent.num_tel }}</td>
+				<td>{{ reservationEvent.date_debut }}</td>
+				<td>{{ Event.prix }}$</td>
+				<td>{{ Event.lieu }}</td>
+				<td><img src="/image/Voyage/{{ asset( voyage.image ) }}.jpg" width="40" height="40"></td>
+
+			</tr>
+		{% else %}
+			<tr>
+				<td colspan="8">no records found</td>
+			</tr>
+		{% endfor %}
+
+	</tbody>
+</table>
