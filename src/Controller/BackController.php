@@ -26,7 +26,7 @@ class BackController extends AbstractController
     #[Route('/billing', name: 'billing')]
     public function billingTest(): Response
     {
-        return $this->render('back/pages/dashboard.html.twig');
+        return $this->render('back/pages/billing.html.twig');
     }
     #[Route('/virtual-reality', name: 'virtual-reality')]
     public function virtual_realityTest(): Response
