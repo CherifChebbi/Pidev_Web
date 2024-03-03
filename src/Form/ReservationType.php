@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Reservation;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use VictorPrdh\RecaptchaBundle\Form\ReCaptchaType;
@@ -14,10 +15,12 @@ class ReservationType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('email')
+            ->add('email', EmailType::class)
             ->add('date')
             ->add('nbr_personne')
             ->add('restaurant')
+            ->add('user_id')
+
             ->add('captcha', ReCaptchaType::class)
         ;
     }
