@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 #[Route('/pays')]
 class PaysController extends AbstractController
 {
+//2-Back Affichage des villes lies a un pays
     #[Route('/pays/{id}/villes', name: 'app_pays_villes', methods: ['GET'])]
     public function villes(int $id, PaysRepository $paysRepository): Response
     {
@@ -40,7 +41,7 @@ class PaysController extends AbstractController
         ]);
     }
     //---------AFFICHAGE-----------
-    //front
+//1-front Affichage
     #[Route('/', name: 'app_pays_indexF', methods: ['GET'])]
     public function index(PaysRepository $paysRepository, Request $request): Response
     {
@@ -55,7 +56,7 @@ class PaysController extends AbstractController
             'sortBy' => $sortBy,
         ]);
     }
-    //front
+//2-front Affichage des villes lies a un pays
     #[Route('/pays/{id}/villesF', name: 'app_pays_villesF', methods: ['GET'])]
     public function villesF(VilleRepository $villeRepository,int $id, PaysRepository $paysRepository,Request $request): Response
     {
@@ -77,7 +78,7 @@ class PaysController extends AbstractController
             'villes' => $villes,
         ]);
     }
-    //Back 
+//1-Back  Affichage
     #[Route('/tables', name: 'app_pays_index', methods: ['GET'])]
     public function indexTables(PaysRepository $paysRepository, Request $request): Response
     {
@@ -92,7 +93,7 @@ class PaysController extends AbstractController
             'sortBy' => $sortBy,
         ]);
     }
-    //---------ADD-----------
+//---------ADD-----------
     #[Route('/new', name: 'app_pays_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, PaysRepository $paysRepository): Response
     {
@@ -132,7 +133,7 @@ class PaysController extends AbstractController
         ]);
     }
 
-    //---------SHOW-----------
+//---------SHOW-----------
     #[Route('/{id_pays}', name: 'app_pays_show', methods: ['GET'])]
     public function show(Pays $pay): Response
     {
@@ -140,7 +141,7 @@ class PaysController extends AbstractController
             'pay' => $pay,
         ]);
     }
-    //---------EDIT-----------
+//---------EDIT-----------
     #[Route('/{id_pays}/edit', name: 'app_pays_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Pays $pay, EntityManagerInterface $entityManager): Response
     {
@@ -169,7 +170,7 @@ class PaysController extends AbstractController
             'form' => $form,
         ]);
     }
-    //---------DELETE NOTIFIE-----------
+//---------DELETE NOTIFIE-----------
     #[Route('/{id_pays}', name: 'app_pays_delete',)]
     public function delete(Request $request, Pays $pay, EntityManagerInterface $entityManager): Response
     {
@@ -180,7 +181,7 @@ class PaysController extends AbstractController
 
         return $this->redirectToRoute('app_pays_index', [], Response::HTTP_SEE_OTHER);
     }
-    //---------DELETE SIMPLE----------------
+//---------DELETE SIMPLE----------------
     #[Route('/deletePays/{id_pays}', name: 'deletePays')]
     public function deletePays(Pays $pays, EntityManagerInterface $em): Response
     {
@@ -370,5 +371,9 @@ class PaysController extends AbstractController
 
         return $map;
     }
-//-------------------------------
+//--------------------------------
+
+
+
+
 }

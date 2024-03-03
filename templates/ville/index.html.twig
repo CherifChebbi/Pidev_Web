@@ -24,7 +24,45 @@
         }
     </script>
 
-    
+    <!--_______________________________________-->
+        <!--AJAX SEARCH -->
+        <div class="d-flex"  >
+            <div class="col-md-4 mx-auto">
+                <div class="input-group">
+                    <input class="form-control border-end-1 border rounded-pill" type="search" value="" id="example-search-input" style="bottom: 10px;padding-right: 12px;">
+                    <span class="input-group-append">
+                        <button class="btn btn-outline-secondary border-bottom-1 border rounded-pill ms-n5 border border-primary" type="button" id="searchButton"style="left: 60px;">
+                            Search
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+         <!--__________-->
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+                $(document).ready(function () {
+                    $('#searchButton').click(function () {
+                        var searchQuery = $('#example-search-input').val().toLowerCase();
+                        var noEventsRow = $('#noEventsRow');
+            
+                
+                        $('.event-row').each(function () {
+                            var eventRowText = $(this).text().toLowerCase();
+            
+                        
+                            $(this).toggle(eventRowText.includes(searchQuery));
+                        });
+            
+                    
+                        noEventsRow.toggle($('.event-row:visible').length === 0);
+                    });
+                });
+        </script>
+        <!--/AJAX SEARCH  -->
+        <!--_______________________________________-->
     <table class="table align-items-center mb-0" border="1">
         <thead>
             <tr>
@@ -47,7 +85,7 @@
                     }
                 </style>
         {% for ville in villes %}
-            <tr>
+            <tr class="event-row">
                 <td>{{ ville.idVille }}</td>
                 <td>{{ ville.nomVille }}</td>
                 <td><img src="{{ asset('assets/BACK/img/Pays/' ~ ville.imgVille ) }}" alt="image_ville" style="max-width: 100px; max-height: 100px;"></td>                

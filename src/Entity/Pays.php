@@ -46,6 +46,10 @@ class Pays
     #[Assert\NotBlank(message:"La langue ne peut pas être vide")]
     public ?string $langue = null;
 
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Continent ne peut pas être vide")]
+    public ?string $continent = null;
+
     #[ORM\Column]
     public ?int $nb_villes = null;
 
@@ -145,6 +149,16 @@ class Pays
     public function setDescPays(string $desc_pays): static
     {
         $this->desc_pays = $desc_pays;
+
+        return $this;
+    }
+    public function getContinent(): ?string
+    {
+        return $this->continent;
+    }
+    public function setContinent(string $continent): static
+    {
+        $this->continent = $continent;
 
         return $this;
     }

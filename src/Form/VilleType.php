@@ -27,7 +27,9 @@ class VilleType extends AbstractType
                 'choice_label'=>'nom_pays',
                 'multiple'=>false,//choix uniq ou mult
                 'expanded'=>false,//liste- false
-            ])  
+            ])
+            ->add('latitude')
+            ->add('longitude')  
         ;
     }
 

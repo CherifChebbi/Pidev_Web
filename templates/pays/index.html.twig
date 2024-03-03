@@ -12,28 +12,72 @@
     </div>
 <div class="card-body px-2 pt-2 pb-8">     
     <div class="table-responsive p-0">
+        <!--_______________________________________-->
         <!--Exporter-->
         {# Ajoutez un lien pour télécharger le fichier PDF #}
         <a href="{{ path('app_pays_export_pdf') }}" class="btn btn-danger">Exporter en PDF</a>
         {# Ajoutez un lien pour télécharger le fichier Excel #}
         <a href="{{ path('app_pays_export_excel') }}" class="btn btn-success">Exporter en Excel</a>
-        
-        <!--Search-->
+        <!--_______________________________________-->
+        <!--Search NORMAL-->
         <form action="{{ path('app_pays_index') }}" method="get" class="d-flex">
-            <input class="form-control me-2" placeholder="Taper le nom..." name="q" style="width: 20%;; height: 45px;">
+            <input class="form-control me-2" placeholder="Search par nom " name="q" style="width: 20%;; height: 45px;">
             <button type="submit" class="btn btn-warning">Search</button>
             <a href="{{ path('app_pays_index') }}" class="btn btn-primary ms-2">View All</a>
         </form> 
+        <!--_______________________________________-->
         <!--Tri--> 
         <form action="{{ path('app_pays_index') }}" method="get" class="d-flex">
             <div>   
                 <label for="sortBy">Trier par:</label>
-                <select name="sortBy" onchange="this.form.submit()" class="form-control me-2">
+                <select name="sortBy" onchange="this.form.submit()" class="form-control me-2 border border-primary">
                     <option value="nom_pays" {% if sortBy == 'nom_pays' %}selected{% endif %}>Nom du pays</option>
                     <option value="nb_villes" {% if sortBy == 'nb_villes' %}selected{% endif %}>Nombre de villes</option>
                 </select>
             </div>
         </form>
+        <!--_______________________________________-->
+        <!--AJAX SEARCH -->
+        <div class="d-flex"  >
+            <div class="col-md-4 mx-auto">
+                <div class="input-group">
+                    <input class="form-control border-end-1 border rounded-pill" type="search" value="" id="example-search-input" style="bottom: 10px;padding-right: 12px;">
+                    <span class="input-group-append">
+                        <button class="btn btn-outline-secondary border-bottom-1 border rounded-pill ms-n5 border border-primary" type="button" id="searchButton"style="left: 60px;">
+                            Search
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!--__________-->
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+                $(document).ready(function () {
+                    $('#searchButton').click(function () {
+                        var searchQuery = $('#example-search-input').val().toLowerCase();
+                        var noEventsRow = $('#noEventsRow');
+            
+                
+                        $('.event-row').each(function () {
+                            var eventRowText = $(this).text().toLowerCase();
+            
+                        
+                            $(this).toggle(eventRowText.includes(searchQuery));
+                        });
+            
+                    
+                        noEventsRow.toggle($('.event-row:visible').length === 0);
+                    });
+                });
+        </script>
+        <!--/AJAX SEARCH  -->
+        <!--_______________________________________-->
+
+        
+
         <table class="table align-items-center mb-0" border="1">
             <thead>
                 <tr>
@@ -43,8 +87,7 @@
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Desc_pays</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Langue</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nb_villes</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">QRCODE</th>
-
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Continent</th>
                 
                     <th class="text-secondary opacity-7"></th>
                 </tr>
@@ -59,14 +102,14 @@
                     }
                 </style>
             {% for pay in pays %}
-                <tr>
+                <tr class="event-row">
                     <td>{{ pay.idPays }}</td>
                     <td>{{ pay.nomPays }}</td>
                     <td><img src="{{ asset('assets/BACK/img/Pays/' ~ pay.imgPays) }}" alt="image_pay" style="max-width: 100px; max-height: 100px;"></td>
                     <td class="description">{{ pay.descPays }}</td>
                     <td>{{ pay.langue }}</td>
                     <td>{{ pay.nb_villes }}</td>
-                    <td><img src="{{ path('pays_qr_code', { 'id': pay.idPays }) }}"></td>
+                    <td>{{ pay.continent }}</td>
                     <td>
                         <a href="{{ path('app_pays_show', {'id_pays': pay.idPays}) }}" class="btn btn-primary">Show</a>
                         <a href="{{ path('app_pays_edit', {'id_pays': pay.idPays}) }}" class="btn btn-warning">Update</a>

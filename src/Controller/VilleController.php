@@ -7,6 +7,7 @@ use App\Entity\Ville;
 use App\Form\VilleType;
 use App\Repository\VilleRepository;
 use App\Repository\PaysRepository;
+use App\Service\OpenWeatherMapService;
 use Doctrine\ORM\EntityManagerInterface;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
@@ -292,4 +293,47 @@ public function edit(Request $request, Ville $ville, EntityManagerInterface $ent
 
     return new Response($builder->getString());
     }
+//---------API MAP carte/WEATHER-----------------------
+    #[Route('ville/{id}', name: 'afficher_ville_sur_carte')]
+    public function afficherVilleSurCarte(int $id, VilleRepository $villeRepository, OpenWeatherMapService $weatherService,): Response
+    {
+        // Récupérer les données du pays depuis la base de données
+        $ville = $villeRepository->find($id);
+        
+        $cityName = $ville->getNomVille(); 
+        //$cityName = $request->query->get('city');
+        $weatherData = $weatherService->getWeatherByCityName($cityName);
+
+        // Générer la carte Google Maps avec les coordonnées du pays
+        $map = $this->generateMap($ville);
+
+        // Retourner la vue avec la carte
+        return $this->render('ville/map.html.twig', [
+            'ville' => $ville,
+            'map' => $map,
+            
+            'temperature' => $weatherData['main']['temp'] ?? null,
+            'weather_condition' => $weatherData['weather'][0]['description'] ?? null,
+            'feels_like' => $weatherData['main']['feels_like'] ?? null,
+            'pressure' => $weatherData['main']['pressure'] ?? null,
+            'humidity' => $weatherData['main']['humidity'] ?? null,
+            'wind_speed' => $weatherData['wind']['speed'] ?? null,
+            'wind_direction' => $weatherData['wind']['deg'] ?? null,
+            'sunrise' => $weatherData['sys']['sunrise'] ?? null,
+            'sunset' => $weatherData['sys']['sunset'] ?? null,
+    ]);
+    }
+    private function generateMap(Ville $ville): array
+    {
+        $map = [
+            'center' => [
+                'lat' => $ville->getLatitude(),
+                'lng' => $ville->getLongitude(),
+            ],
+            'zoom' => 8,
+        ];
+
+        return $map;
+    }
+//------------------------------
 }

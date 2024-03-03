@@ -49,6 +49,49 @@ class Ville
 
     #[ORM\OneToMany(mappedBy: 'villes', targetEntity: Monument::class ,cascade: ['remove'])]
     private Collection $monuments;
+
+    //MAPS
+    #[ORM\Column]
+    private float $latitude;
+    #[ORM\Column]
+    private float $longitude;
+
+    // Add getters and setters for the latitude and longitude attributes
+    public function getlatitude(): ?int
+    {
+        return $this->latitude;
+    }
+    public function getlongitude(): ?int
+    {
+        return $this->longitude;
+    }
+    //set
+    public function setLatitude(float $latitude): static
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+    public function setLongitude( float $longitude): static
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+    //coordonnes
+    public function getCoordonnees(): array
+    {
+        return [
+            'lat' => $this->getLatitude(),
+            'lng' => $this->getLongitude(),
+        ];
+    }
+
+    public function setCoordonnees(array $coordonnees): void
+    {
+        $this->setLatitude($coordonnees['lat']);
+        $this->setLongitude($coordonnees['lng']);
+    }
     
     public function getPays(): ?Pays
     {

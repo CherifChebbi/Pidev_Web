@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Pays;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,6 +22,18 @@ class PaysType extends AbstractType
             ])
             ->add('desc_pays')
             ->add('langue')
+            ->add('continent', ChoiceType::class, [
+                'label' => 'Continent',
+                'choices' => [
+                    'Europe' => 'Europe',
+                    'Afrique' => 'Afrique',
+                    'Amérique ' => 'Amérique',
+                    'Asie' => 'Asie',
+                    'Antarctique' => 'Antarctique',
+                ],
+                'placeholder' => 'Sélectionner un continent', // Optionnel, pour ajouter un placeholder
+                'required' => true, // Optionnel, pour rendre le champ obligatoire
+            ])
             ->add('latitude')
             ->add('longitude')
         ;

@@ -28,6 +28,8 @@ class MonumentType extends AbstractType
                 'multiple'=>false,//choix uniq ou mult
                 'expanded'=>false,//liste- false
             ])
+            ->add('latitude')
+            ->add('longitude')
         ;
         ;
     }

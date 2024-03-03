@@ -8,6 +8,7 @@ use App\Entity\Monument;
 use App\Form\MonumentType;
 use App\Repository\MonumentRepository;
 use App\Repository\VilleRepository;
+use App\Service\OpenWeatherMapService;
 use Doctrine\ORM\EntityManagerInterface;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
@@ -246,5 +247,35 @@ public function edit(Request $request, Monument $monument, EntityManagerInterfac
 
     return new Response($builder->getString());
     }
-    
+//---------API MAP carte monument-----------------------
+    #[Route('monument/{id}', name: 'afficher_monument_sur_carte')]
+    public function afficherMonumentSurCarte(int $id, MonumentRepository $monumentRepository): Response
+    {
+        // Récupérer les données du pays depuis la base de données
+        $monument = $monumentRepository->find($id);
+        
+        $cityName = $monument->getNomMonument(); 
+
+        // Générer la carte Google Maps avec les coordonnées du pays
+        $map = $this->generateMap($monument);
+
+        // Retourner la vue avec la carte
+        return $this->render('monument/map.html.twig', [
+            'monument' => $monument,
+            'map' => $map,
+    ]);
+    }
+    private function generateMap(Monument $monument): array
+    {
+        $map = [
+            'center' => [
+                'lat' => $monument->getLatitude(),
+                'lng' => $monument->getLongitude(),
+            ],
+            'zoom' => 8,
+        ];
+
+        return $map;
+    }
+//------------------------------
 }
