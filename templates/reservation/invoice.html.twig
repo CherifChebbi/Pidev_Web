@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reservation Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Reservation Invoice</h1>
+
+    <table>
+        <tr>
+            <th>Reservation details:</th>
+        </tr>
+        <tr>
+            <td>ID:</td>
+            <td>{{ reservation.id }}</td>
+        </tr>
+        <tr>
+            <td>Customer Name:</td>
+            <td>{{ reservation.nom }}</td>
+        </tr>
+        <!-- Add other reservation details -->
+    </table>
+
+    <table>
+        <tr>
+            <th>Restaurant details:</th>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td>{{ restaurant.nom }}</td>
+        </tr>
+        <tr>
+            <td>Location:</td>
+            <td>{{ restaurant.localisation }}</td>
+        </tr>
+        <!-- Add other restaurant details -->
+    </table>
+
+    <!-- Add any other content you need for the invoice -->
+</body>
+</html>

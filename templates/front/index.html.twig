@@ -1,0 +1,169 @@
+{% extends 'front.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #ccc, #fff); /* Grey to White gradient background */
+            animation: gradientAnimation 5s infinite alternate; /* Gradient animation */
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .container {
+            padding: 40px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img-top {
+            object-fit: cover;
+            height: 200px; /* Set a fixed height for images */
+        }
+
+        .btn-info {
+            background-color: #17a2b8; /* Bootstrap info color */
+            border-color: #17a2b8;
+        }
+
+        .btn-info:hover {
+            background-color: #117a8b; /* Darker shade on hover */
+            border-color: #117a8b;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Advanced Search</h5>
+                        <form action="{{ path('app_restaurant_front') }}" method="get">
+                            {# Add your advanced search form fields here #}
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" name="location" class="form-control" value="{{ app.request.query.get('location') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="minPrice">Min Price</label>
+                                <input type="text" name="minPrice" class="form-control" value="{{ app.request.query.get('minPrice') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="maxPrice">Max Price</label>
+                                <input type="text" name="maxPrice" class="form-control" value="{{ app.request.query.get('maxPrice') }}">
+                            </div>
+                            <button type="submit" class="btn btn-info btn-block">Apply Filters</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <h1 class="mb-4 text-white">List Restaurant</h1>
+
+                {# Add the search form #}
+                <form action="{{ path('app_restaurant_front') }}" method="get" class="mb-4">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ searchTerm }}">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-info">Search</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row">
+                    {% for restaurant in restaurants %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                {% if restaurant.image %}
+                                    <img src="{{ asset('uploads/' ~ restaurant.image) }}" alt="{{ restaurant.nom }}" class="card-img-top img-fluid">
+                                {% else %}
+                                    <div class="text-center py-3">
+                                        No Image
+                                    </div>
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ restaurant.nom }}</h5>
+                                    <p class="card-text">{{ restaurant.description }}</p>
+                                    <a href="{{ path('app_restaurant_front_show', {'id': restaurant.id}) }}" class="btn btn-info btn-sm btn-block">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-12">
+                            <p class="text-center text-white">No records found</p>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="text-center mt-4">
+                    {# Add pagination links if needed #}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Add the AJAX script -->
+<script>
+    $(document).ready(function () {
+        $('#searchForm').submit(function (event) {
+            event.preventDefault();
+
+            // Get the search criteria from the form
+            var criteria = {
+                search: $('input[name="search"]').val(),
+                location: $('input[name="location"]').val(),
+                minPrice: $('input[name="minPrice"]').val(),
+                maxPrice: $('input[name="maxPrice"]').val(),
+            };
+
+            // Send an AJAX request to the server
+            $.ajax({
+                type: 'POST',
+                url: '/restaurants/search',
+                data: criteria,
+                success: function (data) {
+                    // Update the restaurant list based on the response
+                    var restaurantList = $('#restaurantList');
+                    restaurantList.empty();
+
+                    if (data.restaurants.length > 0) {
+                        $.each(data.restaurants, function (index, restaurant) {
+                            // Append restaurant data to the list
+                            restaurantList.append('<div class="col-md-4 mb-4"> ... </div>');
+                            // Update the content of the appended div with the restaurant data
+                            var newRestaurantCard = restaurantList.children().last();
+                            newRestaurantCard.find('.card-title').text(restaurant.nom);
+                            newRestaurantCard.find('.card-text').text(restaurant.description);
+                            // Add other fields as needed
+                        });
+                    } else {
+                        // Handle the case when no restaurants are found
+                        restaurantList.append('<div class="col-12"><p class="text-center text-white">No records found</p></div>');
+                    }
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

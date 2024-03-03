@@ -1,0 +1,19 @@
+{% extends 'front.html.twig' %}
+
+{% block title %}New Reservation{% endblock %}
+
+{% block body %}
+    <h1>New Reservation for {{ restaurant.nom ?? 'Unknown Restaurant' }}</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.nom) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.date) }}
+    {{ form_row(form.nbr_personne) }}
+    
+    {# Render the hidden restaurant field #}
+    {{ form_widget(form.restaurant, {'attr': {'style': 'display:none'}}) }}
+
+    <button type="submit" class="btn btn-primary">Reserve Now</button>
+    {{ form_end(form) }}
+{% endblock %}
