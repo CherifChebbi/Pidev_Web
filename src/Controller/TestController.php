@@ -14,12 +14,12 @@ class TestController extends AbstractController
     {
         return $this->render('index1.html.twig');
     }
+    
     //apres login 
     #[Route('/index2', name: 'index2')]
     public function index2(): Response
     {
         return $this->render('index2.html.twig');
     }
-
     
 }
