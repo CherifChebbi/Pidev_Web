@@ -100,6 +100,11 @@ tr[i].style.display = "none";
 								<button type="submit" class="btn btn-danger">Delete</button>
 							</form>
 						</td>
+						<td>
+							<a href="{{ path('reservation_pdf', {'id': reservation_event.id}) }}" class="btn btn-secondary">Générer PDF</a>
+						</td>
+						<!-- Lien pour générer le PDF -->
+
 					</tr>
 				{% else %}
 					<tr>

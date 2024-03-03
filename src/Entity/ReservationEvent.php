@@ -115,8 +115,17 @@ class ReservationEvent
         return $this;
     }
 
-    public function __toString() 
+    public function __toString()
 {
-    return $this->idCategory; 
+    return sprintf(
+        'Réservation #%d - Nom: %s, Email: %s, Téléphone: %d, Date de réservation: %s, Événement: %s',
+        $this->id,
+        $this->nom,
+        $this->email,
+        $this->num_tel,
+        $this->date_reservation ? $this->date_reservation->format('Y-m-d') : 'N/A',
+        $this->id_event ? $this->id_event->getTitre() : 'N/A'
+    );
 }
+
 }

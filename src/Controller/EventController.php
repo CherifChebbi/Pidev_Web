@@ -33,13 +33,27 @@ class EventController extends AbstractController
 
     #[Route('/front', name: 'app_event_index_front')]
     public function indexfront(EventRepository $eventRepository, CategoryRepository $categoryRepository): Response
-{
-    $events = $eventRepository->findAll();
+    {
+        $events = $eventRepository->findAll();
     $categories = $categoryRepository->findAll();
+    $lieux = $eventRepository->findAllLieux();
+    $closestEvents = $eventRepository->findEventsByClosestDate();
+
+    // Récupération des événements triés par prix ascendant et descendant, et par titre ascendant et descendant
+    $eventsByPriceAscending = $eventRepository->findByPriceAscending();
+    $eventsByPriceDescending = $eventRepository->findByPriceDescending();
+    $eventsByTitleAscending = $eventRepository->findByTitleAscending();
+    $eventsByTitleDescending = $eventRepository->findByTitleDescending();
 
     return $this->render('front/resEvent.html.twig', [
         'events' => $events,
         'categories' => $categories,
+        'lieux' => $lieux,
+        'closestEvents' => $closestEvents,
+        'eventsByPriceAscending' => $eventsByPriceAscending,
+        'eventsByPriceDescending' => $eventsByPriceDescending,
+        'eventsByTitleAscending' => $eventsByTitleAscending,
+        'eventsByTitleDescending' => $eventsByTitleDescending,
     ]);
 }
 
@@ -127,6 +141,40 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/events/category/ajax', name: 'events_by_category_ajax', methods: ['POST'])]
+    public function eventsByCategoryAjax(Request $request, EventRepository $eventRepository): Response
+{
+    $categoryId = $request->request->get('categoryId');
+
+    if ($categoryId) {
+        $events = $eventRepository->findByCategory($categoryId);
+        $html = $this->renderView('front/resEvent.html.twig', [
+            'events' => $events,
+        ]);
+
+        return new JsonResponse($html);
+    } else {
+        return new JsonResponse([]);
+    }
+}
+
+
+    #[Route('/events/lieu', name: 'events_by_lieu')]
+public function eventsByLieu(EventRepository $eventRepository)
+{
+    // Récupérer tous les lieux disponibles
+    $lieux = $eventRepository->findAllLieux();
+
+    // Rendre la réponse en utilisant les données récupérées
+    return $this->render('front/resEvent.html.twig', [
+        'lieux' => $lieux,
+        // Autres données que vous souhaitez transmettre à votre template Twig
+    ]);
+}
+
+
+
+
 
     #[Route('/events/closest', name: 'closest_events', methods: ['GET'])]
     public function closestEvents(EventRepository $eventRepository): Response
@@ -135,19 +183,19 @@ class EventController extends AbstractController
 
 
         return $this->render('front/resEvent.html.twig', [
-            'closestEvents' => $closestEvents,
+            'events' => $closestEvents,
         ]);
     }
 
-    #[Route('/sortByPrice', name: 'app_event_sort_by_price', methods: ['GET'])]
-public function sortByPrice(Request $request, EventRepository $eventRepository): Response
-{
-    $events = $eventRepository->findByPriceAscending();
-
-    return $this->render('front/resEvent.html.twig', [
-        'events' => $events,
-    ]);
-}
+    #[Route('/sortByPriceAscending', name: 'app_event_sort_by_price_ascending', methods: ['GET'])]
+    public function sortByPriceAscending(Request $request, EventRepository $eventRepository): Response
+    {
+        $events = $eventRepository->findByPriceAscending();
+    
+        return $this->render('front/resEvent.html.twig', [
+            'events' => $events,
+        ]);
+    }
 
 #[Route('/sortByPriceDescending', name: 'app_event_sort_by_price_descending', methods: ['GET'])]
 public function sortByPriceDescending(Request $request, EventRepository $eventRepository): Response

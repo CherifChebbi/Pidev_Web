@@ -2,4 +2,5 @@
 framework:
     notifier:
         texter_transports:
+            sendgrid: '%env(MAILER_DSN)%'
             twilio: '%env(TWILIO_DSN)%'

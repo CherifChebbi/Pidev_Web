@@ -1,37 +1,33 @@
-<table>
-	<thead>
-		<tr>
-
-			<th>Id</th>
-			<th>Nom et Prénom</th>
-			<th>Email</th>
-			<th>Téléphone</th>
-			<th>Date de la réservation</th>
-			<th>Prix</th>
-			<th>Lieu</th>
-			<th>Image</th>
-
-
-		</tr>
-	</thead>
-	<tbody>
-		{% for voyage in voyages %}
-			<tr>
-				<td>{{ Event.id }}</td>
-				<td>{{ Event.nom }}</td>
-				<td>{{ reservationEvent.email }}</td>
-				<td>{{ reservationEvent.num_tel }}</td>
-				<td>{{ reservationEvent.date_debut }}</td>
-				<td>{{ Event.prix }}$</td>
-				<td>{{ Event.lieu }}</td>
-				<td><img src="/image/Voyage/{{ asset( voyage.image ) }}.jpg" width="40" height="40"></td>
-
-			</tr>
-		{% else %}
-			<tr>
-				<td colspan="8">no records found</td>
-			</tr>
-		{% endfor %}
-
-	</tbody>
-</table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom et Prénom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Date de la réservation</th>
+                <th>Événement</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation_event in reservation_events %}
+                <tr>
+                    <td>{{ reservation_event.id }}</td>
+                    <td>{{ reservation_event.titre }}</td>
+                    <td>{{ reservation_event.email }}</td>
+                    <td>{{ reservation_event.num_tel }}</td>
+                    <td>{{ reservation_event.date_reservation ? reservation_event.date_reservation|date('Y-m-d') : 'N/A' }}</td>
+                    <td>{{ reservation_event.id_event ? reservation_event.id_event.titre : 'N/A' }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

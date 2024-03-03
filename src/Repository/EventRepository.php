@@ -22,22 +22,33 @@ class EventRepository extends ServiceEntityRepository
     }
 
     public function findByCategory($categoryId)
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.Idcategory = :categoryId')
-            ->setParameter('categoryId', $categoryId)
-            ->getQuery()
-            ->getResult();
+{
+    return $this->createQueryBuilder('e')
+        ->join('e.category', 'c')
+        ->andWhere('c.id = :categoryId')
+        ->setParameter('categoryId', $categoryId)
+        ->getQuery()
+        ->getResult();
+}
+
+
+
+   public function findAllLieux()
+{
+    $lieux = $this->createQueryBuilder('e')
+        ->select('e.lieu')
+        ->distinct(true)
+        ->getQuery()
+        ->getResult();
+
+    // Transformez le tableau associatif en tableau de chaînes de caractères
+    $lieuxArray = [];
+    foreach ($lieux as $lieu) {
+        $lieuxArray[] = $lieu['lieu'];
     }
 
-    public function findByLieu($lieu)
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.lieu = :lieu')
-            ->setParameter('lieu', $lieu)
-            ->getQuery()
-            ->getResult();
-    }
+    return $lieuxArray;
+}
 
     public function findEventsByClosestDate()
     {
@@ -66,14 +77,23 @@ class EventRepository extends ServiceEntityRepository
     }
 
     public function findByTitleAscending()
-    {
-        return $this->createQueryBuilder('e')
-            ->orderBy('e.titre', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
+{
+    return $this->createQueryBuilder('e')
+        ->orderBy('e.titre', 'ASC') // Tri par titre A-Z
+        ->getQuery()
+        ->getResult();
+}
 
+public function findByTitleDescending()
+{
+    return $this->createQueryBuilder('e')
+        ->orderBy('e.titre', 'DESC') // Tri par titre Z-A
+        ->getQuery()
+        ->getResult();
 
+}
+
+}
 
 //    /**
 //     * @return Event[] Returns an array of Event objects
@@ -99,4 +119,3 @@ class EventRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-}
