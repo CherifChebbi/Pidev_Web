@@ -1,0 +1,51 @@
+{% extends 'base_back.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+{% endblock %}
+
+{% block title %}Statistiques{% endblock %}
+
+{% block body %}
+    <canvas id="reservationsChart" width="400" height="400"></canvas>
+
+    <script>
+        // Convertir les données JSON en objet JavaScript
+        let reservationData = {{ reservationData|raw }};
+
+        // Obtenir les clés (titres des événements) et les valeurs (nombre de réservations)
+        let eventTitles = Object.keys(reservationData);
+        let reservationCounts = Object.values(reservationData);
+
+        // Créer le graphique avec Chart.js
+        let ctx = document.getElementById('reservationsChart').getContext('2d');
+        let reservationsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: eventTitles,
+                datasets: [{
+                    label: 'Nombre de réservations',
+                    data: reservationCounts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+{% endblock %}

@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Event;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class ReservationEventType extends AbstractType
 {
@@ -44,13 +45,10 @@ class ReservationEventType extends AbstractType
             'placeholder' => 'Sélectionnez la date de réservation'
         ]
         ])
-    ->add('id_event', EntityType::class, [
+    ->add('id_event', HiddenType::class, [
        'class' => Event::class,
-         'choice_label' => 'titre', // Ou tout autre champ que vous souhaitez afficher dans la liste déroulante
-         'label' => 'Événement',
-         'attr' => [
-             'placeholder' => 'Sélectionnez l\'événement'
-         ]
+         'mapped' => false, // Ou tout autre champ que vous souhaitez afficher dans la liste déroulante
+    
          ]);
     }
 

@@ -61,7 +61,7 @@ class Event
     private ?Category $idCategory = null;
 
     #[ORM\OneToMany(mappedBy: 'id_event', targetEntity: ReservationEvent::class)]
-    private Collection $reservationEvents;
+    public Collection $reservationEvents;
 
     public function __construct()
     {

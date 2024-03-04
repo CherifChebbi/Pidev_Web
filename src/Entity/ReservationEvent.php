@@ -48,7 +48,7 @@ class ReservationEvent
 
     #[ORM\ManyToOne(inversedBy: 'reservationEvents')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Event $id_event = null;
+    public ?Event $id_event = null;
 
     public function getId(): ?int
     {

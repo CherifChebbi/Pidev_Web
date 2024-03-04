@@ -108,44 +108,7 @@
 	{{ parent() }}
 	<script>
 
-
-		// Filtrage par prix
-$("#price-slider").on("input", function () {
-var value = $(this).val();
-$("#current-price").text(value + " €");
-filterEventsByPrice(parseInt(value));
-});
-
-$("#increase-price").click(function () {
-var currentValue = parseInt($("#price-slider").val());
-if (currentValue < 500) {
-$("#price-slider").val(currentValue + 5).trigger("input");
-}
-});
-
-$("#decrease-price").click(function () {
-var currentValue = parseInt($("#price-slider").val());
-if (currentValue > 0) {
-$("#price-slider").val(currentValue - 5).trigger("input");
-}
-});
-
-$("#set-price-range").click(function () {
-var minPrice = parseInt($("#min-price").val());
-var maxPrice = parseInt($("#max-price").val());
-$("#price-slider").val(minPrice).trigger("input");
-$("#current-price").text(minPrice + " €");
-filterEventsByPrice(minPrice, maxPrice);
-});
-
-// Filtrage par date
-$("#date-filter").on("change", function () {
-var selectedDate = $(this).val();
-$(".event-box").hide(); // Masquer tous les événements
-$(".event-box[data-date='" + selectedDate + "']").show(); // Afficher les événements de la date sélectionnée
-});
-
-// Recherche d'événements
+		// Recherche d'événements
 $("#search-button").on("click", function () {
 var searchText = $("#search-input").val().toLowerCase();
 $(".event-box").each(function () {
@@ -198,28 +161,7 @@ $(".event-box[data-lieu='" + selectedLieu + "']").show(); // Afficher les évén
 }
 });
 });
-
-
-document.querySelectorAll('.dropdown-item[data-route]').forEach(item => {
-    item.addEventListener('click', function(event) {
-        event.preventDefault(); // Empêche le lien de déclencher une redirection normale
-        const route = this.dataset.route; // Récupère l'URL de la route Symfony depuis l'attribut data-route
-
-        // Effectuez une requête AJAX vers la route Symfony
-        fetch(route)
-            .then(response => response.text()) // Convertit la réponse en texte
-            .then(data => {
-                // Mettez à jour la partie de votre page qui affiche les événements avec les données triées
-                document.getElementById('events-container').innerHTML = data;
-            })
-            .catch(error => {
-                console.error('Une erreur s\'est produite lors du chargement des événements triés :', error);
-            });
-    });
-});
 	</script>
-
-
 {% endblock %}
 
 {% block navbar %}
@@ -304,7 +246,7 @@ document.querySelectorAll('.dropdown-item[data-route]').forEach(item => {
 								<span class="price-label">Prix :</span>
 								<span class="event-price">{{ event.prix }}</span>
 							</div>
-							<button class="reserve-button">Réserver</button>
+							<button class="btn btn-primary reserve-button">Réserver</button>
 						</div>
 					{% endfor %}
 				</div>

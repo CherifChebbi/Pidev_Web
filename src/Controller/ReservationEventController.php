@@ -23,6 +23,7 @@ use SensioLabs\Security\SecurityChecker;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer ;
 use Symfony\Component\Mailer\MailerInterface;
+use App\Repository\EventRepository;
 
 
 
@@ -41,11 +42,7 @@ class ReservationEventController extends AbstractController
     public function index(ReservationEventRepository $reservationEventRepository): Response
     {
         // Récupérer les réservations avec les événements associés
-        $reservationEvents = $reservationEventRepository->createQueryBuilder('r')
-            ->leftJoin('r.id_event', 'e') // Faire une jointure avec la table des événements
-            ->addSelect('e') // Sélectionner également les données de la table des événements
-            ->getQuery()
-            ->getResult();
+        $reservationEvents = $reservationEventRepository();
 
         return $this->render('reservation_event/index.html.twig', [
             'reservation_events' => $reservationEvents,
@@ -138,11 +135,15 @@ class ReservationEventController extends AbstractController
             $mailer->send($emailMessage);
     
             // Send SMS confirmation
-            $this->sendConfirmationSMS('+21693435120', 'Votre réservation a été confirmée.');
+            $this->sendConfirmationSMS('+21693435120', 'Terranova vous informe que votre réservation a été confirmée.');
     
             // Redirect to a new page
             return $this->redirectToRoute('app_reservation_event_new_front');
         }
+    
+        // Pass event details to the reservation form
+        $eventTitle = $request->query->get('titre');
+        $form->get('eventTitle')->setData($eventTitle);
     
         // Render the form template
         return $this->render('front/ReservationEvent.html.twig', [
@@ -154,7 +155,7 @@ class ReservationEventController extends AbstractController
     {
         // Twilio credentials
         $twilioSid = 'ACea6cbad683b84e9e007719a6ce13d791';
-        $twilioToken = 'c17743e107d1e356dbc7aac6d4019812';
+        $twilioToken = '54ad15a7a4dcdd067d1dc2d346969c50';
         $twilioNumber = '+19403531823'; // This is the phone number you've purchased from Twilio
     
         // Initialize Twilio client
@@ -248,7 +249,36 @@ class ReservationEventController extends AbstractController
             'Content-Type' => 'application/pdf',
         ]);
     }
+
+
+    #[Route('/stats', name: 'stats_reservations')]
+    public function statistiques(EventRepository $eventRepository): Response
+    {
+        // Récupérer tous les événements
+        $events = $eventRepository->findAll();
+        
+        // Tableau pour stocker le nombre de réservations pour chaque événement
+        $reservationCounts = [];
+    
+        // Calculer le nombre de réservations pour chaque événement
+        foreach ($events as $event) {
+             $reservationCounts[$event->getTitre()] = count($event->getReservationEvents());
+        }
+    
+        // Convertir les données en format JSON pour le passer au template Twig
+        $reservationData = json_encode($reservationCounts);
+    
+        return $this->render('reservation_event/statistiques.html.twig', [
+            'reservationData' => $reservationData,
+        ]);
+    }
+    
 }
+
+
+
+
+
 
     
 
