@@ -357,7 +357,7 @@ class PaysController extends AbstractController
             'wind_direction' => $weatherData['wind']['deg'] ?? null,
             'sunrise' => $weatherData['sys']['sunrise'] ?? null,
             'sunset' => $weatherData['sys']['sunset'] ?? null,
-      ]);
+    ]);
     }
     private function generateMap(Pays $pays): array
     {
@@ -371,7 +371,6 @@ class PaysController extends AbstractController
 
         return $map;
     }
-//--------------------------------
 
 
 

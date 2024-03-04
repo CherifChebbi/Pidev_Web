@@ -5,6 +5,8 @@ use App\Entity\Ville;
 use App\Entity\Pays;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Google\Service\Docs\Request;
+use Google\Service\Docs\Response;
 
 /**
  * @extends ServiceEntityRepository<Pays>
@@ -89,4 +91,5 @@ class PaysRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
     
+
 }
