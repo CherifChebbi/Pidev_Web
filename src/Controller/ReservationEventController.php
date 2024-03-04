@@ -24,6 +24,8 @@ use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer ;
 use Symfony\Component\Mailer\MailerInterface;
 use App\Repository\EventRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 
 
@@ -42,7 +44,11 @@ class ReservationEventController extends AbstractController
     public function index(ReservationEventRepository $reservationEventRepository): Response
     {
         // Récupérer les réservations avec les événements associés
-        $reservationEvents = $reservationEventRepository();
+        $reservationEvents = $reservationEventRepository->createQueryBuilder('r')
+            ->leftJoin('r.id_event', 'e') // Faire une jointure avec la table des événements
+            ->addSelect('e') // Sélectionner également les données de la table des événements
+            ->getQuery()
+            ->getResult();
 
         return $this->render('reservation_event/index.html.twig', [
             'reservation_events' => $reservationEvents,
@@ -140,10 +146,6 @@ class ReservationEventController extends AbstractController
             // Redirect to a new page
             return $this->redirectToRoute('app_reservation_event_new_front');
         }
-    
-        // Pass event details to the reservation form
-        $eventTitle = $request->query->get('titre');
-        $form->get('eventTitle')->setData($eventTitle);
     
         // Render the form template
         return $this->render('front/ReservationEvent.html.twig', [
@@ -250,27 +252,34 @@ class ReservationEventController extends AbstractController
         ]);
     }
 
-
-    #[Route('/stats', name: 'stats_reservations')]
-    public function statistiques(EventRepository $eventRepository): Response
+    #[Route('reservation/event/stats', name: 'stats_reservations')]
+    public function statistiques(ReservationEventRepository $reservationEventRepository): Response
     {
-        // Récupérer tous les événements
-        $events = $eventRepository->findAll();
-        
-        // Tableau pour stocker le nombre de réservations pour chaque événement
+        // Get all reservation events from the repository
+        $reservationEvents = $reservationEventRepository->findAll();
+    
+        // Initialize an array to store reservation counts by event title
         $reservationCounts = [];
     
-        // Calculer le nombre de réservations pour chaque événement
-        foreach ($events as $event) {
-             $reservationCounts[$event->getTitre()] = count($event->getReservationEvents());
+        // Calculate reservation counts for each event
+        foreach ($reservationEvents as $reservationEvent) {
+            $eventTitle = $reservationEvent->getIdEvent()->getTitre();
+    
+            // Count reservations by event title
+            if (!isset($reservationCounts[$eventTitle])) {
+                $reservationCounts[$eventTitle] = 1;
+            } else {
+                $reservationCounts[$eventTitle]++;
+            }
         }
     
-        // Convertir les données en format JSON pour le passer au template Twig
-        $reservationData = json_encode($reservationCounts);
+        // Prepare statistics data
+        $statistics = [
+            'Reservations by Event' => $reservationCounts,
+        ];
     
-        return $this->render('reservation_event/statistiques.html.twig', [
-            'reservationData' => $reservationData,
-        ]);
+        // Return JSON response
+        return new JsonResponse($statistics);
     }
     
 }

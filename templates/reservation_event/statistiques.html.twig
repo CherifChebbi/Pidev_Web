@@ -1,51 +1,96 @@
 {% extends 'base_back.html.twig' %}
 
+{% block title %}Reservation Volume Statistics{% endblock %}
+
 {% block css %}
     {{ parent() }}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}
 
 {% block js %}
     {{ parent() }}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 {% endblock %}
 
-{% block title %}Statistiques{% endblock %}
-
 {% block body %}
-    <canvas id="reservationsChart" width="400" height="400"></canvas>
+<main id="main" class="main">
+    <div class="container mt-6">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-18 mb-10">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h1 class="card-title mb-4">Reservation Statistics</h1>
+                        <canvas id="barChart" style="height: 300px; width: 100%; margin-bottom: 20px;"></canvas>
+                        <canvas id="pieChart" style="height: 300px; width: 100%; margin-bottom: 20px;"></canvas>
+                    </div>
+                </div>
+                <a href="{{ path('app_reservation_vol_admin_index') }}" class="btn btn-primary" style="color: #fff; margin-top: 20px;">Back to List</a>
+            </div>
+        </div>
+    </div>
+</main>
 
-    <script>
-        // Convertir les données JSON en objet JavaScript
-        let reservationData = {{ reservationData|raw }};
+<script>
+    var reservationData = {{ reservationData|raw }};
+    var eventTitles = Object.keys(reservationData['Reservations by Event']);
+    var reservationCounts = Object.values(reservationData['Reservations by Event']);
 
-        // Obtenir les clés (titres des événements) et les valeurs (nombre de réservations)
-        let eventTitles = Object.keys(reservationData);
-        let reservationCounts = Object.values(reservationData);
-
-        // Créer le graphique avec Chart.js
-        let ctx = document.getElementById('reservationsChart').getContext('2d');
-        let reservationsChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: eventTitles,
-                datasets: [{
-                    label: 'Nombre de réservations',
-                    data: reservationCounts,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
+    // Bar Chart
+    var ctxBar = document.getElementById('barChart').getContext('2d');
+    var barChart = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: eventTitles,
+            datasets: [{
+                label: 'Reservation Counts',
+                data: reservationCounts,
+                backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            legend: {
+                display: false
             },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
             }
-        });
-    </script>
+        }
+    });
+
+    // Pie Chart
+    var ctxPie = document.getElementById('pieChart').getContext('2d');
+    var pieChart = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: eventTitles,
+            datasets: [{
+                label: 'Reservation Counts',
+                data: reservationCounts,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 159, 64, 0.7)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            legend: {
+                position: 'right'
+            }
+        }
+    });
+</script>
 {% endblock %}
