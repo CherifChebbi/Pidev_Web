@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Les détails de la réservation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            padding: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Votre réservation a été envoyée avec succès</h1>
+
+    <div class="card">
+        <h2>Réservation details:</h2>
+        <ul>
+            <li><strong>Votre identifiant:</strong> {{ reservation.id }}</li>
+            <li><strong>Votre nom:</strong> {{ reservation.nom }}</li>
+             <li><strong>La date du reservation:</strong> {{ reservation.date|date("d/m/y") }}</li>
+              <li><strong>Nombre du personne :</strong> {{ reservation.nbr_personne}}</li>
+              
+                    </td>
+            <!-- Add other reservation details -->
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Restaurant details:</h2>
+        <ul>
+            <li><strong>Restaurant nom:</strong> {{ restaurant.nom }}</li>
+            <li><strong>Localisation:</strong> {{ restaurant.localisation }}</li>
+             
+                            <img src="{{ asset('uploads/' ~ restaurant.image) }}" alt="{{ restaurant.nom }}" class="img-thumbnail" style="max-height: 50px;">
+                       
+            <!-- Add other restaurant details -->
+        </ul>
+    </div>
+
+    <!-- Add any other content you need for the invoice -->
+</body>
+</html>

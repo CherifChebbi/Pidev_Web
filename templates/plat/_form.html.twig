@@ -1,0 +1,37 @@
+{{ form_start(form, {'attr': {'class': 'my-custom-form-class'}}) }}
+
+<div class="form-group row">
+    {{ form_label(form.nom, 'Nom du plat', {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+    <div class="col-sm-10">
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom du plat'}}) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    {{ form_label(form.image, 'Image du plat', {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+    <div class="col-sm-10">
+        {{ form_widget(form.image, {'attr': {'class': 'form-control'}, 'help': 'Téléchargez une image pour le plat (format: jpg, jpeg, png)'}) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    {{ form_label(form.prix, 'Prix', {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+    <div class="col-sm-10">
+        {{ form_widget(form.prix, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le prix du plat'}}) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    {{ form_label(form.restaurant, 'Restaurant', {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+    <div class="col-sm-10">
+        {{ form_widget(form.restaurant, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-sm-10 offset-sm-2">
+        <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    </div>
+</div>
+
+{{ form_end(form) }}

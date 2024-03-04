@@ -1,0 +1,106 @@
+{% extends 'front.html.twig' %}
+
+{% block body %}
+
+<section style="padding-top: 50px; text-align: center;">
+    <div class="container">
+        <div style="background-color: #fff; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); padding: 20px; margin-bottom: 20px;">
+            <h3 style="color: #17a2b8; font-size: 28px; margin-bottom: 20px;">{{ restaurant.nom }}</h3>
+        </div>
+
+        <!-- Restaurant Image -->
+        {% if restaurant.image %}
+            <img src="{{ asset('uploads/' ~ restaurant.image) }}" alt="{{ restaurant.nom }}" style="max-height: 500px; width: 100%; object-fit: cover; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+        {% else %}
+            <div class="text-center py-3">
+                No Image
+            </div>
+        {% endif %}
+
+        <!-- Restaurant Description -->
+        <div>
+            <p style="color: #555; font-size: 18px; margin-bottom: 20px;">{{ restaurant.description }}</p>
+        </div>
+
+        <!-- Restaurant Location -->
+        <div style="background-color: #fff; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); padding: 20px; margin-bottom: 20px;">
+            <h3 style="color: #17a2b8; font-size: 28px; margin-bottom: 20px;">{{ restaurant.localisation }}</h3>
+        </div>
+
+        <!-- List of Plats -->
+        <div class="row">
+            {% for plat in restaurant.getPlats() %}
+                <div class="col-md-4 mb-4">
+                    <div class="card" style="box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s ease-in-out;">
+                        {% if plat.image %}
+                            <img src="{{ asset('uploads/' ~ plat.image) }}" alt="{{ plat.nom }}" class="card-img-top" style="max-height: 300px; object-fit: cover; border-radius: 10px 10px 0 0;">
+                        {% else %}
+                            <div class="text-center py-3">
+                                No Image
+                            </div>
+                        {% endif %}
+                        <div class="card-body" style="padding: 20px;">
+                            <h5 class="card-title" style="font-size: 18px; color: #333;">{{ plat.nom }}</h5>
+                            <p class="card-text" style="color: #777;">Price: {{ plat.prix }} $</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Reservation Button -->
+        <div style="margin-top: 20px;">
+            <a href="{{ path('app_reservation_new', {'id': restaurant.id}) }}" class="btn btn-info" style="background-color: #17a2b8; border-color: #17a2b8; padding: 10px 30px; font-size: 18px; transition: background-color 0.3s;">Reserve Now</a>
+        </div>
+    </div>
+
+    <!-- Comments Section -->
+  
+</section>
+<section style="padding-top: 50px; text-align: center;">
+    <div class="container">
+        <h2 class="mb-4">Liste des commentaires</h2>
+        <div class="comment-cards-container d-flex flex-nowrap overflow-auto">
+            {% for comment in restaurant.comments %}
+                <div class="card mx-2" style="width: 18rem;">
+                    <div class="card-body">
+                        <p class="card-text text-muted">Publié par {{ comment.nickname }} le {{ comment.created_at|date("d/m/y H:i") }}</p>
+                        <div>{{ comment.content | raw }}</div>
+                        <p><a href="#ajout-commentaire" class="btn btn-info" data-reply data-id="{{ comment.id }}">Répondre</a></p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Add Comment Form -->
+        <div class="mt-4">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h2 class="mb-4">Ajouter un commentaire</h2>
+                    {{ form_start(commentForm) }}
+                    {{ form_widget(commentForm) }}
+                    <button type="submit" class="btn btn-info btn-block">Submit</button>
+                    {{ form_end(commentForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .comment-cards-container {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .card {
+        margin-right: 10px;
+        flex: 0 0 auto;
+    }
+
+    .card-body {
+        text-align: left;
+    }
+</style>
+
+{% endblock %}

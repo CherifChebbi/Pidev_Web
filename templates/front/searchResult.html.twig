@@ -1,0 +1,15 @@
+{# templates/front/searchResult.html.twig #}
+
+<div class="row">
+    {% for restaurant in restaurants %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                {# Include your card content here based on the existing template #}
+            </div>
+        </div>
+    {% else %}
+        <div class="col-12">
+            <p class="text-center text-white">No records found</p>
+        </div>
+    {% endfor %}
+</div>
