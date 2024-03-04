@@ -40,6 +40,9 @@ class Restaurant
     #[ORM\OneToMany(mappedBy: 'retsaurant', targetEntity: Comments::class, orphanRemoval: true)]
     private Collection $comments;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $likes = null;
+
     public function __construct()
     {
         $this->plats = new ArrayCollection();
@@ -222,6 +225,26 @@ class Restaurant
             }
         }
 
+        return $this;
+    }
+
+    public function getLikes(): ?int
+    {
+        return $this->likes;
+    }
+
+    public function setLikes(?int $likes): static
+    {
+        $this->likes = $likes;
+
+        return $this;
+    }
+
+
+
+    public function incrementLikes(): self
+    {
+        $this->likes++;
         return $this;
     }
 }

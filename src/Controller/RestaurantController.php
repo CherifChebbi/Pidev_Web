@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 #[Route('/restaurant')]
@@ -166,7 +167,24 @@ class RestaurantController extends AbstractController
 
 
 
-
+    #[Route('/{id}/like', name: 'likePublication', methods: ['POST'])]
+    public function likePublication($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $restaurant = $entityManager->getRepository(Restaurant::class)->find($id);
+    
+        if (!$restaurant) {
+            throw $this->createNotFoundException('Publication not found');
+        }
+    
+        // Increment likes for the publication
+        $restaurant->incrementLikes();
+    
+        $entityManager->flush();
+    
+        return new JsonResponse(['likes' => $restaurant->getLikes()]);
+    }
+    
 
     
 

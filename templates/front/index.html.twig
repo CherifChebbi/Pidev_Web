@@ -48,6 +48,42 @@
         }
     </style>
 {% endblock %}
+
+{% block javascripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Like button click event
+        $('a[data-post-id]').on('click', function () {
+            var button = $(this);
+            var postId = button.data('post-id');
+
+            // Send AJAX request to like publication
+            $.ajax({
+                type: 'POST',
+                url: '/restaurant/' + postId + '/like',
+                success: function (response) { // Update like count on success
+                    // Assuming you have an element with class 'like-count' to display the like count
+                    $('.like-count').text(response.likes);
+
+                    // Toggle appearance of the button
+                    button.toggleClass('liked');
+                },
+                error: function (xhr, status, error) { // Handle AJAX error
+                    console.error(xhr.responseText); // Log the error message
+                }
+            });
+
+            // Prevent default behavior
+            return false;
+        });
+    });
+</script>
+
+
+
+{% endblock %}
+
 {% block body %}
     <div class="container mt-4">
         <div class="row">
@@ -103,6 +139,18 @@
                                     <p class="card-text">{{ restaurant.description }}</p>
                                     <a href="{{ path('app_restaurant_front_show', {'id': restaurant.id}) }}" class="btn btn-info btn-sm btn-block">Read More</a>
                                 </div>
+
+                               <div>
+											
+
+                                            <a href="" data-post-id="{{restaurant.id}}" class="btn btn-info btn-sm btn-block"  data-toggle="tooltip" title="like" >like</a>
+                                            <a href="#" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></a>
+
+							</div>
+
+
+
+
                             </div>
                         </div>
                     {% else %}
