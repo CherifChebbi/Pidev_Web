@@ -86,36 +86,96 @@ class ReservationEventController extends AbstractController
     #[Route('/newfront', name: 'app_reservation_event_new_front', methods: ['GET', 'POST'])]
     public function new_front(Request $request, EntityManagerInterface $entityManager, SessionInterface $session, MailerInterface $mailer): Response
     {
+        // Create a new ReservationEvent instance
         $reservationEvent = new ReservationEvent();
+        
+        // Create the form for the ReservationEvent
         $form = $this->createForm(ReservationEventType::class, $reservationEvent);
+        
+        // Handle the form submission
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            // Retrieve email from the form
+            $email = $form->get('email')->getData();
+    
+            // Add flash message before persisting the entity
+            $this->addFlash('success', 'Réservation effectuée avec succès! Vous recevrez une confirmation par e-mail et par SMS.');
+    
+            // Persist the ReservationEvent entity
             $entityManager->persist($reservationEvent);
             $entityManager->flush();
-
-
-            $this->addFlash('success', 'Réservation effectuée avec succès! Vous recevrez une confirmation par e-mail et par SMS.');
+    
+            // Additional information from the reservation entity
+            $eventTitre = $reservationEvent->getIdEvent()->getTitre(); // Assuming you have a method to get the event name
+            $reservationDate = $reservationEvent->getIdEvent()->getDateDebut()->format('Y-m-d'); // Assuming you have a method to get the date
+            $eventLieu = $reservationEvent->getIdEvent()->getLieu(); // Assuming you have a method to get the event name
+            $eventPrix = $reservationEvent->getIdEvent()->getPrix(); // Assuming you have a method to get the event name
+    
+            // Generate the HTML content for the email
+            $htmlContent = "
+            <p><strong>Détails de la réservation :</strong></p>
+            <ul style=\"list-style-type: none; padding-left: 0;\">
+                <li><strong>Nom de l'événement :</strong> $eventTitre</li>
+                <li><strong>Date de l'événement :</strong> $reservationDate</li>
+                <li><strong>Lieu :</strong> $eventLieu</li>
+                <li><strong>Tarif :</strong> $eventPrix</li>
+            </ul>
+            ";
+    
+            // Configure the mailer transport (replace with your own email settings)
             $transport = Transport::fromDsn('smtp://terranova.noreply@gmail.com:fxdylvrtfelylnpr@smtp.gmail.com:587');
-            $mailer = new Mailer($transport); // Remove this line
-            $email = (new Email())
+            $mailer = new Mailer($transport);
+    
+            // Create the email message
+            $emailMessage = (new Email())
                 ->from('terranova.noreply@gmail.com')
-                ->to('rayensghir7@gmail.com')
-                ->subject('Someone write a comment')
-                ->html('hello check our web application! someone write a comment ');
-            $mailer->send($email);
-
+                ->to($email) // Use the email from the form
+                ->subject('Votre réservation a été confirmée!')
+                ->html($htmlContent);
+    
+            // Send the email
+            $mailer->send($emailMessage);
+    
+            // Send SMS confirmation
+            $this->sendConfirmationSMS('+21693435120', 'Votre réservation a été confirmée.');
+    
+            // Redirect to a new page
             return $this->redirectToRoute('app_reservation_event_new_front');
-
         }
-
+    
+        // Render the form template
         return $this->render('front/ReservationEvent.html.twig', [
             'form' => $form->createView(),
-            
         ]);
     }
+    
+    private function sendConfirmationSMS(string $phoneNumber, string $message): void
+    {
+        // Twilio credentials
+        $twilioSid = 'ACea6cbad683b84e9e007719a6ce13d791';
+        $twilioToken = 'c17743e107d1e356dbc7aac6d4019812';
+        $twilioNumber = '+19403531823'; // This is the phone number you've purchased from Twilio
+    
+        // Initialize Twilio client
+        $client = new Client($twilioSid, $twilioToken);
+    
+        try {
+            // Send SMS
+            $client->messages->create(
+                $phoneNumber, // Destination phone number
+                [
+                    'from' => $twilioNumber,
+                    'body' => $message,
+                ]
+            );
+        } catch (\Exception $e) {
+            // Handle exception
+            // Log or display error message
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
 
- 
 
 
     #[Route('/{id}', name: 'app_reservation_event_show', methods: ['GET'])]
@@ -157,33 +217,40 @@ class ReservationEventController extends AbstractController
     }
 
 
-    #[Route('/pdf', name: 'reservation_pdf', methods: ['GET'])]
-public function pdf(ReservationEventRepository $reservationEventRepository)
-{
-        // Récupérer les données sur les réservations pour chaque client depuis la base de données
-        $reservations = $this->getDoctrine()->getRepository(Reservation::class)->findAll();
 
-        // Créer une instance de Dompdf avec les options par défaut
-        $options = new Options();
-        $options->set('isHtml5ParserEnabled', true);
-        $dompdf = new Dompdf($options);
 
-        // Générer le contenu HTML du PDF à partir des données sur les réservations
-        $html = $this->renderView('reservation/reservation_pdf.html.twig', [
-            'reservations' => $reservations,
+
+
+    #[Route('/pdf/generate/{id}', name: 'pdf_generate')]
+    public function generatePdf(ReservationEvent $reservationEvent): Response
+    {
+        // Récupérer les données de la réservation d'événement
+        $reservationEvent = $this->getDoctrine()->getRepository(ReservationEvent::class)->find($reservationEvent);
+
+        // Rendre le contenu du PDF en utilisant le modèle Twig
+        $pdfContent = $this->renderView('reservation_event/pdf.html.twig', [
+            'reservation_event' => $reservationEvent,
         ]);
 
+        // Créer une instance de Dompdf
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($options);
 
-    // Envoyer le PDF au navigateur
-    $dompdf->stream('reservations.pdf', [
-        'Attachment' => true,
-    ]);
+        // Charger le contenu HTML dans Dompdf
+        $dompdf->loadHtml($pdfContent);
 
-    // Retourner une réponse vide
-    return new Response();
+        // Rendre le PDF
+        $dompdf->render();
+
+        // Retourner le PDF en réponse
+        return new Response($dompdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+        ]);
+    }
 }
 
     
 
-}
+
 

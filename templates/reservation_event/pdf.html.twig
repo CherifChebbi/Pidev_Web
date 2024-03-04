@@ -2,13 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Réservation d'événement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            color: blue;
+            font-size: 24px;
+        }
+        img {
+            display: block;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
+    <h1>Réservation d'événement</h1>
+    <img src="{{ asset('assets/FRONT/img/terranova.png') }}" alt="Logo" width="200">
     <table>
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nom et Prénom</th>
                 <th>Email</th>
                 <th>Téléphone</th>
@@ -17,16 +44,13 @@
             </tr>
         </thead>
         <tbody>
-            {% for reservation_event in reservation_events %}
-                <tr>
-                    <td>{{ reservation_event.id }}</td>
-                    <td>{{ reservation_event.titre }}</td>
-                    <td>{{ reservation_event.email }}</td>
-                    <td>{{ reservation_event.num_tel }}</td>
-                    <td>{{ reservation_event.date_reservation ? reservation_event.date_reservation|date('Y-m-d') : 'N/A' }}</td>
-                    <td>{{ reservation_event.id_event ? reservation_event.id_event.titre : 'N/A' }}</td>
-                </tr>
-            {% endfor %}
+            <tr>
+                <td>{{ reservation_event.nom }}</td>
+                <td>{{ reservation_event.email }}</td>
+                <td>{{ reservation_event.numTel }}</td>
+                <td>{{ reservation_event.dateReservation ? reservation_event.dateReservation|date('Y-m-d') : 'N/A' }}</td>
+                <td>{{ reservation_event.idEvent ? reservation_event.idEvent.titre : 'N/A' }}</td>
+            </tr>
         </tbody>
     </table>
 </body>
