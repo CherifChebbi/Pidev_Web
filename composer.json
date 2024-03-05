@@ -44,6 +44,7 @@
         "symfony/string": "5.4.*",
         "symfony/translation": "5.4.*",
         "symfony/twig-bundle": "5.4.*",
+        "symfony/ux-chartjs": "^2.16",
         "symfony/ux-turbo": "^2.14",
         "symfony/validator": "5.4.*",
         "symfony/web-link": "5.4.*",

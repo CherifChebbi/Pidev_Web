@@ -145,18 +145,6 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    
-    public function eventsByCategory(Category $category, EventRepository $eventRepository): JsonResponse
-{
-    $events = $eventRepository->findByCategory($category);
-
-    // Serialize events to JSON and return the response
-    $serializedEvents = $this->serializeEvents($events);
-    return new JsonResponse($serializedEvents);
-}
-    
-
-
     #[Route('/events/lieu', name: 'events_by_lieu')]
 public function eventsByLieu(EventRepository $eventRepository)
 {
