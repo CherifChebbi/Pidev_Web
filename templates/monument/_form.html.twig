@@ -1,0 +1,24 @@
+
+{{ form_start(form) }}
+    <div class="form-group">
+        {{ form_row(form.nom_monument, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.img_monument, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.desc_monument, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.villes, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.latitude, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.longitude, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <button type="submit" class="btn bg-gradient-danger">
+        {{ button_label|default('Save') }}
+    </button>
+{{ form_end(form) }}

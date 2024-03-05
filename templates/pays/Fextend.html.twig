@@ -1,0 +1,176 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+    <head>
+        <!-- meta data -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+       
+		<link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        {% block title %}<title>Directory Landing Page</title>{% endblock %}
+        
+        {% block css%}
+			<style>
+				.country-image {
+					width: 100%; /* Ensure the image takes up the full width of its container */
+					height: 300px; /* Automatically adjust height to maintain aspect ratio */
+				}
+			</style>
+            <!-- For favicon png -->
+            <link rel="shortcut icon" type="image/icon" href="{{asset('assets/FRONT/logo/favicon.png')}}"/>
+        
+            <!--font-awesome.min.css-->
+            <link rel="stylesheet" href="{{asset('assets/FRONT/css/font-awesome.min.css')}}">
+
+            <!--linear icon css-->
+            <link rel="stylesheet" href="{{asset('assets/FRONT/css/linearicons.css')}}">
+
+            <!--animate.css-->
+            <link rel="stylesheet" href="{{asset('assets/FRONT/css/animate.css')}}">
+
+            <!--flaticon.css-->
+            <link rel="stylesheet" href="{{asset('assets/FRONT/css/flaticon.css')}}">
+
+            <!--slick.css-->
+            <link rel="stylesheet" href="{{asset('assets/FRONT/css/slick.css')}}">
+            <link rel="stylesheet" href="{{asset('assets/FRONT/css/slick-theme.css')}}">
+            
+            <!--bootstrap.min.css-->
+            <link rel="stylesheet" href="{{asset('assets/FRONT/css/bootstrap.min.css')}}">
+            
+            <!-- bootsnav -->
+            <link rel="stylesheet" href="{{asset('assets/FRONT/css/bootsnav.css')}}" >	
+            
+            <!--style.css-->
+            <link rel="stylesheet" href="{{asset('assets/FRONT/css/style.css')}}">
+            
+            <!--responsive.css-->
+            <link rel="stylesheet" href="{{asset('assets/FRONT/css/responsive.css')}}">
+        {% endblock %} 
+    </head>
+	
+	<body>
+		<!-- top-area Start -->
+		<section class="top-area">  
+			<div class="header-area">
+				<!-- Start Navigation -->
+			    <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"  data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+
+			        <div class="container">
+
+			            <!-- Start Header Navigation -->
+			            <div class="navbar-header">
+			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+			                    <i class="fa fa-bars"></i>
+			                </button>
+			                <a class="navbar-brand" href="index.html">Tera<span>Nova</span></a>
+
+			            </div><!--/.navbar-header-->
+			            <!-- End Header Navigation -->
+
+			            <!-- Collect the nav links, forms, and other content for toggling -->
+			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+			                    <li ><a href="{{ path('index2') }}">home</a></li>
+								<li ><a href="{{ path('app_pays_indexF') }}#explore">Liste des Pays</a></li>
+			                </ul><!--/.nav -->
+			            </div><!-- /.navbar-collapse -->
+			        </div><!--/.container-->
+			    </nav><!--/nav-->
+			    <!-- End Navigation -->
+			</div><!--/.header-area-->
+		    <div class="clearfix"></div>
+		</section><!-- /.top-area-->
+		<!-- top-area End -->
+
+		<!--welcome-hero start -->
+		<section id="explore" class="explore" style="padding-top: 0px;padding-bottom: 0px;">
+			<div class="container">
+				
+				<div class="explore-content">
+					<div class="row">
+						{% block body %}
+						{% endblock %}
+					</div>
+				</div>
+			</div>
+		</section><!--/.welcome-hero-->
+		
+		<!--footer start-->
+		<footer id="footer"  class="footer">
+			<div class="container">
+				<div class="footer-menu">
+		           	<div class="row">
+			           	
+		           </div>
+				</div>
+				<div class="hm-footer-copyright">
+					<div class="row">
+						<div class="col-sm-7">
+							<div class="footer-social">
+								<span><i class="fa fa-phone"> +1  (222) 777 8888</i></span>
+								<a href="#"><i class="fa fa-facebook"></i></a>	
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-linkedin"></i></a>
+								<a href="#"><i class="fa fa-google-plus"></i></a>
+							</div>
+						</div>
+					</div>
+					
+				</div><!--/.hm-footer-copyright-->
+			</div><!--/.container-->
+
+			<div id="scroll-Top">
+				<div class="return-to-top">
+					<i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+				</div>
+				
+			</div><!--/.scroll-Top-->
+			
+        </footer><!--/.footer-->
+		<!--footer end-->
+		
+        {% block js %}
+		<script>
+			function toggleQRCode(paysId) {
+				var qrCodeImg = document.getElementById('qrCode' + paysId);
+				if (qrCodeImg.style.display === 'none') {
+					qrCodeImg.style.display = 'block';
+				} else {
+					qrCodeImg.style.display = 'none';
+				}
+			}
+		</script>
+            <!-- Include all js compiled plugins (below), or include individual files as needed -->
+
+            <script src="{{asset('assets/FRONT/js/jquery.js')}}"></script>
+            
+            <!--modernizr.min.js-->
+            <script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js')}}"></script>
+            
+            <!--bootstrap.min.js-->
+            <script src="{{asset('assets/FRONT/js/bootstrap.min.js')}}"></script>
+            
+            <!-- bootsnav js -->
+            <script src="{{asset('assets/FRONT/js/bootsnav.js')}}"></script>
+
+            <!--feather.min.js-->
+            <script  src="{{asset('assets/FRONT/js/feather.min.js')}}"></script>
+
+            <!-- counter js -->
+            <script src="{{asset('assets/FRONT/js/jquery.counterup.min.js')}}"></script>
+            <script src="{{asset('assets/FRONT/js/waypoints.min.js')}}"></script>
+
+            <!--slick.min.js-->
+            <script src="{{asset('assets/FRONT/js/slick.min.js')}}"></script>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js')}}"></script>
+                
+            <!--Custom JS-->
+            <script src="{{asset('assets/FRONT/js/custom.js')}}"></script>
+        {% endblock %}
+        
+    </body>
+	
+</html>

@@ -1,0 +1,8 @@
+{% extends 'back/t_base_pays.html.twig' %}
+{% block body %}
+    <h4>Create new Ville</h4>
+
+    {{ include('ville/_form.html.twig') }}
+
+    <a href="{{ path('app_ville_index') }}" class="btn bg-gradient-info">VIEW LIST</a>
+{% endblock %}

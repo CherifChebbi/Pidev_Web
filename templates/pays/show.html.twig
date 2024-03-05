@@ -1,0 +1,42 @@
+{% extends 'back/t_base_pays.html.twig' %}
+
+{% block body %}
+    <style>
+    td.paragraph-wrap {
+    white-space: pre-wrap;
+    }
+    </style>
+    <div class="card-body px-3 pt-3 pb-4">     
+            <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0" border="1">
+        <tbody>
+            <tr>
+                <th>Id_pays</th>
+                <td>{{ pay.idPays }}</td>
+            </tr>
+            <tr>
+                <th>Nom_pays</th>
+                <td>{{ pay.nomPays }}</td>
+            </tr>
+            <tr>
+                <th>Img_pays</th>
+                <td><img src="{{ asset('assets/BACK/img/Pays/' ~ pay.imgPays ) }}" alt="" style="max-width: 100px; max-height: 100px;"></td>
+            </tr>
+            <tr>
+                <th>Desc_pays</th>
+                <td style="white-space: pre-wrap;"><p>{{ pay.descPays }}</p></td>
+            </tr>
+            <tr>
+                <th>Langue</th>
+                <td>{{ pay.langue }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <a class="btn bg-gradient-info" href="{{ path('app_pays_index') }}">  LISTE PAYS</a>
+    <a class="btn bg-gradient-success" href="{{ path('app_pays_edit', {'id_pays': pay.idPays}) }}">EDIT</a>
+    
+    {{ include('pays/_delete_form.html.twig') }}
+    </div>
+    </div>
+{% endblock %}

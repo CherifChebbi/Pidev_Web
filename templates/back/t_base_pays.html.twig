@@ -46,7 +46,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{{ path('tables') }}">
+          <a class="nav-link " href="{{ path('app_pays_index') }}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
             </div>
@@ -114,9 +114,9 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-white active" aria-current="page">PAYS</li>
+            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Tables</li>
           </ol>
-          <h6 class="font-weight-bolder text-white mb-0">PAYS</h6>
+          <h6 class="font-weight-bolder text-white mb-0">Tables</h6>
         </nav>
       </div>
     </nav>
@@ -137,19 +137,18 @@
           <div class="collapse navbar-collapse" id="navigation">
             <ul class="navbar-nav mx-auto">
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="">
-                  
+                <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="{{ path('app_pays_index') }}">
+                  Liste Pays
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link me-2" href="">
-                   
-                 
+                <a class="nav-link me-2" href="{{ path('app_pays_new') }}"> 
+                  Ajouter Pays
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="">
-                   <u> </u>
+                <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="{{ path('app_pays_indexF') }}">
+                   <u> ACCEDER FRONT </u>
                 </a>
               </li>
             </ul>
@@ -157,7 +156,7 @@
         </div>
       </nav>
         <!-- End Navbar -->
-<!--............................................................................-->
+
     <div class="container-fluid py-4">
       <div class="row">
         <div class="col-12">
@@ -214,7 +213,7 @@
       </footer>
     </div>
   </main>
-/{% block js %}
+{% block js %}
   <!--   Core JS Files   -->
   <script src="{{asset('assets/BACK/js/core/popper.min.js')}}"></script>
   <script src="{{asset('assets/BACK/js/core/bootstrap.min.js')}}"></script>

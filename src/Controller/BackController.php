@@ -11,7 +11,7 @@ class BackController extends AbstractController
     #[Route('/back', name: 'back')]
     public function backTest(): Response
     {
-        return $this->render('back/pages/base_back.html.twig');
+        return $this->render('back/pages/dashboard.html.twig');
     }
     #[Route('/dashboard', name: 'dashboard')]
     public function dashboardTest(): Response

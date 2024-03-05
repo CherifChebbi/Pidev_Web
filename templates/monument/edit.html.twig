@@ -1,0 +1,10 @@
+{% extends 'back/t_base_pays.html.twig' %}
+{% block body %}
+    <h4>Edit Monument</h4>
+
+    {{ include('monument/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_monument_index') }}" class="btn bg-gradient-info">Back to list</a>
+
+    {{ include('monument/_delete_form.html.twig') }}
+{% endblock %}

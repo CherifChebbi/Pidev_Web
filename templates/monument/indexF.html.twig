@@ -1,0 +1,71 @@
+{% extends 'pays/Fextend.html.twig' %}
+	
+{% block body %}
+<div class="section-header">
+		<h2>MONUMENTS</h2>
+		<p>----------------------</p>
+	</div><!--/.section-header-->
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="subscription-input-group d-flex">
+				<form action="{{ path('app_monument_indexF') }}#explore" method="get" class="d-flex">
+					<input class="subscription-input-form" placeholder="Taper le nom..." name="q">
+					<button type="submit" class="appsLand-btn subscribe-btn">Find</button>
+				</form>
+
+				{% if app.request.query.get('q') %}
+                	<button onclick="goBack()" class="appsLand-btn subscribe-btn" style="width: 20%; height: 60px;left: 650px;">View All</button>
+				{% endif %}
+				<script>
+					function goBack() {
+						console.log("Bouton View All cliqué");
+						window.history.back();
+					}
+				</script>
+
+			</div>
+		</div>  
+	</div>
+	<br><br><hr>
+		 {% for monument in monuments %}
+		<div class="col-md-4 col-sm-6">
+			<div class="single-explore-item">
+				<div class="single-explore-img">
+					<img src="{{ asset('assets/BACK/img/Pays/' ~ monument.imgMonument ) }}" alt="" width="1200" height="800" class="country-image">               
+					<div class="single-explore-img-info">
+						<button onclick="window.location.href='#'">{{ monument.nomMonument }}</button>
+					</div>
+				</div>
+				<div class="single-explore-txt bg-theme-2">	
+					<div class="explore-person">
+						<div class="row">
+							<div class="col-sm-10">
+								<p><b>Description:</b></p>
+								<p onclick="toggleQRCode({{ monument.idMonument }})" style="color: red; cursor: pointer;">CLIQUER ICI</p>
+								<img id="qrCode{{ monument.idMonument }}" src="{{ path('monument_qr_code', { 'id': monument.idMonument}) }}" style="display: none;">
+							</div>
+						</div>
+					</div>
+					<div class="explore-open-close-part">
+						<div class="row">
+							<div class="col-sm-5">
+								<button class="close-btn open-btn" onclick="window.location.href='#'">EXPLORE</button>
+							</div>
+							<div class="col-sm-7">
+								<div class="explore-map-icon">
+									<a href="{{ path('afficher_monument_sur_carte', {'id': monument.idMonument}) }}" target="_blank">
+										<i data-feather="map"></i>
+									</a>
+									<a href="{{ path('afficher_monument_sur_maps', {'id': monument.idMonument}) }}" target="_blank">
+										<i data-feather="map-pin"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}					
+	
+{% endblock %}

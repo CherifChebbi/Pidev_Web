@@ -1,0 +1,77 @@
+{% extends 'back/t_base_pays.html.twig' %}
+
+{% block title %}Statistiques{% endblock %}
+
+{% block body %}
+    <h2 style="text-align: center;margin-bottom: 100px;">Statistique des pays</h2>
+
+    <div style="width: 100%; display: flex; justify-content: space-between;">
+        <div style="width: 45%;margin-left: 30px;">
+            <h4 style="margin-bottom: 40px">Nombre de villes par pays</h4>
+            <canvas id="graphiqueVillesParPays" width="200" height="100"></canvas>
+        </div>
+
+        <div style="width: 45%;margin-right: 30px;">
+            <h4 style="margin-bottom: 40px">Nombre de pays par continent</h4>
+            <canvas id="graphiqueContinent" width="200" height="100"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        var ctxVillesParPays = document.getElementById('graphiqueVillesParPays').getContext('2d');
+        var ctxContinent = document.getElementById('graphiqueContinent').getContext('2d');
+
+        var dataVillesParPays = {
+            labels: [{% for pays in nombreVillesParPays %}'{{ pays.nomPays }}',{% endfor %}],
+            datasets: [{
+                label: 'Nombre de villes',
+                data: [{% for pays in nombreVillesParPays %}{{ pays.nombreVilles }},{% endfor %}],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        var dataContinent = {
+            labels: [{% for pays in paysParContinent %}'{{ pays.continent }}',{% endfor %}],
+            datasets: [{
+                label: 'Nombre de pays',
+                data: [{% for pays in paysParContinent %}{{ pays.nombrePays }},{% endfor %}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        var options = {
+            // Options des graphiques
+        };
+
+        var graphiqueVillesParPays = new Chart(ctxVillesParPays, {
+            type: 'bar',
+            data: dataVillesParPays,
+            options: options
+        });
+
+        var graphiqueContinent = new Chart(ctxContinent, {
+            type: 'doughnut',
+            data: dataContinent,
+            options: options
+        });
+    </script>
+{% endblock %}

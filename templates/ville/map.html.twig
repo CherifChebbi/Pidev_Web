@@ -1,0 +1,58 @@
+{% extends 'extend.html.twig' %}
+{% block body %}
+    <!--METEO-->
+    <div class="section-header">
+        <h2>Météo</h2>
+    </div>
+    {% if temperature is not null %}
+        <p><b>Température actuelle :</b> {{ temperature }}°C</p>
+    {% endif %}
+    {% if weather_condition is not null %}
+        <p><b>Conditions météorologiques :</b> {{ weather_condition }}</p>
+    {% endif %}
+    {% if feels_like is not null %}
+        <p><b>Température ressentie :</b> {{ feels_like }}°C</p>
+    {% endif %}
+    {% if pressure is not null %}
+        <p><b>Pression atmosphérique :</b> {{ pressure }} hPa</p>
+    {% endif %}
+    {% if humidity is not null %}
+        <p><b>Humidité :</b> {{ humidity }}%</p>
+    {% endif %}
+    {% if wind_speed is not null %}
+        <p><b>Vitesse du vent :</b> {{ wind_speed }} m/s</p>
+    {% endif %}
+    {% if wind_direction is not null %}
+        <p><b>Direction du vent :</b> {{ wind_direction }}°</p>
+    {% endif %}
+    {% if sunrise is not null %}
+        <p><b>Lever du soleil :</b> {{ sunrise | date('H:i') }}</p>
+    {% endif %}
+    {% if sunset is not null %}
+        <p><b>Coucher du soleil : </b>{{ sunset | date('H:i') }}</p>
+    {% endif %}<!--/METEO-->
+
+    <!--CARTE-->
+    <div class="section-header">
+        <h2>Map de {{ ville.nomVille }}</h2>
+    </div>
+    
+    <div id="map" style="width: 100%; height: 400px;"></div>
+        <script>
+            function initMap() {
+                var mapCenter = {{ map.center|json_encode|raw }};
+                var mapZoom = {{ map.zoom }}- 2;
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: mapCenter,
+                    zoom: mapZoom
+                });
+                var marker = new google.maps.Marker({
+                    position: mapCenter,
+                    map: map
+                });
+            }
+            initMap();
+        </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCD9SWAwQURGBsOaEQG5UfkI-FldmKcwA&callback=initMap"></script>
+    <!--/CARTE-->
+{% endblock %}

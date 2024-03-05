@@ -1,0 +1,37 @@
+{% extends 'back/t_base_pays.html.twig' %}
+{% block body %}
+    <style>
+        td.paragraph-wrap {
+        white-space: pre-wrap;
+        }
+    </style>
+    <div class="card-body px-3 pt-3 pb-4">     
+        <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0" border="1">
+                <tbody>
+                    <tr>
+                        <th>Id_ville</th>
+                        <td>{{ ville.idVille }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nom_ville</th>
+                        <td>{{ ville.nomVille }}</td>
+                    </tr>
+                    <tr>
+                        <th>Img_ville</th>
+                        <td><img src="{{ asset('assets/BACK/img/Pays/ville_img/' ~ ville.imgVille ~ '.jpg') }}" alt="" style="max-width: 100px; max-height: 100px;"></td>                
+                    </tr>
+                    <tr>
+                        <th>Desc_ville</th>
+                        <td style="white-space: pre-wrap;">{{ ville.descVille }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <a href="{{ path('app_ville_index') }}"class="btn bg-gradient-info">View list</a>
+
+    <a href="{{ path('app_ville_edit', {'id_ville': ville.idVille}) }}"class="btn bg-gradient-success">EDIT</a>
+
+    {{ include('ville/_delete_form.html.twig') }}
+{% endblock %}

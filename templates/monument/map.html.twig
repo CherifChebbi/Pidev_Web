@@ -1,0 +1,26 @@
+{% extends 'extend.html.twig' %}
+{% block body %}
+    <!--CARTE-->
+    <div class="section-header">
+        <h2>Map de {{ monument.nomMonument }}</h2>
+    </div>
+    
+    <div id="map" style="width: 100%; height: 400px;"></div>
+        <script>
+            function initMap() {
+                var mapCenter = {{ map.center|json_encode|raw }};
+                var mapZoom = {{ map.zoom }}- 2;
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: mapCenter,
+                    zoom: mapZoom
+                });
+                var marker = new google.maps.Marker({
+                    position: mapCenter,
+                    map: map
+                });
+            }
+            initMap();
+        </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCD9SWAwQURGBsOaEQG5UfkI-FldmKcwA&callback=initMap"></script>
+    <!--/CARTE-->
+{% endblock %}

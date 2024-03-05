@@ -1,0 +1,104 @@
+{% extends 'back/t_base_pays.html.twig' %}
+{% block body %}
+    
+    <div class="card-header pb-0">
+        <a href="{{ path('app_monument_new') }}" class="btn btn-outline-success">Create Monument</a>
+    </div>
+    <div class="card-header pb-3">
+        <h4>Liste des monuments</h4>
+    </div>
+    <!--_______________________________________-->
+    <form action="{{ path('app_monument_index') }}" method="get" class="d-flex">
+            <input class="form-control me-2 " placeholder="Taper le nom..." name="q" style="width: 20%;; height: 45px;">
+            <button type="submit" class="btn btn-warning">Search</button>
+        </form>
+        {% if app.request.query.get('q') %}
+        <button onclick="goBack()" class="btn btn-warning" style="width: 20%;; height: 45px;">View All</button>
+    {% endif %}
+    <script>
+        function goBack() {
+            console.log("Bouton View All cliqué");
+            window.history.back();
+        }
+    </script>
+    <!--_______________________________________-->
+        <!--AJAX SEARCH -->
+        <div class="d-flex"  >
+            <div class="col-md-4 mx-auto">
+                <div class="input-group">
+                    <input class="form-control border-end-1 border rounded-pill" type="search" value="" id="example-search-input" style="bottom: 10px;padding-right: 12px;">
+                    <span class="input-group-append">
+                        <button class="btn btn-outline-secondary border-bottom-1 border rounded-pill ms-n5 border border-primary" type="button" id="searchButton"style="left: 60px;">
+                            Search
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+         <!--__________-->
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+                $(document).ready(function () {
+                    $('#searchButton').click(function () {
+                        var searchQuery = $('#example-search-input').val().toLowerCase();
+                        var noEventsRow = $('#noEventsRow');
+            
+                
+                        $('.event-row').each(function () {
+                            var eventRowText = $(this).text().toLowerCase();
+            
+                        
+                            $(this).toggle(eventRowText.includes(searchQuery));
+                        });
+            
+                    
+                        noEventsRow.toggle($('.event-row:visible').length === 0);
+                    });
+                });
+        </script>
+        <!--/AJAX SEARCH  -->
+        <!--_______________________________________-->
+    <table class="table align-items-center mb-0" border="1">
+        <thead>
+            <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id_monument</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nom_monument</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Img_monument</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Desc_monument</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ville</th>
+            </tr>
+        </thead>
+        <tbody>
+        <style>
+                    .description {
+                        max-width: 200px; /* ajustez cette valeur en fonction de vos besoins */
+                        overflow: hidden;
+                        text-overflow: ellipsis; /* ajout d'une ellipse (...) pour indiquer qu'il y a du contenu coupé */
+                        white-space: nowrap; /* empêche le texte de se retourner à la ligne */
+                    }
+                </style>
+        {% for monument in monuments %}
+            <tr class="event-row">
+                <td>{{ monument.idMonument }}</td>
+                <td>{{ monument.nomMonument }}</td>
+                <td><img src="{{ asset('assets/BACK/img/Pays/' ~ monument.imgMonument ) }}" alt="" style="max-width: 100px; max-height: 100px;"></td>                
+                <td class="description">{{ monument.descMonument }}</td>
+                <td>{{ monument.villes.nom_ville }}</td>
+                <td>
+                    <a href="{{ path('app_monument_show', {'id_monument': monument.idMonument}) }}" class="btn bg-gradient-primary">Show</a>
+                    <a href="{{ path('app_monument_edit', {'id_monument': monument.idMonument}) }}" class="btn bg-gradient-warning">Edit</a>
+                    <a href="{{ path('deleteMonument', {'id_monument': monument.idMonument}) }}" class="btn bg-gradient-success">Delete</a>         
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

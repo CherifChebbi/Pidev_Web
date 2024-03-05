@@ -1,0 +1,261 @@
+{% extends 'back/t_base_pays.html.twig' %}
+{% block body %}
+    <!--_______________________________________________________________________-->  
+<!--____________ STATISTIQUES _____________________________________________-->  
+
+  <div class="container-fluid py-4">
+      <div class="row">
+        <!--_______________________________________________________________________-->  
+        <!-- Bloc 1 -->
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Nombre total de pays </p>
+                    <h5 class="font-weight-bolder">
+                      {{ statistiques.nombre_pays }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
+                    <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--_______________________________________________________________________-->  
+        <!-- Bloc 2 -->
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Nombre total de villes</p>
+                    <h5 class="font-weight-bolder">
+                      {{ statistiques.nombre_villes }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
+                    <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--_______________________________________________________________________-->  
+        <!-- Bloc 3 -->
+        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Nbr total de monuments</p>
+                    <h5 class="font-weight-bolder">
+                      {{ statistiques.nombre_monuments }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
+                    <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--_______________________________________________________________________-->  
+      <!-- Deuxième ligne -->
+      <div class="row" style="margin-top: 10px">
+        <!-- Bloc 4 -->
+        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Pays avec le plus de villes</p>
+                    <h5 class="font-weight-bolder">
+                      {{ statistiques.pays_plus_villes.getNomPays() }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--_______________________________________________________________________-->  
+        <!-- Bloc 5 -->
+        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Ville avec le plus de monuments</p>
+                    <h5 class="font-weight-bolder">
+                      {{ statistiques.ville_plus_monuments.getNomVille() }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--_______________________________________________________________________-->  
+      </div>
+    </div>     
+<!--_______________________________________________________________________-->  
+<!--________________________CHARTS GRAPHIQUES ______________________________________-->  
+    
+<!--_______________________________________________________________________-->  
+    <div class="card-header pb-0">
+    <h6>
+          
+        <a href="{{ path('app_ville_index') }}" class="btn btn-outline-primary">List des villes</a>
+        <a href="{{ path('app_monument_index') }}" class="btn btn-outline-info">List des monuments</a>      
+    </h6>
+    
+</div>
+    <div class="card-header pb-3">
+        <h4><h4>Liste des Pays</h4>
+    </div>
+<div class="card-body px-2 pt-2 pb-8">     
+    <div class="table-responsive p-0">   
+        <!--Exporter-->
+        {# Ajoutez un lien pour télécharger le fichier PDF #}
+        <a href="{{ path('app_pays_export_pdf') }}" class="btn bg-gradient-warning">Exporter en PDF</a>
+        {# Ajoutez un lien pour télécharger le fichier Excel #}
+        <a href="{{ path('app_pays_export_excel') }}" class="btn bg-gradient-success">Exporter en Excel</a>
+        {# STATISTIQUE #}
+        <a href="{{ path('statistiques') }}" class="btn bg-gradient-info">STATISTIQUE</a>
+        <!--_______________________________________-->
+        <!--Search NORMAL-->
+        <form action="{{ path('app_pays_index') }}" method="get" class="d-flex">
+            <input class="form-control me-2" placeholder="Search par nom " name="q" style="width: 20%;; height: 45px;">
+            <button type="submit" class="btn bg-gradient-info">Search</button>
+            <a href="{{ path('app_pays_index') }}" class="btn bg-gradient-danger">View All</a>
+        </form> 
+        <!--_______________________________________-->
+        <!--Tri--> 
+        <form action="{{ path('app_pays_index') }}" method="get" class="d-flex">
+            <div>   
+                <label for="sortBy">Trier par:</label>
+                <select name="sortBy" onchange="this.form.submit()" class="form-control me-2 border border-primary">
+                    <option value="nom_pays" {% if sortBy == 'nom_pays' %}selected{% endif %}>Nom du pays</option>
+                    <option value="nb_villes" {% if sortBy == 'nb_villes' %}selected{% endif %}>Nombre de villes</option>
+                </select>
+            </div>
+        </form>
+        <br>
+<!--_______________________________________-->
+<!--_________AJAX SEARCH__________ -->
+        <div class="d-flex"  >
+            <!--_______________________________________-->
+            <a href="{{ path('app_pays_new') }}" class="btn bg-gradient-primary">ADD Pays</a>
+            <div class="col-md-4 mx-auto">
+                <div class="input-group">
+                    <input class="form-control border-end-1 border rounded-pill" type="search" value="" id="example-search-input" style="bottom: 10px;padding-right: 12px;">
+                    <span class="input-group-append">
+                        <button class="btn btn-outline-secondary border-bottom-1 border rounded-pill ms-n5 border border-primary" type="button" id="searchButton"style="left: 60px;">
+                            Search
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!--__________-->
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+                $(document).ready(function () {
+                    $('#searchButton').click(function () {
+                        var searchQuery = $('#example-search-input').val().toLowerCase();
+                        var noEventsRow = $('#noEventsRow');
+            
+                
+                        $('.event-row').each(function () {
+                            var eventRowText = $(this).text().toLowerCase();
+            
+                        
+                            $(this).toggle(eventRowText.includes(searchQuery));
+                        });
+            
+                    
+                        noEventsRow.toggle($('.event-row:visible').length === 0);
+                    });
+                });
+        </script>
+<!--___________________________________________________-->
+
+        <table class="table align-items-center mb-0" border="1">
+            <thead>
+                <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Id_pays</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nom_pays</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Img_pays</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Desc_pays</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Langue</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nb_villes</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Continent</th>
+                
+                    <th class="text-secondary opacity-7"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <style>
+                    .description {
+                        max-width: 200px; /* ajustez cette valeur en fonction de vos besoins */
+                        overflow: hidden;
+                        text-overflow: ellipsis; /* ajout d'une ellipse (...) pour indiquer qu'il y a du contenu coupé */
+                        white-space: nowrap; /* empêche le texte de se retourner à la ligne */
+                    }
+                </style>
+            {% for pay in pays %}
+                <tr class="event-row">
+                    <td>{{ pay.idPays }}</td>
+                    <td>{{ pay.nomPays }}</td>
+                    <td><img src="{{ asset('assets/BACK/img/Pays/' ~ pay.imgPays) }}" alt="image_pay" style="max-width: 100px; max-height: 100px;"></td>
+                    <td class="description">{{ pay.descPays }}</td>
+                    <td>{{ pay.langue }}</td>
+                    <td>{{ pay.nb_villes }}</td>
+                    <td>{{ pay.continent }}</td>
+                    <td>
+                        <a href="{{ path('app_pays_show', {'id_pays': pay.idPays}) }}" class="btn bg-gradient-primary">Show</a>
+                        <a href="{{ path('app_pays_edit', {'id_pays': pay.idPays}) }}" class="btn bg-gradient-warning">Update</a>
+                        <a href="{{ path('deletePays', {'id_pays': pay.idPays}) }}" class="btn bg-gradient-success">Delete</a> 
+                        <a href="{{ path('app_pays_villes', {'id': pay.idPays}) }}" class="btn btn-outline-primary">V</a> 
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'extend.html.twig' %}
+	
+{% block body %}
+<!-- .............................................................................................. -->
+<!-- .............................................................................................. -->
+		<!--explore start -->
+		<section id="explore" class="explore" style="padding-top: 0px;padding-bottom: 0px;">
+			<div class="container">
+				<div class="section-header">
+					<h2>Countries</h2>
+					<p>Decouvrir les pays</p>
+				</div><!--/.section-header-->
+		
+				<div class="explore-content">
+					<div class="row">
+						<div class="col-sm-12">
+							<!--_______________________________________-->
+							<!--SEARCH NORMALE-->
+							<div class="subscription-input-group d-flex">
+								<form action="{{ path('app_pays_indexF') }}#explore" method="get" class="d-flex">
+									<input class="subscription-input-form" placeholder="Taper le nom..." name="q">
+									<button type="submit" class="appsLand-btn subscribe-btn">Find</button>
+								</form>
+								<a href="{{ path('app_pays_indexF') }}#explore" class="appsLand-btn subscribe-btn" style="width: 20%; height: 60px;left: 650px;">View All</a>							
+							</div>
+							<br><br>
+							<!--_______________________________________-->
+							<!--Tri--> 
+							<form action="{{ path('app_pays_indexF') }}#explore" method="get" class="d-flex">								
+								<div>
+									<label for="sortBy"><h2><span style="font-size: 20px;">🔹</span> Trier par:</h2></label>
+									<select name="sortBy" onchange="this.form.submit()" style="width: 180px;height: 50px;"class="form-control me-2 border border-primary">
+										<option value="nom_pays" {% if sortBy == 'nom_pays' %}selected{% endif %}> Nom du pays</option>
+										<option value="nb_villes" {% if sortBy == 'nb_villes' %}selected{% endif %}> Nombre de villes</option>
+									</select>
+								</div>
+							</form>  
+							<!--_______________________________________-->
+						</div>  
+					</div>
+					<br>
+					<div class="row">
+					
+					{% for pay in pays %}
+						<tr>
+							<div class="col-md-4 col-sm-6">
+								<div class="single-explore-item">
+									<div class="single-explore-img">
+										<img src="{{ asset('assets/BACK/img/Pays/' ~ pay.imgPays ) }}" alt="" width="1200" height="800" class="country-image">
+										<div class="single-explore-img-info">
+											<button onclick="window.location.href='{{ path('app_pays_villesF', {'id': pay.idPays}) }}'">{{ pay.nomPays }}</button>
+										</div>
+									</div>
+									<div class="single-explore-txt bg-theme-2">
+										
+										<div class="explore-person">
+											<div class="row">
+												<div class="col-sm-10">
+													<p><b>Description:</b></p>
+													<p onclick="toggleQRCode({{ pay.idPays }})" style="color: red; cursor: pointer;">CLIQUER ICI</p>
+													<img id="qrCode{{ pay.idPays }}" src="{{ path('pays_qr_code', { 'id': pay.idPays }) }}" style="display: none;">
+												</div>
+												<div class="col-sm-10">
+													<p><b>Langue:</b></p>
+													{{ pay.langue }}
+												</div>
+												<div class="col-sm-10">
+													<p><b>Continent:</b></p>
+													{{ pay.continent }}
+												</div>
+												<div class="col-sm-10">
+													<p><b>Nombre de villes:</b></p>
+													{{ pay.nb_villes }}
+												</div>
+											</div>
+										</div>
+										<div class="explore-open-close-part">
+											<div class="row">
+												<div class="col-sm-5">
+													<button class="close-btn open-btn" onclick="window.location.href=""">EXPLORE</button>
+												</div>
+												<div class="col-sm-7">
+													<div class="explore-map-icon">
+														<a href="{{ path('afficher_pays_sur_carte', {'id': pay.idPays}) }}" target="_blank">
+															<i data-feather="map"></i>
+														</a>
+														<a href="{{ path('afficher_pays_sur_maps', {'id': pay.idPays}) }}" target="_blank">
+															<i data-feather="map-pin"></i>
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</tr>
+						{% endfor %}
+						
+					</div>					
+			</div><!--/.container-->
+			<div id="map"></div>
+
+		</section><!--/.explore-->
+{% endblock %}

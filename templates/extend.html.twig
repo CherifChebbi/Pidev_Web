@@ -13,8 +13,12 @@
 {% block title %}<title>Directory Landing Page</title>{% endblock %}
         
 {% block css%}
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+			<style>
+				.country-image {
+					width: 100%; /* Ensure the image takes up the full width of its container */
+					height: 300px; /* Automatically adjust height to maintain aspect ratio */
+				}
+			</style>
             <!-- For favicon png -->
             <link rel="shortcut icon" type="image/icon" href="{{asset('assets/FRONT/logo/favicon.png')}}"/>
         
@@ -85,12 +89,8 @@
 		<!-- top-area End -->
 		
 <!--___________________________________________________________________________________________-->	
-		<section class="subscription">
+		<section class="subscription" style="padding-top: 0px;padding-bottom: 0px;">
 			<div class="container" >
-				<div class="section-header">
-					<h2>____</h2>
-					<p>_______________</p>
-				</div><!--/.section-header-->
 				<div class="explore-content">
 					<div class="row">
                         <!--_________________________________________________________________ -->
@@ -153,6 +153,19 @@
 		<!--footer end-->
 		
 {% block js %}
+		 <!-- QRCODE -->
+		<script>
+			function toggleQRCode(paysId) {
+				var qrCodeImg = document.getElementById('qrCode' + paysId);
+				if (qrCodeImg.style.display === 'none') {
+					qrCodeImg.style.display = 'block';
+				} else {
+					qrCodeImg.style.display = 'none';
+				}
+			}
+		</script>
+		 <!-- API MAPS-->
+		
             <!-- Include all js compiled plugins (below), or include individual files as needed -->
 
             <script src="{{asset('assets/FRONT/js/jquery.js')}}"></script>

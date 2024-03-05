@@ -1,0 +1,8 @@
+{% extends 'back/t_base_pays.html.twig' %}
+{% block body %}
+    <h4>Create new Monument</h4>
+
+    {{ include('monument/_form.html.twig') }}
+
+    <a href="{{ path('app_monument_index') }}"class="btn bg-gradient-info">back to list</a>
+{% endblock %}

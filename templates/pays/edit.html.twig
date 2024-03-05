@@ -1,0 +1,9 @@
+{% extends 'back/t_base_pays.html.twig' %}
+{% block body %}
+    <h4>Edit Pays</h4>
+
+    {{ include('pays/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('pays/_delete_form.html.twig') }}
+
+     <a href="{{ path('app_pays_index') }}" class="btn bg-gradient-info">VIEW LIST</a>
+{% endblock %}
