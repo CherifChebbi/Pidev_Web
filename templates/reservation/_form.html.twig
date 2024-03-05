@@ -1,4 +1,3 @@
-
 {% extends 'front.html.twig' %}
 {% block body %}
 <!DOCTYPE html>
@@ -54,29 +53,81 @@
         button:hover {
             background-color: #45a049;
         }
+        .error-message {
+            color: #ff0000;
+            margin-top: 5px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
 
 <div class="form-container">
-    {{ form_start(form) }}
-    <label for="{{ form.nom.vars.id }}">Name:</label>
-    {{ form_widget(form.nom) }}
+   {{ form_start(form, { 'attr': { 'novalidate': 'novalidate' } }) }}
 
-    <label for="{{ form.email.vars.id }}">Email:</label>
-    {{ form_widget(form.email) }}
+<!-- Name field -->
+<div class="form-group row">
+    <div class="col-sm-2">
+        {{ form_label(form.nom, 'Name', {'label_attr': {'class': 'control-label'}}) }}
+    </div>
+    <div class="col-sm-10">
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'id': 'user_name'}}) }}
+        {{ form_errors(form.nom, { 'attr': { 'class': 'text-danger error-message' } }) }}
+    </div>
+</div>
 
-    <label for="{{ form.date.vars.id }}">Date:</label>
-    {{ form_widget(form.date) }}
+<!-- Email field -->
+<div class="form-group row">
+    <div class="col-sm-2">
+        {{ form_label(form.email, 'Email', {'label_attr': {'class': 'control-label'}}) }}
+    </div>
+    <div class="col-sm-10">
+        {{ form_widget(form.email, {'attr': {'class': 'form-control', 'id': 'user_email'}}) }}
+        {{ form_errors(form.email, { 'attr': { 'class': 'text-danger error-message' } }) }}
+    </div>
+</div>
 
-    <label for="{{ form.nbr_personne.vars.id }}">Number of People:</label>
-    {{ form_widget(form.nbr_personne) }}
+<!-- Date field -->
+<div class="form-group row">
+    <div class="col-sm-2">
+        {{ form_label(form.date, 'Date', {'label_attr': {'class': 'control-label'}}) }}
+    </div>
+    <div class="col-sm-10">
+        {{ form_widget(form.date, {'attr': {'class': 'form-control', 'id': 'reservation_date'}}) }}
+        {{ form_errors(form.date, { 'attr': { 'class': 'text-danger error-message' } }) }}
+    </div>
+</div>
 
-    <label for="{{ form.restaurant.vars.id }}">Restaurant:</label>
-    {{ form_widget(form.restaurant) }}
+<!-- Number of People field -->
+<div class="form-group row">
+    <div class="col-sm-2">
+        {{ form_label(form.nbr_personne, 'Number of People', {'label_attr': {'class': 'control-label'}}) }}
+    </div>
+    <div class="col-sm-10">
+        {{ form_widget(form.nbr_personne, {'attr': {'class': 'form-control', 'id': 'num_of_people'}}) }}
+        {{ form_errors(form.nbr_personne, { 'attr': { 'class': 'text-danger error-message' } }) }}
+    </div>
+</div>
 
-    <button class="btn">{{ button_label|default('Save') }}</button>
-    {{ form_end(form) }}
+<!-- Restaurant field -->
+<div class="form-group row">
+    <div class="col-sm-2">
+        {{ form_label(form.restaurant, 'Restaurant', {'label_attr': {'class': 'control-label'}}) }}
+    </div>
+    <div class="col-sm-10">
+        {{ form_widget(form.restaurant, {'attr': {'class': 'form-control', 'id': 'selected_restaurant'}}) }}
+        {{ form_errors(form.restaurant, { 'attr': { 'class': 'text-danger error-message' } }) }}
+    </div>
+</div>
+
+<!-- Submit button -->
+<div class="form-group row">
+    <div class="col-sm-10 offset-sm-2">
+        <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    </div>
+</div>
+
+{{ form_end(form) }}
 </div>
 
 </body>

@@ -1,12 +1,12 @@
-{{ form_start(form, {'attr': {'class': 'my-custom-form-class'}}) }}
+{{ form_start(form, {'attr':  { 'novalidate': 'novalidate' } }) }}
     <div class="form-group">
-        {{ form_label(form.nom, 'Nom du restaurant') }}
-        {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom du restaurant'}}) }}
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'id': 'user_name'}}) }}
+        {{ form_errors(form.nom, { 'attr': { 'class': 'text-danger error-message' } }) }}
     </div>
 
     <div class="form-group">
-        {{ form_label(form.localisation, 'Localisation') }}
-        {{ form_widget(form.localisation, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la localisation du restaurant'}}) }}
+        {{ form_widget(form.localisation, {'attr': {'class': 'form-control', 'id': 'user_name' }}) }}
+        {{ form_errors(form.localisation, { 'attr': { 'class': 'text-danger error-message' } }) }}
     </div>
 
     <div class="form-group">
@@ -15,8 +15,8 @@
     </div>
 
     <div class="form-group">
-        {{ form_label(form.description, 'Description du restaurant') }}
-        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Ajoutez une description du restaurant'}}) }}
+         {{ form_widget(form.description, {'attr': {'class': 'form-control', 'id': 'user_name' }}) }}
+        {{ form_errors(form.description, { 'attr': { 'class': 'text-danger error-message' } }) }}
     </div>
 
     <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>

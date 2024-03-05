@@ -59,6 +59,9 @@
             "./config/packages/knp_snappy.yaml"
         ]
     },
+    "phiil/googlesheets-translation-bundle": {
+        "version": "5.4.0"
+    },
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {

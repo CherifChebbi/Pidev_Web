@@ -40,8 +40,10 @@ class Restaurant
     #[ORM\OneToMany(mappedBy: 'retsaurant', targetEntity: Comments::class, orphanRemoval: true)]
     private Collection $comments;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $likes = null;
+    #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: Like::class)]
+    private Collection $likes;
+
+    
 
     public function __construct()
     {
@@ -49,6 +51,7 @@ class Restaurant
         $this->reservations = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -228,23 +231,38 @@ class Restaurant
         return $this;
     }
 
-    public function getLikes(): ?int
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getLikes(): Collection
     {
         return $this->likes;
     }
 
-    public function setLikes(?int $likes): static
+    public function addLike(Like $like): static
     {
-        $this->likes = $likes;
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+            $like->setRestaurant($this);
+        }
 
         return $this;
     }
 
-
-
-    public function incrementLikes(): self
+    public function removeLike(Like $like): static
     {
-        $this->likes++;
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getRestaurant() === $this) {
+                $like->setRestaurant(null);
+            }
+        }
+
         return $this;
     }
+
+   
+
+
+    
 }

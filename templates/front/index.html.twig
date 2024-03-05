@@ -123,7 +123,7 @@
                     </div>
                 </form>
 
-                <div class="row">
+               <div class="row" id="restaurantList">
                     {% for restaurant in restaurants %}
                         <div class="col-md-4 mb-4">
                             <div class="card">
@@ -138,19 +138,16 @@
                                     <h5 class="card-title">{{ restaurant.nom }}</h5>
                                     <p class="card-text">{{ restaurant.description }}</p>
                                     <a href="{{ path('app_restaurant_front_show', {'id': restaurant.id}) }}" class="btn btn-info btn-sm btn-block">Read More</a>
+
+                                    <!-- Like and dislike buttons -->
+                                    <div class="btn-group mt-2">
+                                        <a href="#" data-post-id="{{ restaurant.id }}" class="btn btn-info btn-sm btn-like" data-toggle="tooltip" title="like">Like</a>
+                                        <!-- Add a dislike button if needed -->
+                                    </div>
+
+                                    <!-- Display like count -->
+                                    <span class="like-count ml-2">{{ restaurant.likes|default(0) }}</span>
                                 </div>
-
-                               <div>
-											
-
-                                            <a href="" data-post-id="{{restaurant.id}}" class="btn btn-info btn-sm btn-block"  data-toggle="tooltip" title="like" >like</a>
-                                            <a href="#" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></a>
-
-							</div>
-
-
-
-
                             </div>
                         </div>
                     {% else %}
@@ -168,50 +165,27 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- Add the AJAX script -->
-<script>
-    $(document).ready(function () {
-        $('#searchForm').submit(function (event) {
-            event.preventDefault();
+    <!-- Add the AJAX script -->
+    <script>
+        $(document).ready(function () {
+            $('.btn-like').on('click', function (e) {
+                e.preventDefault();
+                var button = $(this);
+                var postId = button.data('post-id');
 
-            // Get the search criteria from the form
-            var criteria = {
-                search: $('input[name="search"]').val(),
-                location: $('input[name="location"]').val(),
-                minPrice: $('input[name="minPrice"]').val(),
-                maxPrice: $('input[name="maxPrice"]').val(),
-            };
-
-            // Send an AJAX request to the server
-            $.ajax({
-                type: 'POST',
-                url: '/restaurants/search',
-                data: criteria,
-                success: function (data) {
-                    // Update the restaurant list based on the response
-                    var restaurantList = $('#restaurantList');
-                    restaurantList.empty();
-
-                    if (data.restaurants.length > 0) {
-                        $.each(data.restaurants, function (index, restaurant) {
-                            // Append restaurant data to the list
-                            restaurantList.append('<div class="col-md-4 mb-4"> ... </div>');
-                            // Update the content of the appended div with the restaurant data
-                            var newRestaurantCard = restaurantList.children().last();
-                            newRestaurantCard.find('.card-title').text(restaurant.nom);
-                            newRestaurantCard.find('.card-text').text(restaurant.description);
-                            // Add other fields as needed
-                        });
-                    } else {
-                        // Handle the case when no restaurants are found
-                        restaurantList.append('<div class="col-12"><p class="text-center text-white">No records found</p></div>');
+                $.ajax({
+                    type: 'POST',
+                    url: '/restaurant/' + postId + '/like',
+                    success: function (response) {
+                        $('.like-count[data-post-id="' + postId + '"]').text(response.likes);
+                        button.toggleClass('liked');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
                     }
-                },
-                error: function (error) {
-                    console.error('Error:', error);
-                }
+                });
             });
         });
-    });
+    </script>
 </script>
 {% endblock %}

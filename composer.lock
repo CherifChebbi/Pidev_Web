@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "90a989f29c2861be71a01c99e0715260",
+    "content-hash": "70f37bdf02cbbadb7f07582d8c5a85bd",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1969,6 +1969,53 @@
                 "source": "https://github.com/dompdf/php-svg-lib/tree/0.5.2"
             },
             "time": "2024-02-07T12:49:40+00:00"
+        },
+        {
+            "name": "phiil/googlesheets-translation-bundle",
+            "version": "5.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/philipp-riddle/SymfonyGoogleSheetsTranslationBundle.git",
+                "reference": "92b7f81cf325e415f6ac199a80ce550bae8ae590"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/philipp-riddle/SymfonyGoogleSheetsTranslationBundle/zipball/92b7f81cf325e415f6ac199a80ce550bae8ae590",
+                "reference": "92b7f81cf325e415f6ac199a80ce550bae8ae590",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0|^8.1",
+                "symfony/cache": "^5.4",
+                "symfony/framework-bundle": "^5.4",
+                "symfony/translation": "^5.4"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "symfony/phpunit-bridge": "^5.4"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Phiil\\GoogleSheetsTranslationBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Philipp Martini",
+                    "email": "philipp@riddle.com"
+                }
+            ],
+            "description": "This bundle enables you to deploy your translation within seconds and the best part: Manage them in Googlesheets, probably the easiest way.",
+            "support": {
+                "issues": "https://github.com/philipp-riddle/SymfonyGoogleSheetsTranslationBundle/issues",
+                "source": "https://github.com/philipp-riddle/SymfonyGoogleSheetsTranslationBundle/tree/5.4.0"
+            },
+            "time": "2022-07-08T09:47:09+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",

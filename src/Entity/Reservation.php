@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -14,14 +15,41 @@ class Reservation
     #[ORM\Column]
     private ?int $id = null;
 
+    
+    
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le titre ne peut pas être vide')]
+    #[Assert\Length(max: 255, maxMessage: 'Le titre ne peut pas dépasser {{ limit }} caractères')]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z\- ]+$/',
+        message: 'Le nom ne peut contenir que des lettres, des tirets et des espaces'
+        )]
     private ?string $nom = null;
+
+    /**
+ * @Assert\NotBlank(message="L'email est obligatoire")
+ * @Assert\Email(
+ *     message = "L'email '{{ value }}' n'est pas valide.",
+ *     mode = "html5"
+ * )
+ * @ORM\Column(type="string", length=255)
+ */
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
+    /**
+     * @Assert\NotBlank(message="La date de réservation est obligatoire.")
+     * @ORM\Column(type=Types::DATE_MUTABLE)
+     */
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
+
+    /**
+     * @Assert\NotBlank(message="Le nombre de personnes est obligatoire.")
+     * @Assert\Positive(message="Le nombre de personnes doit être positif.")
+     * @ORM\Column
+     */
 
     #[ORM\Column]
     public ?int $nbr_personne = null;
