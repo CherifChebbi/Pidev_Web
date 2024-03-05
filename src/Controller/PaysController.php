@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Endroid\QrCode\Writer\PngWriter;
 use App\Service\OpenWeatherMapService;
+use App\Service\StatistiqueService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
@@ -27,6 +28,7 @@ class PaysController extends AbstractController
     {
         // Récupérer le pays en fonction de son identifiant
         $pays = $paysRepository->find($id);
+       
 
         if (!$pays) {
             throw $this->createNotFoundException('Pays non trouvé');
@@ -38,6 +40,7 @@ class PaysController extends AbstractController
         return $this->render('ville/index.html.twig', [
             'pays' => $pays,
             'villes' => $villes,
+           
         ]);
     }
     //---------AFFICHAGE-----------
@@ -80,17 +83,20 @@ class PaysController extends AbstractController
     }
 //1-Back  Affichage
     #[Route('/tables', name: 'app_pays_index', methods: ['GET'])]
-    public function indexTables(PaysRepository $paysRepository, Request $request): Response
+    public function indexTables(PaysRepository $paysRepository, Request $request,StatistiqueService $statistiqueService): Response
     {
         $sortBy = $request->query->get('sortBy', 'nomPays');
         $searchTerm = $request->query->get('q');
         $pays = $paysRepository->findAllOrderedBy($sortBy);
+        $statistiques = $statistiqueService->calculerStatistiques();
+
         if ($searchTerm) {
             $pays = $paysRepository->search($searchTerm);
         }
         return $this->render('pays/index.html.twig', [
             'pays' => $pays,
             'sortBy' => $sortBy,
+            'statistiques' => $statistiques,
         ]);
     }
 //---------ADD-----------
@@ -371,6 +377,8 @@ class PaysController extends AbstractController
 
         return $map;
     }
+//----------------------------------------------------------------------
+   
 
 
 

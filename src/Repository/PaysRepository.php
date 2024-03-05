@@ -90,6 +90,33 @@ class PaysRepository extends ServiceEntityRepository
         }
         return $qb->getQuery()->getResult();
     }
-    
+    //STAT
+    public function findPaysAvecPlusDeVilles()
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.nb_villes', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    //STATISTIQUE
+    // Récupérer le nombre de pays par nombre de villes
+    public function getNombreVillesParPays()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.nom_pays as nomPays', 'p.nb_villes as nombreVilles')
+            ->getQuery()
+            ->getResult();
+    }
+
+    // Récupérer le nombre de pays par continent
+    public function getPaysParContinent()
+    {
+        return $this->createQueryBuilder('p')
+            ->select('COUNT(p) as nombrePays', 'p.continent as continent')
+            ->groupBy('p.continent')
+            ->getQuery()
+            ->getResult();
+    }
 
 }

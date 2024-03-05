@@ -2,7 +2,7 @@
 {% block body %}
     
     <div class="card-header pb-0">
-        <a href="{{ path('app_monument_new') }}" class="btn btn-success">Create Monument</a>
+        <a href="{{ path('app_monument_new') }}" class="btn btn-outline-success">Create Monument</a>
     </div>
     <div class="card-header pb-3">
         <h4>Liste des monuments</h4>
@@ -87,9 +87,9 @@
                 <td class="description">{{ monument.descMonument }}</td>
                 <td>{{ monument.villes.nom_ville }}</td>
                 <td>
-                    <a href="{{ path('app_monument_show', {'id_monument': monument.idMonument}) }}"class="btn btn-primary">Show</a>
-                    <a href="{{ path('app_monument_edit', {'id_monument': monument.idMonument}) }}"class="btn btn-warning">Edit</a>
-                    <a href="{{ path('deleteMonument', {'id_monument': monument.idMonument}) }}" class="btn btn-danger">Delete</a>         
+                    <a href="{{ path('app_monument_show', {'id_monument': monument.idMonument}) }}" class="btn bg-gradient-primary">Show</a>
+                    <a href="{{ path('app_monument_edit', {'id_monument': monument.idMonument}) }}" class="btn bg-gradient-warning">Edit</a>
+                    <a href="{{ path('deleteMonument', {'id_monument': monument.idMonument}) }}" class="btn bg-gradient-success">Delete</a>         
                 </td>
             </tr>
         {% else %}

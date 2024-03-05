@@ -138,13 +138,12 @@
             <ul class="navbar-nav mx-auto">
               <li class="nav-item">
                 <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="{{ path('app_pays_index') }}">
-                  LISTE PAYS
+                  Liste Pays
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link me-2" href="{{ path('app_pays_new') }}">
-                  <i class="fas fa-user-edit"></i>   
-                  AJOUTER PAYS
+                <a class="nav-link me-2" href="{{ path('app_pays_new') }}"> 
+                  Ajouter Pays
                 </a>
               </li>
               <li class="nav-item">
@@ -157,7 +156,7 @@
         </div>
       </nav>
         <!-- End Navbar -->
-<!--............................................................................-->
+
     <div class="container-fluid py-4">
       <div class="row">
         <div class="col-12">
@@ -214,7 +213,7 @@
       </footer>
     </div>
   </main>
-/{% block js %}
+{% block js %}
   <!--   Core JS Files   -->
   <script src="{{asset('assets/BACK/js/core/popper.min.js')}}"></script>
   <script src="{{asset('assets/BACK/js/core/bootstrap.min.js')}}"></script>

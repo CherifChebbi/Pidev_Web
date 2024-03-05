@@ -77,6 +77,14 @@ class VilleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-    
+    //STAT
+    public function findVilleAvecPlusDeMonuments()
+    {
+        return $this->createQueryBuilder('v')
+            ->orderBy('v.nb_monuments', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
     
 }

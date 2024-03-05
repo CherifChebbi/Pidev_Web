@@ -50,5 +50,8 @@
     "gulp-sourcemaps": "^2.6.5",
     "sass": "^1.49.9"
   },
-  "homepage": "https://creative-tim.com/product/argon-dashboard"
+  "homepage": "https://creative-tim.com/product/argon-dashboard",
+  "dependencies": {
+    "chart.js": "^4.4.2"
+  }
 }
