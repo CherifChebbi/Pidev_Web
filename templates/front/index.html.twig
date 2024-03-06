@@ -1,72 +1,23 @@
 {% extends 'front.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #ccc, #fff);
-            animation: gradientAnimation 5s infinite alternate;
-        }
+{% block body %}
 
-        @keyframes gradientAnimation {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 100% 50%;
-            }
-        }
+ <style>
+    .card-description {
+        min-height: 3em; /* Adjust the minimum height based on your preference */
+        max-height: 6em; /* Adjust the maximum height based on your preference */
+        overflow: hidden;
+        margin-bottom: 10px; /* Add some margin at the bottom */
+    }
 
-        .container {
-            padding: 40px;
-        }
-
-        .card {
-            margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s ease-in-out;
-        }
-
-        .card:hover {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .card-img-top {
-            object-fit: cover;
-            height: 200px;
-        }
-
-        .btn-info {
-            background-color: #17a2b8;
-            border-color: #17a2b8;
-        }
-
-        .btn-info:hover {
-            background-color: #117a8b;
-            border-color: #117a8b;
-        }
-
-        .btn-like {
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-        }
-
-        .like-count {
-            margin-left: 5px;
-        }
-
-        .btn-like img {
-            width: 20px; /* Adjust the size as needed */
-            height: auto;
-        }
-    </style>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
+    .read-more-btn {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+   
     <script>
         $(document).ready(function () {
             // Heart button click event
@@ -96,9 +47,7 @@
             });
         });
     </script>
-{% endblock %}
-
-{% block body %}
+ 
        <div class="container mt-4">
         <div class="row">
             <div class="col-md-3">
@@ -119,6 +68,7 @@
                                 <label for="maxPrice">Max Prix du plat</label>
                                 <input type="text" name="maxPrice" class="form-control" value="{{ app.request.query.get('maxPrice') }}">
                             </div>
+                            
                             <button type="submit" class="btn btn-info btn-block">Appliquer les filtres</button>
                         </form>
                     </div>
@@ -126,58 +76,68 @@
             </div>
             <div class="col-md-9">
                 <h1 class="mb-4 text-white">List des Restaurants</h1>
-
+    <div style="padding-bottom: 2%;"   >    </div>
                 {# Add the search form #}
-                <form action="{{ path('app_restaurant_front') }}" method="get" class="mb-4">
-                    <div class="input-group">
-                        <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ searchTerm }}">
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-info">Rechercher</button>
-                        </div>
+              <form action="{{ path('app_restaurant_front') }}" method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ searchTerm }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-info">Rechercher</button>
+            </div>
+        </div>
+    </form>
+
+
+    <div style="padding-bottom: 2%;"   >    </div>
+
+     
+
+<div style="padding-bottom: 2%;"> </div>
+
+<div class="row" id="restaurantList">
+    {% for restaurant in restaurants %}
+        {% if loop.index % 3 == 1 %}
+            <div class="form-row">
+        {% endif %}
+        
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+                {% if restaurant.image %}
+                    <img src="{{ asset('uploads/' ~ restaurant.image) }}" alt="{{ restaurant.nom }}" class="card-img-top img-fluid">
+                {% else %}
+                    <div class="text-center py-3">
+                        No Image
                     </div>
-                </form>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ restaurant.nom }}</h5>
+                    <p class="card-text card-description">{{ restaurant.description }}</p>
 
-               <div class="row" id="restaurantList">
-                    {% for restaurant in restaurants %}
-                        <div class="col-md-4 mb-4">
-                            <div class="card">
-                                {% if restaurant.image %}
-                                    <img src="{{ asset('uploads/' ~ restaurant.image) }}" alt="{{ restaurant.nom }}" class="card-img-top img-fluid">
-                                {% else %}
-                                    <div class="text-center py-3">
-                                        No Image
-                                    </div>
-                                {% endif %}
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ restaurant.nom }}</h5>
+                    <a href="{{ path('app_restaurant_front_show', {'id': restaurant.id}) }}" class="btn btn-info btn-sm btn-block read-more-btn">Read More</a>
 
-                                    <p class="card-text">{{ restaurant.description }}</p>
+                    <!-- Like and dislike buttons -->
+                    <div class="btn-group mt-2">
+                        <a href="#" data-post-id="{{ restaurant.id }}" class="btn btn-info btn-sm btn-like" data-toggle="tooltip" title="like">Like</a>
+                        <!-- Add a dislike button if needed -->
+                    </div>
 
-                                    <a href="{{ path('app_restaurant_front_show', {'id': restaurant.id}) }}" class="btn btn-info btn-sm btn-block">Read More</a>
-                                    <!-- Like and dislike buttons -->
-
-                                    <div class="btn-group mt-2">
-                                        <a href="#" data-post-id="{{ restaurant.id }}" class="btn btn-info btn-sm btn-like" data-toggle="tooltip" title="like">Like</a>
-                                        <!-- Add a dislike button if needed -->
-
-                                    </div>
-
-                                    <!-- Display like count -->                                                                                                               
-                                    <span class="like-count ml-2">{{ restaurant.likes|default(0) }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="col-12">
-                            <p class="text-center text-white">No records found</p>
-                        </div>
-                    {% endfor %}
-                </div>
-
-                <div class="text-center mt-4">
-                    {# Add pagination links if needed #}
+                    <!-- Display like count -->
+                    <span class="like-count ml-2">{{ restaurant.likes|default(0) }}</span>
                 </div>
             </div>
+        </div>
+
+        {% if loop.index % 3 == 0 or loop.last %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+
+<div class="text-center mt-4">
+    {# Add pagination links if needed #}
+</div>
+
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
