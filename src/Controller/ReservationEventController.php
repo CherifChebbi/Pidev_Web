@@ -237,7 +237,7 @@ class ReservationEventController extends AbstractController
 
         // Créer une instance de Dompdf
         $options = new Options();
-        $options->set('chroot', [__DIR__.'/Librairie', __DIR__.'/PICS', __DIR__.'/PHOTOS']);
+        
         $options->set('defaultFont', 'Arial');
         $dompdf = new Dompdf($options);
 
@@ -255,35 +255,36 @@ class ReservationEventController extends AbstractController
 
     #[Route('reservation/event/stats', name: 'stats_reservations')]
     public function statistiques(ReservationEventRepository $reservationEventRepository): Response
-    {
-        // Get all reservation events from the repository
-        $reservationEvents = $reservationEventRepository->findAll();
+{
+    // Get all reservation events from the repository
+    $reservationEvents = $reservationEventRepository->findAll();
 
-        // Initialize an array to store reservation counts by event title
-        $reservationCounts = [];
+    // Initialize an array to store reservation counts by event title
+    $reservationCounts = [];
 
-        // Calculate reservation counts for each event
-        foreach ($reservationEvents as $reservationEvent) {
-            $eventTitle = $reservationEvent->getIdEvent()->getTitre();
+    // Calculate reservation counts for each event
+    foreach ($reservationEvents as $reservationEvent) {
+        $eventTitle = $reservationEvent->getIdEvent()->getTitre();
 
-            // Count reservations by event title
-            if (!isset($reservationCounts[$eventTitle])) {
-                $reservationCounts[$eventTitle] = 1;
-            } else {
-                $reservationCounts[$eventTitle]++;
-            }
+        // Count reservations by event title
+        if (!isset($reservationCounts[$eventTitle])) {
+            $reservationCounts[$eventTitle] = 1;
+        } else {
+            $reservationCounts[$eventTitle]++;
         }
-
-        // Prepare statistics data
-        $statistics = $reservationCounts;
-        var_dump($statistics);
-
-
-        // Render the Twig template with the statistics data
-        return $this->render('reservation_event/statistiques.html.twig', [
-            'reservationData' => $statistics,
-        ]);
     }
+
+    // Prepare statistics data
+    $statistics = [
+        'Reservations by Event' => $reservationCounts,
+    ];
+
+    // Render the Twig template with the statistics data
+    return $this->render('reservation_event/statistiques.html.twig', [
+        'reservationData' => $statistics['Reservations by Event'],
+    ]);
+}
+
 }
 
 

@@ -1,4 +1,4 @@
-{% extends 'event.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
 {% block title %}Reservation Volume Statistics
 {% endblock %}
@@ -9,10 +9,10 @@
 {% endblock %}
 
 {% block js %}
-	{{ parent() }}
-	<script src="https://cdn.jsdelivr.net/npm/chart.js/Chart.min.js"></script>
-
+    {{ parent() }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
+
 
 {% block body %}
 	<main id="main" class="main">
