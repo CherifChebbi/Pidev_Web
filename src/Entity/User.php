@@ -3,13 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -21,6 +20,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\Email(message: "L'adresse email '{{ value }}' n'est pas valide.")]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -33,30 +33,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom ne peut pas être vide.")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le prénom ne peut pas être vide.")]
     private ?string $prenom = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le numéro de téléphone ne peut pas être vide.")]
+    #[Assert\Length(min: 8, max: 12, minMessage: "Le numéro de téléphone doit comporter au moins {{ limit }} chiffres.", maxMessage: "Le numéro de téléphone ne peut pas comporter plus de {{ limit }} chiffres.")]
     private ?int $numtel = null;
-
-   
 
     #[ORM\Column(length: 255)]
     private ?string $Nationnalite = null;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Reservation::class)]
-    private Collection $reservations;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Like::class)]
-    private Collection $likes;
 
-    public function __construct()
-    {
-        $this->reservations = new ArrayCollection();
-        $this->likes = new ArrayCollection();
-    }
+    #[ORM\Column]
+    private ?bool $isBanned = null;
+
+    #[ORM\Column]
+    private ?bool $isVerified = null;
 
 
 
@@ -198,70 +196,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Reservation>
-     */
-    public function getReservations(): Collection
+    public function isIsBanned(): ?bool
     {
-        return $this->reservations;
+        return $this->isBanned;
     }
 
-    public function addReservation(Reservation $reservation): static
+    public function setIsBanned(bool $isBanned): static
     {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations->add($reservation);
-            $reservation->setUserId($this);
-        }
+        $this->isBanned = $isBanned;
 
         return $this;
     }
 
-    public function removeReservation(Reservation $reservation): static
+    public function isIsVerified(): ?bool
     {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getUserId() === $this) {
-                $reservation->setUserId(null);
-            }
-        }
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }
-
-    public function __toString()
-    {
-        return $this->id;
+    public function __toString() {
+        return(string) $this->id;
     }
 
-    /**
-     * @return Collection<int, Like>
-     */
-    public function getLikes(): Collection
-    {
-        return $this->likes;
-    }
 
-    public function addLike(Like $like): static
-    {
-        if (!$this->likes->contains($like)) {
-            $this->likes->add($like);
-            $like->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLike(Like $like): static
-    {
-        if ($this->likes->removeElement($like)) {
-            // set the owning side to null (unless already changed)
-            if ($like->getUser() === $this) {
-                $like->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-   
-
+    
 }

@@ -4,18 +4,26 @@
 
  <style>
     .card-description {
-        min-height: 3em; /* Adjust the minimum height based on your preference */
-        max-height: 6em; /* Adjust the maximum height based on your preference */
-        overflow: hidden;
-        margin-bottom: 10px; /* Add some margin at the bottom */
-    }
+    min-height: 3em; /* Adjust the minimum height based on your preference */
+    max-height: 6em; /* Adjust the maximum height based on your preference */
+    overflow: hidden;
+    margin-bottom: 10px; /* Add some margin at the bottom */
+    padding: 30px; /* Add padding to create space between elements */
+}
 
-    .read-more-btn {
-        display: block;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+   .read-more-btn {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 8px 12px; /* Adjust the padding values based on your preference */
+    margin-top: 10px; /* Add margin to create space between buttons and other elements */
+    display: inline-block;
+    text-decoration: none;
+    background-color: #007bff; /* Button background color */
+    color: #fff; /* Button text color */
+    border: 1px solid #007bff; /* Button border color */
+    border-radius: 5px; /* Button border radius */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition effect */
+}
 </style>
    
     <script>
@@ -27,7 +35,7 @@
 
                 // Send AJAX request to like restaurant
                 $.ajax({
-                    type: 'POST',
+                    type: 'POST', 'GET',
                     url: '/restaurant/' + postId + '/like',
                     success: function (response) {
                         // Update like count on success
@@ -49,31 +57,34 @@
     </script>
  
        <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Recherche multiple</h5>
-                        <form action="{{ path('app_restaurant_front') }}" method="get">
-                            {# Add your advanced search form fields here #}
-                            <div class="form-group">
-                                <label for="location">Localisation</label>
-                                <input type="text" name="location" class="form-control" value="{{ app.request.query.get('location') }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="minPrice">Min prix du plat</label>
-                                <input type="text" name="minPrice" class="form-control" value="{{ app.request.query.get('minPrice') }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="maxPrice">Max Prix du plat</label>
-                                <input type="text" name="maxPrice" class="form-control" value="{{ app.request.query.get('maxPrice') }}">
-                            </div>
-                            
-                            <button type="submit" class="btn btn-info btn-block">Appliquer les filtres</button>
-                        </form>
-                    </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Rechercher multiple</h5>
+            <form action="{{ path('app_restaurant_front') }}" method="get" class="row">
+
+                <div class="form-group col-md-4">
+                    <label for="location">Localisation</label>
+                    <input type="text" name="location" class="form-control" placeholder="Entrez la localisation" value="{{ app.request.query.get('location') }}">
                 </div>
-            </div>
+
+                <div class="form-group col-md-4">
+                    <label for="minPrice">Min prix du plat</label>
+                    <input type="text" name="minPrice" class="form-control" placeholder="Entrez le prix minimum" value="{{ app.request.query.get('minPrice') }}">
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="maxPrice">Max Prix du plat</label>
+                    <input type="text" name="maxPrice" class="form-control" placeholder="Entrez le prix maximum" value="{{ app.request.query.get('maxPrice') }}">
+                </div>
+
+                <div class="form-group col-md-12">
+                    <button type="submit" class="btn btn-info btn-block">Appliquer les filtres</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
             <div class="col-md-9">
                 <h1 class="mb-4 text-white">List des Restaurants</h1>
     <div style="padding-bottom: 2%;"   >    </div>
@@ -116,10 +127,9 @@
                     <a href="{{ path('app_restaurant_front_show', {'id': restaurant.id}) }}" class="btn btn-info btn-sm btn-block read-more-btn">Read More</a>
 
                     <!-- Like and dislike buttons -->
-                    <div class="btn-group mt-2">
-                        <a href="#" data-post-id="{{ restaurant.id }}" class="btn btn-info btn-sm btn-like" data-toggle="tooltip" title="like">Like</a>
-                        <!-- Add a dislike button if needed -->
-                    </div>
+                    <a href="#" data-post-id="{{ restaurant.id }}" class="btn btn-info btn-like" data-toggle="tooltip" title="Like">
+                        <i class="fas fa-thumbs-up"></i> Like
+                    </a>
 
                     <!-- Display like count -->
                     <span class="like-count ml-2">{{ restaurant.likes|default(0) }}</span>

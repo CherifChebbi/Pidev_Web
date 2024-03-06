@@ -17,6 +17,45 @@
             max-height: none; /* Remove the maximum height for larger screens */
         }
     }
+
+    /* Form styling */
+    .comment-form {
+        margin-top: 20px;
+    }
+
+    .comment-form input,
+    .comment-form textarea {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .comment-form button {
+        background-color: #17a2b8;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .comment-cards-container {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow: auto;
+        margin-bottom: 20px;
+    }
+
+    .comment-card {
+        width: 18rem;
+        margin-right: 10px;
+    }
+
+    .comment-card .card-body {
+        padding: 20px;
+    }
 </style>
 
 
@@ -84,7 +123,7 @@
 </section>
 
 
-<section style="padding-top: 50px; text-align: center;">
+<section style="padding-top: 50px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
     <div class="container">
         <h2 class="mb-4">Liste des commentaires</h2>
         <div class="comment-cards-container d-flex flex-nowrap overflow-auto">
@@ -100,19 +139,29 @@
         </div>
 
         <!-- Add Comment Form -->
-        <div class="mt-4">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h2 class="mb-4">Ajouter un commentaire</h2>
-                    {{ form_start(commentForm) }}
-                    {{ form_widget(commentForm) }}
-                    
-                    {{ form_end(commentForm) }}
-                </div>
-            </div>
+          
+        <!-- Add Comment Form -->
+
+
+    </div>
+    </div>
+     <div class="mt-4 comment-form d-flex justify-content-center align-items-center">
+    <div class="card text-center" style="width: 18rem;">
+        <div class="card-body">
+            <h2 class="mb-4">Ajouter un commentaire</h2>
+            {{ form_start(commentForm) }}
+            {{ form_widget(commentForm.content, {'attr': {'placeholder': 'Votre commentaire', 'rows': 3}}) }}
+            {{ form_widget(commentForm.nickname, {'attr': {'placeholder': 'Votre pseudo'}}) }}
+            {{ form_widget(commentForm.email, {'attr': {'placeholder': 'Votre email'}}) }}
+            {{ form_widget(commentForm.accepter) }}
+            <button class="btn btn-info">Ajouter le commentaire</button>
+            {{ form_end(commentForm) }}
         </div>
     </div>
+</div>
+
 </section>
+
 
 
 
