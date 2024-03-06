@@ -1,0 +1,75 @@
+{% extends 'back/t_base_pays.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        /* Custom CSS Styles */
+        .container {
+            margin-top: 50px;
+            margin-left: 20px; /* Adjust the margin-left as needed */
+            margin-right: 20px; /* Optionally, add margin-right for spacing */
+        }
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        th {
+            color: #ffffff;
+        }
+        .btn {
+            margin-right: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>{{ user.nom }}</h1>
+
+        <table class="table table-striped">
+            <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ user.password }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ user.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ user.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Numtel</th>
+                <td>{{ user.numtel }}</td>
+            </tr>
+            <tr>
+                <th>Nationnalite</th>
+                <td>{{ user.Nationnalite }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_admin_index') }}" class="btn btn-primary">Back to list</a>
+
+        <a href="{{ path('app_admin_edit', {'id': user.id}) }}" class="btn btn-secondary">Edit</a>
+
+        {{ include('admin/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

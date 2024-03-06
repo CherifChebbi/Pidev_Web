@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Users List</title>
+    <style>
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 6px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        /* Alternating row colors */
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        /* No records found */
+        tbody tr.no-records td {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+        }
+        /* Title */
+        h1 {
+            text-align: center;
+            margin-top: 20px; /* Adjust margin as needed */
+        }
+    </style>
+</head>
+<body>
+<h1>Liste des utilisateurs</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Nom</th>
+        <th>Prenom</th>
+        <th>Numtel</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.nom }}</td>
+            <td>{{ user.prenom }}</td>
+            <td>{{ user.numtel }}</td>
+           
+           
+
+
+        </tr>
+    {% else %}
+        <tr class="no-records">
+            <td colspan="10">No records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

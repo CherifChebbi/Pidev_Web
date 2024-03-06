@@ -8,6 +8,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BackController extends AbstractController
 {
+    #[Route('/user', name: 'user')]
+    public function userTest(): Response
+    {
+        return $this->render('back/pages/user.html.twig');
+    }
     #[Route('/back', name: 'back')]
     public function backTest(): Response
     {
@@ -38,20 +43,6 @@ class BackController extends AbstractController
     {
         return $this->render('back/pages/rtl.html.twig');
     }
-    #[Route('/profile', name: 'profile')]
-    public function profileTest(): Response
-    {
-        return $this->render('back/pages/profile.html.twig');
-    }
-    #[Route('/sign-in', name: 'sign-in')]
-    public function sign_inTest(): Response
-    {
-        return $this->render('back/pages/sign-in.html.twig');
-    }
-    #[Route('/sign-up', name: 'sign-up')]
-    public function sign_upTest(): Response
-    {
-        return $this->render('back/pages/sign-up.html.twig');
-    }
+   
     
 }

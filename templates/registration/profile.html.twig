@@ -1,0 +1,75 @@
+{% extends 'main/Textends.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        .navbar-brand-img-large {
+            max-height: 170px; /* Adjust the max-height as needed */
+            width: auto; /* Maintain aspect ratio */
+            display: block; /* Ensures the image is treated as a block element */
+            margin: 0 auto 20px; /* Centers the image horizontally and adds space at the bottom */
+        }
+
+        .user-name {
+            text-align: center; /* Centers the user name */
+            font-weight: lighter; /* Makes the user name lighter */
+            margin-bottom: 20px; /* Adds space below the user name */
+        }
+
+        .logout-btn {
+            margin: 30px auto; /* Centers the button horizontally */
+            text-align: center; /* Centers the button text */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <img src="{{ asset('assets/BACK/img/account.png') }}" class="navbar-brand-img navbar-brand-img-large">
+
+                    <h1 class="user-name">{{ app.user.nom }}</h1>
+
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <th>Id</th>
+                                <td>{{ app.user.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ app.user.email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nom</th>
+                                <td>{{ app.user.nom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Prenom</th>
+                                <td>{{ app.user.prenom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Numtel</th>
+                                <td>{{ app.user.numtel }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nationality</th>
+                                <td>{{ app.user.Nationnalite }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('app_logout') }}" class="btn btn-danger logout-btn">Logout</a>
+                        <a href="{{ path('app_admin_edit', {'id': app.user.id}) }}" class="btn btn-danger logout-btn">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

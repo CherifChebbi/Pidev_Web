@@ -6,15 +6,17 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!--font-family-->
+       
 		<link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        {% block title %}<title>Directory Landing Page</title>{% endblock %}
         
-        <!-- title of site -->
-{% block title %}<title>Directory Landing Page</title>{% endblock %}
-        
-{% block css%}
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+        {% block css%}
+			<style>
+				.country-image {
+					width: 100%; /* Ensure the image takes up the full width of its container */
+					height: 300px; /* Automatically adjust height to maintain aspect ratio */
+				}
+			</style>
             <!-- For favicon png -->
             <link rel="shortcut icon" type="image/icon" href="{{asset('assets/FRONT/logo/favicon.png')}}"/>
         
@@ -46,137 +48,50 @@
             <!--responsive.css-->
             <link rel="stylesheet" href="{{asset('assets/FRONT/css/responsive.css')}}">
 {% endblock %} 
-
     </head>
 	
 	<body>
 		<!-- top-area Start -->
-		<section class="top-area">
+		<section class="top-area">  
 			<div class="header-area">
 				<!-- Start Navigation -->
 			    <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"  data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+
 			        <div class="container">
+
 			            <!-- Start Header Navigation -->
 			            <div class="navbar-header">
 			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
 			                    <i class="fa fa-bars"></i>
 			                </button>
 			                <a class="navbar-brand" href="index.html">Tera<span>Nova</span></a>
-			            </div>
+
+			            </div><!--/.navbar-header-->
 			            <!-- End Header Navigation -->
+
 			            <!-- Collect the nav links, forms, and other content for toggling -->
 			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
 			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-			                    <li><a href="{{ path('index2') }}">Home</a></li>
-			                    <li><a href="{{ path('app_pays_indexF') }}">PAYS</a></li>
-			                    <li><a href="">HEBERGEMENTS</a></li>
-			                    <li><a href="">RESTAURANTS</a></li>
-                                <li><a href="">EVENEMENTS</a></li>
-			                    <li class="scroll"><a href="#contact">contact</a></li>
-								<li ><a href="{{ path('app_profile') }}">Profil</a></li>
-                                <li><a href="{{ path('index1') }}">Retour</a></li>
-			                </ul>
+			                    <li ><a href="{{ path('index1') }}">home</a></li>
+
+			                </ul><!--/.nav -->
 			            </div><!-- /.navbar-collapse -->
 			        </div><!--/.container-->
 			    </nav><!--/nav-->
 			    <!-- End Navigation -->
-            </div><!--/.header-area-->
-            <div class="clearfix"></div>   
+			</div><!--/.header-area-->
+		    <div class="clearfix"></div>
 		</section><!-- /.top-area-->
 		<!-- top-area End -->
 
 		<!--welcome-hero start -->
-		<section id="home" class="welcome-hero">
-
+		<section>
 			<div class="container">
-				<div class="welcome-hero-txt">
-					<h2>best place to find and explore <br> that all you need </h2>
-					<p>
-						Find Best Place, Restaurant, Hotel, Real State and many more think in just One click 
-					</p>
-				</div>
+				{% block body %}
+                {% endblock %}
 			</div>
 		</section><!--/.welcome-hero-->
 		
-<!--___________________________________________________________________________________________-->
-		<!--list-topics start -->
-		<section id="list-topics" class="list-topics">    
-			<div class="container">
-				<div class="list-topics-content" style="left: 90px">
-					<ul>
-						
-						<li>
-							<div class="single-list-topics-content">
-								<div class="single-list-topics-icon">
-									<i class="flaticon-placeholder"></i>
-								</div>
-								<h2><a href="#"></a></h2>
-                                <p>PAYS</p>
-								
-							</div>
-						</li>
-						<li>
-							<div class="single-list-topics-content">
-								<div class="single-list-topics-icon">
-									<i class="flaticon-building"></i>
-								</div>
-								<h2><a href="#"></a></h2>
-                                <p>HEBERGEMENTS</p>
-								
-							</div>
-						</li>
-                        <li>
-							<div class="single-list-topics-content">
-								<div class="single-list-topics-icon">
-									<i class="flaticon-restaurant"></i>
-								</div>
-								<h2><a href="#"></a></h2>
-                                <p>RESTAURANTS</p>
-								
-							</div>
-						</li>
-						<li>
-							<div class="single-list-topics-content">
-								<div class="single-list-topics-icon">
-									<i class="flaticon-lightbulb-idea"></i>
-								</div>
-								<h2><a href="#"></a></h2>
-                                <p>EVENEMENTS</p>
-								
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div> 
-		</section>
-	
-<!--___________________________________________________________________________________________-->			
-		<!--CONTACT -->
-		<section id="contact"  class="subscription">
-			<div class="container">
-				<div class="subscribe-title text-center">
-					<h2>
-						..........
-					</h2>
-					<p>
-						Listrace offer you to list your business with us and we very much able to promote your Business.
-					</p>
-				</div>
-				<div class="row">
-                    <div class="col-sm-7">
-                        <div class="footer-social">
-                            <span><i class="fa fa-phone"> +1  (222) 777 8888</i></span>
-                            <a href="#"><i class="fa fa-facebook"></i></a>	
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-linkedin"></i></a>
-                            <a href="#"><i class="fa fa-google-plus"></i></a>
-                        </div>
-                    </div>
-                </div>
-			</div>
-		</section><!--/subscription-->	
-<!--___________________________________________________________________________________________-->	
-
 		<!--footer start-->
 		<footer id="footer"  class="footer">
 			<div class="container">
@@ -184,11 +99,35 @@
 		           	<div class="row">
 			           	<div class="col-sm-3">
 			           		 <div class="navbar-header">
-				                <a class="navbar-brand" href="index.html">Tera<span>Nova</span></a>
+				               
 				            </div><!--/.navbar-header-->
+			           	</div>
+			           	<div class="col-sm-9">
+			           		<ul class="footer-menu-item">
+
+			                </ul><!--/.nav -->
 			           	</div>
 		           </div>
 				</div>
+				<div class="hm-footer-copyright">
+					<div class="row">
+						<div class="col-sm-5">
+							<p>
+								
+							</p><!--/p-->
+						</div>
+						<div class="col-sm-7">
+							<div class="footer-social">
+								<span><i class="fa fa-phone"> +1  (222) 777 8888</i></span>
+								<a href="#"><i class="fa fa-facebook"></i></a>	
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-linkedin"></i></a>
+								<a href="#"><i class="fa fa-google-plus"></i></a>
+							</div>
+						</div>
+					</div>
+					
+				</div><!--/.hm-footer-copyright-->
 			</div><!--/.container-->
 
 			<div id="scroll-Top">
@@ -201,7 +140,20 @@
         </footer><!--/.footer-->
 		<!--footer end-->
 		
-{% block js %}
+        {% block js %}
+		 <!-- QRCODE -->
+		<script>
+			function toggleQRCode(paysId) {
+				var qrCodeImg = document.getElementById('qrCode' + paysId);
+				if (qrCodeImg.style.display === 'none') {
+					qrCodeImg.style.display = 'block';
+				} else {
+					qrCodeImg.style.display = 'none';
+				}
+			}
+		</script>
+		 <!-- API MAPS-->
+		
             <!-- Include all js compiled plugins (below), or include individual files as needed -->
 
             <script src="{{asset('assets/FRONT/js/jquery.js')}}"></script>
