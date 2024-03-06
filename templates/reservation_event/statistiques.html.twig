@@ -1,71 +1,69 @@
-{% extends 'base_back.html.twig' %}
+{% extends 't_base_events.html.twig' %}
 
-{% block title %}Reservation Volume Statistics
+{% block title %}
+	Event Reservation Statistics
 {% endblock %}
-
-{% block css %}
-	{{ parent() }}
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-{% endblock %}
-
-{% block js %}
-    {{ parent() }}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{% endblock %}
-
 
 {% block body %}
-	<main id="main" class="main">
-		<div class="container mt-6">
-			<div class="row justify-content-center">
-				<div class="col-lg-8 col-md-18 mb-10">
-					<div class="card text-center">
-						<div class="card-body">
-							<h1 class="card-title mb-4">Reservation Statistics</h1>
-							<canvas id="reservationsChart" style="height: 300px; width: 100%; margin-bottom: 20px;"></canvas>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</main>
+	<h1>Statistiques des réservations</h1>
 
+	<div class="chart-container">
+		<canvas id="reservationsChart"></canvas>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script>
-		var eventTitles = [];
-var reservationCounts = [];{% for title, count in reservationData %}eventTitles.push('{{ title|raw }}');
-reservationCounts.push({{ count|raw }});{% endfor %}
-
-// Create the bar chart
-var ctx = document.getElementById('reservationsChart').getContext('2d');
-var reservationsChart = new Chart(ctx, {
+		var ctx = document.getElementById('reservationsChart').getContext('2d');
+var myChart = new Chart(ctx, {
 type: 'bar',
 data: {
-labels: eventTitles,
+labels: {{ eventLabels|raw }},
 datasets: [
 {
-label: 'Reservation Counts',
-data: reservationCounts,
-backgroundColor: 'rgba(255, 99, 132, 0.7)',
+label: 'Number of Reservations',
+data: {{ reservationsData|raw }},
+backgroundColor: [
+'rgba(255, 99, 132, 0.5)', // Red
+'rgba(54, 162, 235, 0.5)', // Blue
+'rgba(255, 206, 86, 0.5)', // Yellow
+'rgba(75, 192, 192, 0.5)', // Green
+'rgba(153, 102, 255, 0.5)', // Purple
+'rgba(255, 159, 64, 0.5)' // Orange
+],
+borderColor: [
+'rgba(255, 99, 132, 1)', // Red
+'rgba(54, 162, 235, 1)', // Blue
+'rgba(255, 206, 86, 1)', // Yellow
+'rgba(75, 192, 192, 1)', // Green
+'rgba(153, 102, 255, 1)', // Purple
+'rgba(255, 159, 64, 1)' // Orange
+],
 borderWidth: 1
 }
 ]
 },
 options: {
-responsive: false,
-maintainAspectRatio: false,
-legend: {
-display: false
-},
 scales: {
-yAxes: [
-{
-ticks: {
+y: {
 beginAtZero: true
 }
+},
+plugins: {
+legend: {
+display: false
 }
-]
 }
 }
 });
 	</script>
+{% endblock %}
+
+{% block stylesheets %}
+	<style>
+		.chart-container {
+			margin-top: 50px;
+			margin-bottom: 50px;
+			text-align: center;
+		}
+	</style>
 {% endblock %}

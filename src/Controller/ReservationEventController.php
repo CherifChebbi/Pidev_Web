@@ -86,6 +86,36 @@ class ReservationEventController extends AbstractController
         ]);
     }
 
+
+
+
+    #[Route('/{id}/reserver', name: 'app_reserver_front_edit', methods: ['GET', 'POST'])]
+    public function reserver(Request $request, Event $event, EntityManagerInterface $entityManager): Response
+    {
+        $reservationEvent = new ReservationEvent(); // No need to instantiate here
+    
+        $form = $this->createForm(ReservationEventType::class, $reservationEvent);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Handle form submission
+            $entityManager->persist($reservationEvent); // Persist the data
+            $entityManager->flush(); // Save to database
+    
+            // Redirect after successful submission
+            return $this->redirectToRoute('app_reservation_event_index', [], Response::HTTP_SEE_OTHER);
+        }
+    
+        // Render the form template
+        return $this->render('front/ReservationEvent.html.twig', [
+            'event' => $event,
+            'form' => $form->createView(), // Pass the form view to the template
+        ]);
+    }
+    
+
+
+
     #[Route('/newfront', name: 'app_reservation_event_new_front', methods: ['GET', 'POST'])]
     public function new_front(Request $request, EntityManagerInterface $entityManager, SessionInterface $session, MailerInterface $mailer): Response
     {
@@ -157,7 +187,7 @@ class ReservationEventController extends AbstractController
     {
         // Twilio credentials
         $twilioSid = 'ACea6cbad683b84e9e007719a6ce13d791';
-        $twilioToken = '54ad15a7a4dcdd067d1dc2d346969c50';
+        $twilioToken = 'a699afb42d8382374817f4decc2c743c';
         $twilioNumber = '+19403531823'; // This is the phone number you've purchased from Twilio
     
         // Initialize Twilio client
@@ -253,37 +283,59 @@ class ReservationEventController extends AbstractController
         ]);
     }
 
-    #[Route('reservation/event/stats', name: 'stats_reservations')]
-    public function statistiques(ReservationEventRepository $reservationEventRepository): Response
+//     #[Route('reservation/event/stats', name: 'stats_reservations')]
+//     public function statistiques(ReservationEventRepository $reservationEventRepository): Response
+// {
+//     // Get all reservation events from the repository
+//     $reservationEvents = $reservationEventRepository->findAll();
+
+//     // Initialize an array to store reservation counts by event title
+//     $reservationCounts = [];
+
+//     // Calculate reservation counts for each event
+//     foreach ($reservationEvents as $reservationEvent) {
+//         $eventTitle = $reservationEvent->getIdEvent()->getTitre();
+
+//         // Count reservations by event title
+//         if (!isset($reservationCounts[$eventTitle])) {
+//             $reservationCounts[$eventTitle] = 1;
+//         } else {
+//             $reservationCounts[$eventTitle]++;
+//         }
+//     }
+
+//     // Prepare statistics data
+//     $statistics = [
+//         'Reservations by Event' => $reservationCounts,
+//     ];
+
+//     // Render the Twig template with the statistics data
+//     return $this->render('reservation_event/statistiques.html.twig', [
+//         'reservationData' => $statistics['Reservations by Event'],
+//     ]);
+// }
+
+#[Route('/reservation/event/stats', name: 'stats_reservations')]
+public function eventStats(ReservationEventRepository $reservationEventRepository)
 {
-    // Get all reservation events from the repository
-    $reservationEvents = $reservationEventRepository->findAll();
+    $reservationsStats = $reservationEventRepository->countReservationsByEvent();
 
-    // Initialize an array to store reservation counts by event title
-    $reservationCounts = [];
-
-    // Calculate reservation counts for each event
-    foreach ($reservationEvents as $reservationEvent) {
-        $eventTitle = $reservationEvent->getIdEvent()->getTitre();
-
-        // Count reservations by event title
-        if (!isset($reservationCounts[$eventTitle])) {
-            $reservationCounts[$eventTitle] = 1;
-        } else {
-            $reservationCounts[$eventTitle]++;
-        }
+    $eventLabels = [];
+    $reservationsData = [];
+    foreach ($reservationsStats as $stat) {
+        $eventLabels[] = $stat['eventName'];
+        $reservationsData[] = $stat['reservationsCount'];
     }
 
-    // Prepare statistics data
-    $statistics = [
-        'Reservations by Event' => $reservationCounts,
-    ];
-
-    // Render the Twig template with the statistics data
     return $this->render('reservation_event/statistiques.html.twig', [
-        'reservationData' => $statistics['Reservations by Event'],
+        'eventLabels' => json_encode($eventLabels),
+        'reservationsData' => json_encode($reservationsData),
     ]);
 }
+
+
+
+
 
 }
 

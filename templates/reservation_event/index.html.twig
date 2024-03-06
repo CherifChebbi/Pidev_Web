@@ -1,4 +1,4 @@
-{% extends 'base_back.html.twig' %}
+{% extends 't_base_events.html.twig' %}
 
 {% block css %}
 	{{ parent() }}
@@ -145,10 +145,11 @@ filterEvents();
 						<tr>
 							<td>{{ reservation_event.id }}</td>
 							<td>{{ reservation_event.idEvent.titre }}</td>
-							<td>{{ reservation_event.nom }}</td>
 							<td>{{ reservation_event.email }}</td>
 							<td>{{ reservation_event.numTel }}</td>
+							<td>{{ reservation_event.dateReservation ? reservation_event.dateReservation|date('Y-m-d') : 'N/A' }}</td>
 							<td>
+
 								<a href="{{ path('app_reservation_event_show', {'id': reservation_event.id}) }}" class="btn btn-primary">Show</a>
 								<a href="{{ path('app_reservation_event_edit', {'id': reservation_event.id}) }}" class="btn btn-warning">Edit</a>
 								<form action="{{ path('app_reservation_event_delete', {'id': reservation_event.id}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this reservation?')">

@@ -8,10 +8,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TestController extends AbstractController
 {
-    #[Route('/front', name: 'front')]
-    public function frontTest(): Response
+    //avant login 
+    #[Route('/index1', name: 'index1')]
+    public function index1(): Response
     {
-        return $this->render('base_front.html.twig');
+        return $this->render('index1.html.twig');
+    }
+    
+    //apres login 
+    #[Route('/index2', name: 'index2')]
+    public function index2(): Response
+    {
+        return $this->render('index2.html.twig');
     }
     
 }

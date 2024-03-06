@@ -21,6 +21,18 @@ class ReservationEventRepository extends ServiceEntityRepository
         parent::__construct($registry, ReservationEvent::class);
     }
 
+    public function countReservationsByEvent()
+{
+    $qb = $this->createQueryBuilder('r')
+        ->select('e.titre AS eventName, COUNT(r.id) AS reservationsCount')
+        ->leftJoin('r.id_event', 'e')
+        ->groupBy('eventName')
+        ->orderBy('eventName', 'ASC');
+
+    return $qb->getQuery()->getResult();
+}
+
+
 //    /**
 //     * @return ReservationEvent[] Returns an array of ReservationEvent objects
 //     */

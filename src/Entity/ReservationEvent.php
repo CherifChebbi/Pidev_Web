@@ -30,15 +30,6 @@ class ReservationEvent
     private ?string $email = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'Le numéro de téléphone ne peut pas être vide')]
-    #[Assert\Length(
-        max: 12,
-        maxMessage: 'Le numéro de téléphone ne peut pas dépasser {{ limit }} chiffres'
-    )]
-    #[Assert\Regex(
-        pattern: '/^\d+$/',
-        message: 'Le numéro de téléphone doit contenir uniquement des chiffres'
-    )]
     private ?int $num_tel = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
