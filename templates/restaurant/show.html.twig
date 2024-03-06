@@ -42,9 +42,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_restaurant_index') }}" class="btn btn-secondary">Back to List</a>
+    <a href="{{ path('app_restaurant_index') }}" class="btn btn-secondary">Retourner a la list</a>
 
-    <a href="{{ path('app_restaurant_edit', {'id': restaurant.id}) }}" class="btn btn-warning">Edit</a>
+    <a href="{{ path('app_restaurant_edit', {'id': restaurant.id}) }}" class="btn btn-warning">Modifier</a>
 
     {{ include('restaurant/_delete_form.html.twig') }}
 </div>

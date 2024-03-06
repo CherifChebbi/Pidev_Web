@@ -35,8 +35,8 @@
                     <td>{{ plat.restaurant.nom }}</td>
 
                     <td>
-                        <a href="{{ path('app_plat_show', {'id': plat.id}) }}" class="btn btn-info btn-sm">Show</a>
-                        <a href="{{ path('app_plat_edit', {'id': plat.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{{ path('app_plat_show', {'id': plat.id}) }}" class="btn">Afficher</a>
+                        <a href="{{ path('app_plat_edit', {'id': plat.id}) }}" class="btn">Modifier</a>
                     </td>
                 </tr>
             {% else %}
@@ -47,6 +47,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_plat_new') }}" class="btn btn-success">Ajouter un plat</a>
+    <a href="{{ path('app_plat_new') }}" class="btn">Ajouter un plat</a>
 </div>
 {% endblock %}

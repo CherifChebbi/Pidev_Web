@@ -2,18 +2,63 @@
 
 {% block title %}New Reservation{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body {
+           display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background: url('/Pidev-gestion_restaurant_final/public/images/download.jpg') center/cover no-repeat;
+    font-family: Arial, sans-serif;
+        }
+
+        .reservation-container {
+            width: 400px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #ffffff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <h1>New Reservation for {{ restaurant.nom ?? 'Unknown Restaurant' }}</h1>
+    <div class="reservation-container">
+        <h1>New Reservation for {{ restaurant.nom ?? 'Unknown Restaurant' }}</h1>
 
-    {{ form_start(form) }}
-    {{ form_row(form.nom) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.date) }}
-    {{ form_row(form.nbr_personne) }}
-    
-    {# Render the hidden restaurant field #}
-    {{ form_widget(form.restaurant, {'attr': {'style': 'display:none'}}) }}
+        {{ form_start(form) }}
+        {{ form_row(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Your Name'}}) }}
+        {{ form_row(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Your Email'}}) }}
+        {{ form_row(form.date, {'attr': {'class': 'form-control'}}) }}
+        {{ form_row(form.nbr_personne, {'attr': {'class': 'form-control', 'placeholder': 'Number of People'}}) }}
 
-    <button type="submit" class="btn btn-primary">Reserve Now</button>
-    {{ form_end(form) }}
+        {# Render the hidden restaurant field #}
+        {{ form_widget(form.restaurant, {'attr': {'style': 'display:none'}}) }}
+
+        <button type="submit" class="btn btn-primary">Reserve Now</button>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

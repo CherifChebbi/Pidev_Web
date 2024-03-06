@@ -6,6 +6,7 @@ use App\Repository\RestaurantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RestaurantRepository::class)]
 class Restaurant
@@ -15,23 +16,32 @@ class Restaurant
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: 'Le nom ne peut pas être vide')]
+    #[Assert\Length(max: 255, maxMessage: 'Le nom ne peut pas dépasser {{ 4 }} caractères')]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z\- ]+$/',
+        message: 'Le nom ne peut contenir que des lettres, des tirets et des espaces'
+        )]
+
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'La localisation ne peut pas etre vide')]
     private ?string $localisation = null;
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'La description ne peut pas etre vide')]
     private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: Plat::class, cascade: ['remove'])]
     private Collection $plats;
 
 
-    #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: Reservation::class)]
+    #[ORM\OneToMany(mappedBy: 'restaurant', targetEntity: Reservation::class, cascade: ["remove"])]
     private Collection $reservations;
 
     #[ORM\OneToMany(mappedBy: 'restauran', targetEntity: Commentaire::class)]

@@ -1,12 +1,13 @@
 {% extends 'front.html.twig' %}
+
 {% block stylesheets %}
     {{ parent() }}
     <style>
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(to right, #ccc, #fff); /* Grey to White gradient background */
-            animation: gradientAnimation 5s infinite alternate; /* Gradient animation */
+            background: linear-gradient(to right, #ccc, #fff);
+            animation: gradientAnimation 5s infinite alternate;
         }
 
         @keyframes gradientAnimation {
@@ -34,91 +35,104 @@
 
         .card-img-top {
             object-fit: cover;
-            height: 200px; /* Set a fixed height for images */
+            height: 200px;
         }
 
         .btn-info {
-            background-color: #17a2b8; /* Bootstrap info color */
+            background-color: #17a2b8;
             border-color: #17a2b8;
         }
 
         .btn-info:hover {
-            background-color: #117a8b; /* Darker shade on hover */
+            background-color: #117a8b;
             border-color: #117a8b;
+        }
+
+        .btn-like {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .like-count {
+            margin-left: 5px;
+        }
+
+        .btn-like img {
+            width: 20px; /* Adjust the size as needed */
+            height: auto;
         }
     </style>
 {% endblock %}
 
 {% block javascripts %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // Like button click event
-        $('a[data-post-id]').on('click', function () {
-            var button = $(this);
-            var postId = button.data('post-id');
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            // Heart button click event
+            $('a[data-post-id]').on('click', function () {
+                var button = $(this);
+                var postId = button.data('post-id');
 
-            // Send AJAX request to like publication
-            $.ajax({
-                type: 'POST',
-                url: '/restaurant/' + postId + '/like',
-                success: function (response) { // Update like count on success
-                    // Assuming you have an element with class 'like-count' to display the like count
-                    $('.like-count').text(response.likes);
+                // Send AJAX request to like restaurant
+                $.ajax({
+                    type: 'POST',
+                    url: '/restaurant/' + postId + '/like',
+                    success: function (response) {
+                        // Update like count on success
+                        $('.like-count[data-post-id="' + postId + '"]').text(response.likes);
 
-                    // Toggle appearance of the button
-                    button.toggleClass('liked');
-                },
-                error: function (xhr, status, error) { // Handle AJAX error
-                    console.error(xhr.responseText); // Log the error message
-                }
+                        // Toggle appearance of the button
+                        button.toggleClass('liked');
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle AJAX error
+                        console.error(xhr.responseText); // Log the error message
+                    }
+                });
+
+                // Prevent default behavior
+                return false;
             });
-
-            // Prevent default behavior
-            return false;
         });
-    });
-</script>
-
-
-
+    </script>
 {% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
+       <div class="container mt-4">
         <div class="row">
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Advanced Search</h5>
+                        <h5 class="card-title">Recherche multiple</h5>
                         <form action="{{ path('app_restaurant_front') }}" method="get">
                             {# Add your advanced search form fields here #}
                             <div class="form-group">
-                                <label for="location">Location</label>
+                                <label for="location">Localisation</label>
                                 <input type="text" name="location" class="form-control" value="{{ app.request.query.get('location') }}">
                             </div>
                             <div class="form-group">
-                                <label for="minPrice">Min Price</label>
+                                <label for="minPrice">Min prix du plat</label>
                                 <input type="text" name="minPrice" class="form-control" value="{{ app.request.query.get('minPrice') }}">
                             </div>
                             <div class="form-group">
-                                <label for="maxPrice">Max Price</label>
+                                <label for="maxPrice">Max Prix du plat</label>
                                 <input type="text" name="maxPrice" class="form-control" value="{{ app.request.query.get('maxPrice') }}">
                             </div>
-                            <button type="submit" class="btn btn-info btn-block">Apply Filters</button>
+                            <button type="submit" class="btn btn-info btn-block">Appliquer les filtres</button>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="col-md-9">
-                <h1 class="mb-4 text-white">List Restaurant</h1>
+                <h1 class="mb-4 text-white">List des Restaurants</h1>
 
                 {# Add the search form #}
                 <form action="{{ path('app_restaurant_front') }}" method="get" class="mb-4">
                     <div class="input-group">
                         <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ searchTerm }}">
                         <div class="input-group-append">
-                            <button type="submit" class="btn btn-info">Search</button>
+                            <button type="submit" class="btn btn-info">Rechercher</button>
                         </div>
                     </div>
                 </form>
@@ -136,16 +150,19 @@
                                 {% endif %}
                                 <div class="card-body">
                                     <h5 class="card-title">{{ restaurant.nom }}</h5>
-                                    <p class="card-text">{{ restaurant.description }}</p>
-                                    <a href="{{ path('app_restaurant_front_show', {'id': restaurant.id}) }}" class="btn btn-info btn-sm btn-block">Read More</a>
 
+                                    <p class="card-text">{{ restaurant.description }}</p>
+
+                                    <a href="{{ path('app_restaurant_front_show', {'id': restaurant.id}) }}" class="btn btn-info btn-sm btn-block">Read More</a>
                                     <!-- Like and dislike buttons -->
+
                                     <div class="btn-group mt-2">
                                         <a href="#" data-post-id="{{ restaurant.id }}" class="btn btn-info btn-sm btn-like" data-toggle="tooltip" title="like">Like</a>
                                         <!-- Add a dislike button if needed -->
+
                                     </div>
 
-                                    <!-- Display like count -->
+                                    <!-- Display like count -->                                                                                                               
                                     <span class="like-count ml-2">{{ restaurant.likes|default(0) }}</span>
                                 </div>
                             </div>

@@ -13,14 +13,15 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #f4f4f4;
+            background: url('path/to/your/background-image.jpg') no-repeat center center fixed;
+            background-size: cover;
             font-family: Arial, sans-serif;
         }
 
         .form-container {
             width: 400px;
             padding: 20px;
-            background-color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.8);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
@@ -53,6 +54,7 @@
         button:hover {
             background-color: #45a049;
         }
+
         .error-message {
             color: #ff0000;
             margin-top: 5px;
@@ -67,10 +69,8 @@
 
 <!-- Name field -->
 <div class="form-group row">
-    <div class="col-sm-2">
+    <div class="col-sm-12">
         {{ form_label(form.nom, 'Name', {'label_attr': {'class': 'control-label'}}) }}
-    </div>
-    <div class="col-sm-10">
         {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'id': 'user_name'}}) }}
         {{ form_errors(form.nom, { 'attr': { 'class': 'text-danger error-message' } }) }}
     </div>
@@ -78,10 +78,8 @@
 
 <!-- Email field -->
 <div class="form-group row">
-    <div class="col-sm-2">
+    <div class="col-sm-12">
         {{ form_label(form.email, 'Email', {'label_attr': {'class': 'control-label'}}) }}
-    </div>
-    <div class="col-sm-10">
         {{ form_widget(form.email, {'attr': {'class': 'form-control', 'id': 'user_email'}}) }}
         {{ form_errors(form.email, { 'attr': { 'class': 'text-danger error-message' } }) }}
     </div>
@@ -89,10 +87,8 @@
 
 <!-- Date field -->
 <div class="form-group row">
-    <div class="col-sm-2">
+    <div class="col-sm-12">
         {{ form_label(form.date, 'Date', {'label_attr': {'class': 'control-label'}}) }}
-    </div>
-    <div class="col-sm-10">
         {{ form_widget(form.date, {'attr': {'class': 'form-control', 'id': 'reservation_date'}}) }}
         {{ form_errors(form.date, { 'attr': { 'class': 'text-danger error-message' } }) }}
     </div>
@@ -100,10 +96,8 @@
 
 <!-- Number of People field -->
 <div class="form-group row">
-    <div class="col-sm-2">
+    <div class="col-sm-12">
         {{ form_label(form.nbr_personne, 'Number of People', {'label_attr': {'class': 'control-label'}}) }}
-    </div>
-    <div class="col-sm-10">
         {{ form_widget(form.nbr_personne, {'attr': {'class': 'form-control', 'id': 'num_of_people'}}) }}
         {{ form_errors(form.nbr_personne, { 'attr': { 'class': 'text-danger error-message' } }) }}
     </div>
@@ -111,10 +105,8 @@
 
 <!-- Restaurant field -->
 <div class="form-group row">
-    <div class="col-sm-2">
+    <div class="col-sm-12">
         {{ form_label(form.restaurant, 'Restaurant', {'label_attr': {'class': 'control-label'}}) }}
-    </div>
-    <div class="col-sm-10">
         {{ form_widget(form.restaurant, {'attr': {'class': 'form-control', 'id': 'selected_restaurant'}}) }}
         {{ form_errors(form.restaurant, { 'attr': { 'class': 'text-danger error-message' } }) }}
     </div>
@@ -122,7 +114,7 @@
 
 <!-- Submit button -->
 <div class="form-group row">
-    <div class="col-sm-10 offset-sm-2">
+    <div class="col-sm-12">
         <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
     </div>
 </div>
