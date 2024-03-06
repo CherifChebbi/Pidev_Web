@@ -1,0 +1,33 @@
+{% extends 'main/Textends.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+    <h1>Inscription</h1>
+
+    {{ form_errors(registrationForm) }}
+
+    {{ form_start(registrationForm) }}
+
+        <fieldset>
+           <legend> Mon identité </legend> 
+           {{ form_row(registrationForm.Nom) }}
+           {{ form_row(registrationForm.Prenom) }}
+           {{ form_row(registrationForm.email) }}
+           
+        </fieldset>   
+
+        <fieldset> 
+            <legend> Mes coordonnées </legend>
+            {{ form_row(registrationForm.Numtel) }}
+            {{ form_row(registrationForm.Nationnalite) }}
+        </fieldset>
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Password'
+        }) }}
+        {{ form_row(registrationForm.agreeTerms) }}
+
+        <button type="submit" class="btn btn-primary btn-lg my-4">M'inscrire</button>
+    {{ form_end(registrationForm) }}
+{% endblock %}
