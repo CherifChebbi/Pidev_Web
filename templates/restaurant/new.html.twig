@@ -1,0 +1,14 @@
+{% extends 'back/t_base_restaurant.html.twig' %}
+
+{% block title %}Ajouter Votre Restaurant{% endblock %}
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 13%;">
+
+    <h1>Ajouter Restaurant</h1>
+
+    {{ include('restaurant/_form.html.twig') }}
+
+    <a href="{{ path('app_restaurant_index') }}" class="btn">Retour a list des restaurant </a>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'extend.html.twig' %}
+
+{% block body %}
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        color: #000; /* Set to black for better visibility */
+    }
+
+    .reservation-container {
+        width: 400px;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    input {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    button {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<section style="padding-top: 0px;padding-bottom: 0px;margin-top: 500px;" >
+   
+    <div>
+        <h1>New Reservation for {{ restaurant.nom ?? 'Unknown Restaurant' }}</h1>
+
+        {{ form_start(form) }}
+        {{ form_row(form.nom, {'attr': {'placeholder': 'Your Name'}}) }}
+        {{ form_row(form.email, {'attr': {'placeholder': 'Your Email'}}) }}
+        {{ form_row(form.date, {'attr': {'class': 'form-control'}}) }}
+        {{ form_row(form.nbr_personne, {'attr': {'placeholder': 'Number of People'}}) }}
+
+        {# Render the hidden restaurant field #}
+        {{ form_widget(form.restaurant, {'attr': {'style': 'display:none'}}) }}
+
+        <button type="submit" class="btn btn-primary">Reserve Now</button>
+        {{ form_end(form) }}
+    </div>
+</section>
+{% endblock %}

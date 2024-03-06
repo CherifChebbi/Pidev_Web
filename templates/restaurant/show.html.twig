@@ -1,0 +1,51 @@
+{% extends 'back/t_base_restaurant.html.twig' %}
+
+
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 8%;">
+
+
+{% block title %}Restaurant - {{ restaurant.nom }}{% endblock %}
+<div class="container mt-4">
+   
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th scope="row">Id</th>
+                <td>{{ restaurant.id }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Nom</th>
+                <td>{{ restaurant.nom }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Localisation</th>
+                <td>{{ restaurant.localisation }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Image</th>
+                <td>
+                    {% if restaurant.image %}
+                        <img src="{{ asset('uploads/' ~ restaurant.image) }}" alt="{{ restaurant.nom }}" class="img-thumbnail" style="max-height: 100px;">
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Description</th>
+                <td>{{ restaurant.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_restaurant_index') }}" class="btn btn-secondary">Retourner a la list</a>
+
+    <a href="{{ path('app_restaurant_edit', {'id': restaurant.id}) }}" class="btn btn-warning">Modifier</a>
+
+    {{ include('restaurant/_delete_form.html.twig') }}
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'back/t_base_restaurant.html.twig' %}
+
+
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 8%;">
+    <h1>Modifier le Plat</h1>
+
+    {{ include('plat/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_plat_index') }}">Retourner a la list </a>
+
+    {{ include('plat/_delete_form.html.twig') }}
+{% endblock %}

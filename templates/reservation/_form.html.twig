@@ -1,0 +1,127 @@
+{% extends 'front.html.twig' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Reservation Form</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: url('path/to/your/background-image.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            width: 400px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #ffffff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: #ff0000;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+   {{ form_start(form, { 'attr': { 'novalidate': 'novalidate' } }) }}
+
+<!-- Name field -->
+<div class="form-group row">
+    <div class="col-sm-12">
+        {{ form_label(form.nom, 'Name', {'label_attr': {'class': 'control-label'}}) }}
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'id': 'user_name'}}) }}
+        {{ form_errors(form.nom, { 'attr': { 'class': 'text-danger error-message' } }) }}
+    </div>
+</div>
+
+<!-- Email field -->
+<div class="form-group row">
+    <div class="col-sm-12">
+        {{ form_label(form.email, 'Email', {'label_attr': {'class': 'control-label'}}) }}
+        {{ form_widget(form.email, {'attr': {'class': 'form-control', 'id': 'user_email'}}) }}
+        {{ form_errors(form.email, { 'attr': { 'class': 'text-danger error-message' } }) }}
+    </div>
+</div>
+
+<!-- Date field -->
+<div class="form-group row">
+    <div class="col-sm-12">
+        {{ form_label(form.date, 'Date', {'label_attr': {'class': 'control-label'}}) }}
+        {{ form_widget(form.date, {'attr': {'class': 'form-control', 'id': 'reservation_date'}}) }}
+        {{ form_errors(form.date, { 'attr': { 'class': 'text-danger error-message' } }) }}
+    </div>
+</div>
+
+<!-- Number of People field -->
+<div class="form-group row">
+    <div class="col-sm-12">
+        {{ form_label(form.nbr_personne, 'Number of People', {'label_attr': {'class': 'control-label'}}) }}
+        {{ form_widget(form.nbr_personne, {'attr': {'class': 'form-control', 'id': 'num_of_people'}}) }}
+        {{ form_errors(form.nbr_personne, { 'attr': { 'class': 'text-danger error-message' } }) }}
+    </div>
+</div>
+
+<!-- Restaurant field -->
+<div class="form-group row">
+    <div class="col-sm-12">
+        {{ form_label(form.restaurant, 'Restaurant', {'label_attr': {'class': 'control-label'}}) }}
+        {{ form_widget(form.restaurant, {'attr': {'class': 'form-control', 'id': 'selected_restaurant'}}) }}
+        {{ form_errors(form.restaurant, { 'attr': { 'class': 'text-danger error-message' } }) }}
+    </div>
+</div>
+
+<!-- Submit button -->
+<div class="form-group row">
+    <div class="col-sm-12">
+        <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    </div>
+</div>
+
+{{ form_end(form) }}
+</div>
+
+</body>
+</html>
+{% endblock %}

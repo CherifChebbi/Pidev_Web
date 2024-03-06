@@ -1,0 +1,39 @@
+{% extends 'back/t_base_restaurant.html.twig' %}
+
+
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 13%;">
+
+    <h1>list des Commentaire </h1>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Comment</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for commentaire in commentaires %}
+                <tr>
+                    <td>{{ commentaire.id }}</td>
+                    <td>{{ commentaire.comment }}</td>
+                    <td>
+                        <a href="{{ path('app_commentaire_show', {'id': commentaire.id}) }}" class="btn btn-info btn-sm">Show</a>
+                        <a href="{{ path('app_commentaire_edit', {'id': commentaire.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">No records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_commentaire_new') }}" class="btn btn-success">Create New</a>
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends 'extend.html.twig' %}
+
+{% block title %}Reservation index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-container a {
+            text-decoration: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .btn-info {
+            background-color: #5bc0de;
+            color: #fff;
+        }
+
+        .btn-info:hover {
+            background-color: #4cae4c;
+        }
+
+        .btn-success {
+            background-color: #5cb85c;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>List des restaurant</h1>
+
+   <table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Date</th>
+            <th>Nbr_personne</th>
+            <th>Restaurant</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reservation in reservations %}
+        <tr>
+            <td>{{ reservation.id }}</td>
+            <td>{{ reservation.nom }}</td>
+            <td>{{ reservation.email }}</td>
+            <td>{{ reservation.date ? reservation.date|date('Y-m-d') : '' }}</td>
+            <td>{{ reservation.nbrPersonne }}</td>
+            <td>{{ reservation.restaurant.nom }}</td>
+            <td class="btn-container">
+                <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}" class="btn btn-info btn-sm">Afficher</a>
+                <a href="{{ path('app_restaurant_front', {'id': reservation.id}) }}" class="btn btn-success btn-sm">Retourner</a>
+                {{ include('reservation/_delete_form.html.twig') }}
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="7">No records found</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    
+{% endblock %}

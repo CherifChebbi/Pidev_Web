@@ -1,0 +1,52 @@
+{% extends 'back/t_base_restaurant.html.twig' %}
+
+{% block title %}Plat Index{% endblock %}
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 10%;">
+<div class="container mt-4">
+    <h1>List Des Plats</h1>
+
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Image</th>
+                <th scope="col">Prix</th>
+                <th scope="col">Restaurant</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for plat in plats %}
+                <tr>
+                    <td>{{ plat.id }}</td>
+                    <td>{{ plat.nom }}</td>
+                    <td>
+                        {% if plat.image %}
+                            <img src="{{ asset('uploads/' ~ plat.image) }}" alt="{{ plat.nom }}" class="img-thumbnail" style="max-height: 50px;">
+                        {% else %}
+                            No Image
+                        {% endif %}
+                    </td>
+                    <td>{{ plat.prix }}</td>
+                    <td>{{ plat.restaurant.nom }}</td>
+
+                    <td>
+                        <a href="{{ path('app_plat_show', {'id': plat.id}) }}" class="btn">Afficher</a>
+                        <a href="{{ path('app_plat_edit', {'id': plat.id}) }}" class="btn">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">No records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_plat_new') }}" class="btn">Ajouter un plat</a>
+</div>
+{% endblock %}

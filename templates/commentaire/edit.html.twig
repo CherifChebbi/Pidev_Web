@@ -1,0 +1,15 @@
+{% extends 'back/t_base_restaurant.html.twig' %}
+
+{% block title %}Edit Commentaire{% endblock %}
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 13%;">
+    <h1>Edit Commentaire</h1>
+
+    {{ include('commentaire/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_commentaire_index') }}">back to list</a>
+
+    {{ include('commentaire/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'back/t_base_restaurant.html.twig' %}
+
+{% block title %}New Commentaire{% endblock %}
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 13%;">
+
+
+    <h1>Create new Commentaire</h1>
+
+    {{ include('commentaire/_form.html.twig') }}
+
+    <a href="{{ path('app_commentaire_index') }}">back to list</a>
+{% endblock %}

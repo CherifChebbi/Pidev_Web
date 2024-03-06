@@ -1,0 +1,44 @@
+{% extends 'back/t_base_restaurant.html.twig' %}
+
+
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 13%;">
+{% block title %}Post{% endblock %}
+<div class="container mt-4">
+    <h1>Post</h1>
+
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th scope="row">Id</th>
+                <td>{{ post.id }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Image</th>
+                <td>
+                    {% if post.image %}
+                         <img src="{{ asset('uploads/' ~ post.image) }}" alt="{{ post.rate }}" class="img-thumbnail" style="max-height: 100px;">
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Description</th>
+                <td>{{ post.description }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Rate</th>
+                <td>{{ post.rate }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_post_index') }}" class="btn btn-info">Back to List</a>
+    <a href="{{ path('app_post_edit', {'id': post.id}) }}" class="btn btn-warning">Edit</a>
+
+    {{ include('post/_delete_form.html.twig') }}
+</div>
+{% endblock %}

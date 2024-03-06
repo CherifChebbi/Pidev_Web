@@ -1,0 +1,26 @@
+{{ form_start(form, {'attr': {'class': 'my-custom-form-class'}}) }}
+
+    {{ form_row(form.content, {'attr': {'class': 'form-control', 'placeholder': 'Comment content'}}) }}
+
+    {{ form_row(form.active, {'attr': {'class': 'form-check-input'}}) }}
+    {{ form_label(form.active, 'Active', {'label_attr': {'class': 'form-check-label'}}) }}
+
+    {{ form_row(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Your email'}}) }}
+
+    {{ form_row(form.nickname, {'attr': {'class': 'form-control', 'placeholder': 'Your nickname'}}) }}
+
+    {{ form_row(form.created_at, {'attr': {'class': 'form-control', 'placeholder': 'Creation date'}}) }}
+
+    {{ form_row(form.accepter, {'attr': {'class': 'form-check-input'}}) }}
+    {{ form_label(form.accepter, 'Accept', {'label_attr': {'class': 'form-check-label'}}) }}
+
+    {{ form_row(form.retsaurant, {'attr': {'class': 'form-control'}}) }}
+
+    {{ form_row(form.parent, {'attr': {'class': 'form-control'}}) }}
+
+    {# Render replies collection (if applicable) #}
+    {{ form_row(form.replies, {'attr': {'class': 'my-replies-collection'}}) }}
+
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}

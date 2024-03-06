@@ -1,0 +1,12 @@
+{% extends 'back/t_base_restaurant.html.twig' %}
+
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 13%;">
+    <h1> Ajouter une publication</h1>
+
+    {{ include('post/_form.html.twig') }}
+
+    <a href="{{ path('app_post_index') }}">back to list</a>
+{% endblock %}

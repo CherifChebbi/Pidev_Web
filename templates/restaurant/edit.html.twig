@@ -1,0 +1,17 @@
+{% extends 'back/t_base_restaurant.html.twig' %}
+
+
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 8%;">
+<h1>Modifier le Restaurant</h1>
+
+    
+
+    {{ include('restaurant/_form.html.twig', {'button_label': 'Mise  a jour'}) }}
+
+    <a href="{{ path('app_restaurant_index') }}" class="btn">Retourner a la list</a>
+
+    {{ include('restaurant/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'back/t_base_hebergement.html.twig' %}
+
+{% block title %}Reservation{% endblock %}
+
+
+
+
+
+{% block body %}
+    <style>
+        /* Center the content vertically and horizontally */
+       
+
+        /* Reservation container styling */
+        .reservation-container {
+            background-color: #fff; /* Set background color */
+            border-radius: 10px; /* Add border radius for rounded corners */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
+            padding: 40px; /* Add padding */
+            max-width: 600px; /* Set maximum width */
+            width: 100%; /* Set width to fill the container */
+            margin: 20px;
+            margin-left: 100px /* Add margin */
+        }
+
+        /* Reservation table styling */
+        .reservation-table {
+            width: 100%; /* Set table width */
+            border-collapse: collapse; /* Collapse border spacing */
+        }
+
+        /* Reservation table header cell styling */
+        .reservation-table th {
+            text-align: left; /* Align text to the left */
+            padding: 10px 0; /* Add vertical padding */
+        }
+
+        /* Reservation table data cell styling */
+        .reservation-table td {
+            padding: 10px 0; /* Add vertical padding */
+        }
+
+        /* Back to list and edit links styling */
+        .reservation-links {
+            display: flex; /* Use flexbox layout */
+            justify-content: space-between; /* Space elements evenly */
+            margin-top: 20px; /* Add top margin */
+        }
+
+        /* Link styling */
+        .reservation-links a {
+            text-decoration: none; /* Remove underline */
+            color: #4a90e2; /* Set link color */
+            transition: color 0.3s; /* Add transition effect */
+        }
+
+        /* Hover effect on links */
+        .reservation-links a:hover {
+            color: #2668a1; /* Change link color on hover */
+        }
+    </style>
+    <div class="reservation-container">
+        <h1>Reservation Details</h1>
+        <table class="reservation-table">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ reservation.id }}</td>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ reservation.nom }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ reservation.email }}</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>{{ reservation.date ? reservation.date|date('Y-m-d') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Nbr_personne</th>
+                    <td>{{ reservation.nbrPersonne }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="reservation-links">
+            <a href="{{ path('app_reservation_index') }}">Back to List</a>
+        </div>
+
+        {{ include('reservation/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

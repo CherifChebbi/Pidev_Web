@@ -1,0 +1,60 @@
+{% extends 'back/t_base_hebergement.html.twig' %}
+
+{% block title %}Reservation index{% endblock %}
+
+
+
+
+{% block body %}
+<div style="padding-left:20%;">
+<div style="padding-top: 12%;">
+
+    <style>
+        /* Style adjustments for the calendar container */
+        #calendar-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh; /* Adjust the height as needed */
+        }
+
+        /* Style adjustments for the calendar */
+        #calendar {
+            width: 80%; /* Adjust the width as needed */
+            max-width: 600px; /* Maximum width for responsiveness */
+            background-color: #ffffff; /* Set background color */
+            border-radius: 10px; /* Add border radius for rounded corners */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+        }
+    </style>
+    <h1>Reservation index</h1>
+
+    <div id="calendar-container">
+        <div id="calendar"></div>
+    </div>
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+
+    <script>
+       document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOMContentLoaded event triggered');
+
+        var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: [
+                    {% for reservation in reservations %}
+                        {
+                            title: '{{ reservation.nom }}',
+                            start: '{{ reservation.date ? reservation.date|date('Y-m-d') : '' }}',
+                            url: '{{ path('app_reservation_show', {'id': reservation.id}) }}'
+                        },
+                    {% endfor %}
+                ]
+            });
+
+            calendar.render();
+        });
+    </script>
+{% endblock %}

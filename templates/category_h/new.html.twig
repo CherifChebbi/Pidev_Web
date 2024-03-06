@@ -1,0 +1,20 @@
+{% extends 'back/t_base_hebergement.html.twig' %}
+
+{% block title %}New Category{% endblock %}
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 13%;">
+
+<div class="container mt-4">
+    <h1>Create New Category</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ include('category/_form.html.twig') }}
+        </div>
+    </div>
+
+    <a href="{{ path('app_category_index') }}" class="btn btn-secondary mt-3">Back to List</a>
+</div>
+{% endblock %}

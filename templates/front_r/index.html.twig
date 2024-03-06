@@ -1,0 +1,178 @@
+{% extends 'extend.html.twig' %}
+
+{% block body %}
+
+ <style>
+    .card-description {
+    min-height: 3em; /* Adjust the minimum height based on your preference */
+    max-height: 6em; /* Adjust the maximum height based on your preference */
+    overflow: hidden;
+    margin-bottom: 10px; /* Add some margin at the bottom */
+    padding: 30px; /* Add padding to create space between elements */
+}
+
+   .read-more-btn {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 8px 12px; /* Adjust the padding values based on your preference */
+    margin-top: 10px; /* Add margin to create space between buttons and other elements */
+    display: inline-block;
+    text-decoration: none;
+    background-color: #007bff; /* Button background color */
+    color: #fff; /* Button text color */
+    border: 1px solid #007bff; /* Button border color */
+    border-radius: 5px; /* Button border radius */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition effect */
+}
+</style>
+   
+    <script>
+        $(document).ready(function () {
+            // Heart button click event
+            $('a[data-post-id]').on('click', function () {
+                var button = $(this);
+                var postId = button.data('post-id');
+
+                // Send AJAX request to like restaurant
+                $.ajax({
+                    type: 'POST', 'GET',
+                    url: '/restaurant/' + postId + '/like',
+                    success: function (response) {
+                        // Update like count on success
+                        $('.like-count[data-post-id="' + postId + '"]').text(response.likes);
+
+                        // Toggle appearance of the button
+                        button.toggleClass('liked');
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle AJAX error
+                        console.error(xhr.responseText); // Log the error message
+                    }
+                });
+
+                // Prevent default behavior
+                return false;
+            });
+        });
+    </script>
+ 
+       <div class="container mt-4">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Rechercher multiple</h5>
+            <form action="{{ path('app_restaurant_front') }}" method="get" class="row">
+
+                <div class="form-group col-md-4">
+                    <label for="location">Localisation</label>
+                    <input type="text" name="location" class="form-control" placeholder="Entrez la localisation" value="{{ app.request.query.get('location') }}">
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="minPrice">Min prix du plat</label>
+                    <input type="text" name="minPrice" class="form-control" placeholder="Entrez le prix minimum" value="{{ app.request.query.get('minPrice') }}">
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="maxPrice">Max Prix du plat</label>
+                    <input type="text" name="maxPrice" class="form-control" placeholder="Entrez le prix maximum" value="{{ app.request.query.get('maxPrice') }}">
+                </div>
+
+                <div class="form-group col-md-12">
+                    <button type="submit" class="btn btn-info btn-block">Appliquer les filtres</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+            <div class="col-md-9">
+                <h1 class="mb-4 text-white">List des Restaurants</h1>
+    <div style="padding-bottom: 2%;"   >    </div>
+                {# Add the search form #}
+              <form action="{{ path('app_restaurant_front') }}" method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ searchTerm }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-info">Rechercher</button>
+            </div>
+        </div>
+    </form>
+
+
+    <div style="padding-bottom: 2%;"   >    </div>
+
+     
+
+<div style="padding-bottom: 2%;"> </div>
+
+<div class="row" id="restaurantList">
+    {% for restaurant in restaurants %}
+        {% if loop.index % 3 == 1 %}
+            <div class="form-row">
+        {% endif %}
+        
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+                {% if restaurant.image %}
+                    <img src="{{ asset('uploads/' ~ restaurant.image) }}" alt="{{ restaurant.nom }}" class="card-img-top img-fluid">
+                {% else %}
+                    <div class="text-center py-3">
+                        No Image
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ restaurant.nom }}</h5>
+                    <p class="card-text card-description">{{ restaurant.description }}</p>
+
+                    <a href="{{ path('app_restaurant_front_show', {'id': restaurant.id}) }}" class="btn btn-info btn-sm btn-block read-more-btn">Read More</a>
+
+                    <!-- Like and dislike buttons -->
+                    <a href="#" data-post-id="{{ restaurant.id }}" class="btn btn-info btn-like" data-toggle="tooltip" title="Like">
+                        <i class="fas fa-thumbs-up"></i> Like
+                    </a>
+
+                    <!-- Display like count -->
+                    <span class="like-count ml-2">{{ restaurant.likes|default(0) }}</span>
+                </div>
+            </div>
+        </div>
+
+        {% if loop.index % 3 == 0 or loop.last %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+
+<div class="text-center mt-4">
+    {# Add pagination links if needed #}
+</div>
+
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Add the AJAX script -->
+    <script>
+        $(document).ready(function () {
+            $('.btn-like').on('click', function (e) {
+                e.preventDefault();
+                var button = $(this);
+                var postId = button.data('post-id');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/restaurant/' + postId + '/like',
+                    success: function (response) {
+                        $('.like-count[data-post-id="' + postId + '"]').text(response.likes);
+                        button.toggleClass('liked');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</script>
+{% endblock %}

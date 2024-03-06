@@ -1,0 +1,30 @@
+{% extends 'back/t_base_restaurant.html.twig' %}
+
+{% block title %}Commentaire{% endblock %}
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 13%;">
+    <div class="container mt-5">
+        <h1 class="display-4">Commentaire</h1>
+
+        <table class="table table-bordered table-striped mt-4">
+            <tbody>
+                <tr>
+                    <th scope="row">Id</th>
+                    <td>{{ commentaire.id }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Comment</th>
+                    <td>{{ commentaire.comment }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_commentaire_index') }}" class="btn btn-primary mt-3">Back to List</a>
+
+        <a href="{{ path('app_commentaire_edit', {'id': commentaire.id}) }}" class="btn btn-warning mt-3">Edit</a>
+
+        {{ include('commentaire/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

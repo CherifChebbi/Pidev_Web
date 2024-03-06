@@ -1,0 +1,13 @@
+{% extends 'back/t_base_restaurant.html.twig' %}
+
+{% block title %}New Plat{% endblock %}
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 13%;">
+    <h1>Ajouter un Plat</h1>
+
+    {{ include('plat/_form.html.twig') }}
+
+    <a href="{{ path('app_plat_index') }}" class="btn">Retourner a la list</a>
+{% endblock %}

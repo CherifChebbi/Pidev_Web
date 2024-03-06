@@ -1,0 +1,29 @@
+{% extends 'extend.html.twig' %}
+	
+{% block body %}
+
+    <div class="container mt-4">
+        <h1>Hébergement</h1>
+
+        <div class="row">
+            {% for h in hebergements %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ asset('uploads/' ~ h.categorie.image) }}" class="card-img-top" alt="{{ h.categorie.nom }}" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ h.nom }}</h5>
+                        <p class="card-text">{{ h.description }}</p>
+                        <a href="{{ path('app_reserver', {'id': h.id}) }}" class="btn btn-reservation">Reservation</a>
+                        
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p>No records found</p>
+            {% endfor %}
+        </div>
+    </div>
+
+	{% endblock %}
+
+	

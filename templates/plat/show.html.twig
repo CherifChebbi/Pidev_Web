@@ -1,0 +1,45 @@
+{% extends 'back/t_base_restaurant.html.twig' %}
+
+
+
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 8%;">
+<div class="container mt-4">
+{% block title %}Plat - {{ plat.nom }}{% endblock %}
+    
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th scope="row">Id</th>
+                <td>{{ plat.id }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Nom</th>
+                <td>{{ plat.nom }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Image</th>
+                <td>
+                    {% if plat.image %}
+                        <img src="{{ asset('uploads/' ~ plat.image) }}" alt="{{ plat.nom }}" class="img-thumbnail" style="max-height: 100px;">
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Prix</th>
+                <td>{{ plat.prix }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_plat_index') }}" class="btn">Retourner a la list</a>
+
+    <a href="{{ path('app_plat_edit', {'id': plat.id}) }}" class="btn">Modifier</a>
+
+    {{ include('plat/_delete_form.html.twig') }}
+</div>
+{% endblock %}
