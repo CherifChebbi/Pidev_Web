@@ -1,0 +1,32 @@
+{% extends 'back/t_base_events.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block title %}Edit Event{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center">Modifier un événement</h1>
+
+        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+        {{ form_row(form) }}
+
+        {# Pas besoin de rendre explicitement le champ image_event, form_row le fera automatiquement #}
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">{{ button_label|default('Update') }}</button>
+            <a href="{{ path('app_event_index') }}" class="btn btn-secondary">Back to List</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'back/t_base_events.html.twig' %}
+
+{% block title %}Edit Category{% endblock %}
+
+{% block css %}
+    {{ parent() }} 
+    <style>
+        /* Custom CSS styles */
+        .container {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .table th, .table td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .table th {
+            background-color: #f2f2f2;
+            text-align: left;
+            font-weight: bold;
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn {
+            margin-right: 10px;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+        /* Custom color for the title */
+        h1 {
+            color: #333; /* Dark grey */
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+        <h1>Détails de la catégorie</h1>
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Identifiant</th>
+                    <td>{{ category.id }}</td>
+                </tr>
+                <tr>
+                    <th>Nom de la catégorie</th>
+                    <td>{{ category.nom }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="btn-container">
+            <a href="{{ path('app_category_index') }}" class="btn btn-secondary">Retour à la liste</a>
+            <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-primary">Modifier</a>
+        </div>
+    </div>
+{% endblock %}

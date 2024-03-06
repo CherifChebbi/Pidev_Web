@@ -1,0 +1,324 @@
+{% extends 'extend.html.twig' %}
+
+{% block css %}
+	{{ parent() }}
+	<style>
+		/* Ajoutez vos styles personnalisés ici */
+		.sidebar {
+			background-color: #f8f9fa;
+			padding: 20px;
+			border-radius: 5px;
+			margin-bottom: 20px;
+		}
+		.filter-title {
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+		.filter-option {
+			margin-bottom: 20px; /* Augmentation de l'espacement entre les options de filtrage */
+		}
+		.event-box {
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			padding: 20px;
+			margin-bottom: 20px;
+			max-height: 400px; /* Hauteur maximale */
+			overflow-y: auto; /* Défilement vertical si nécessaire */
+			background-color: #fff; /* Fond blanc pour une meilleure lisibilité */
+			transition: box-shadow 0.3s; /* Effet de transition pour une meilleure expérience utilisateur */
+			display: flex; /* Utilisation de flexbox pour centrer le contenu */
+			flex-direction: column; /* Alignement vertical */
+			justify-content: space-between; /* Espacement vertical égal */
+		}
+		.event-box:hover {
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère au survol pour une interaction visuelle */
+		}
+		.event-image {
+			max-width: 100%;
+			height: 200px; /* Hauteur fixe pour l'image */
+			margin-bottom: 10px;
+			object-fit: cover; /* Ajustement de l'image à la taille de son conteneur */
+			border-radius: 5px; /* Coins arrondis pour une meilleure esthétique */
+		}
+		.event-title {
+			font-weight: bold;
+			margin-bottom: 5px; /* Espacement supplémentaire pour une meilleure lisibilité */
+			color: #333; /* Couleur du titre pour une meilleure visibilité */
+		}
+		.event-date {
+			margin-bottom: 10px;
+			color: #666; /* Couleur de la date pour une meilleure visibilité */
+		}
+		.event-description {
+			margin-bottom: 10px; /* Espacement supplémentaire pour une meilleure lisibilité */
+			color: #666; /* Couleur de la description pour une meilleure visibilité */
+			overflow: hidden; /* Masquer le texte supplémentaire */
+			height: 60px; /* Hauteur initiale */
+		}
+		.event-price-container {
+			display: flex;
+			justify-content: space-between;
+		}
+		.price-label {
+			font-weight: bold;
+		}
+		.lieu-filter-checkboxes label {
+			display: block;
+			margin-bottom: 5px;
+		}
+		.price-control-button {
+			background-color: #f8f9fa;
+			border: none;
+			cursor: pointer;
+			padding: 5px 10px;
+			border-radius: 3px;
+		}
+		.search-container {
+			margin-bottom: 20px;
+		}
+		.search-input {
+			width: 100%;
+			padding: 10px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			box-sizing: border-box;
+		}
+		.event-text {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 20px;
+		}
+		.dropdown-menu {
+			right: 0;
+			left: auto;
+		}
+		.dropdown-toggle::after {
+			display: inline-block;
+			margin-left: 0.255em;
+			vertical-align: 0.255em;
+			content: "";
+			border-top: 0.3em solid;
+			border-right: 0.3em solid transparent;
+			border-bottom: 0;
+			border-left: 0.3em solid transparent;
+		}
+	</style>
+{% endblock %}
+
+{% block js %}
+	{{ parent() }}
+	<script>
+		$(function () { // Gestion du clic sur "Lire plus"
+$(".read-more").on("click", function () {
+$(this).prev(".event-description").css("height", "auto"); // Ajuster la hauteur pour afficher tout le contenu
+$(this).hide(); // Cacher le lien "Lire plus"
+});
+
+// Gestion du clic sur le lien de réservation
+$(".reserve-link").on("click", function () {
+window.location.href = $(this).data("href"); // Rediriger vers le formulaire de réservation
+});
+
+// Recherche d'événements
+$("#search-button").on("click", function () {
+var searchText = $("#search-input").val().toLowerCase();
+$(".event-box").each(function () {
+var eventTitle = $(this).find('.event-title').text().toLowerCase();
+if (eventTitle.includes(searchText)) {
+$(this).show();
+} else {
+$(this).hide();
+}
+});
+});
+
+// Filtrage par lieu
+$("#lieu-filter").on("change", function () {
+var selectedLieu = $(this).val();
+$(".event-box").each(function () {
+var eventLieu = $(this).data('lieu');
+if (selectedLieu === "" || eventLieu === selectedLieu) {
+$(this).show();
+} else {
+$(this).hide();
+}
+});
+});
+
+// Filtrage par prix croissant
+$("#prix-croissant-filter").on("change", function () {
+if ($(this).prop("checked")) {
+$(".event-box").sort(function (a, b) {
+var priceA = parseFloat($(a).find('.event-price').text());
+var priceB = parseFloat($(b).find('.event-price').text());
+return priceA - priceB;
+}).appendTo('.col-md-9 .row');
+}
+});
+
+// Filtrage par prix décroissant
+$("#prix-decroissant-filter").on("change", function () {
+if ($(this).prop("checked")) {
+$(".event-box").sort(function (a, b) {
+var priceA = parseFloat($(a).find('.event-price').text());
+var priceB = parseFloat($(b).find('.event-price').text());
+return priceB - priceA;
+}).appendTo('.col-md-9 .row');
+}
+});
+
+// Filtrage par titre A-Z
+$("#titre-a-z-filter").on("change", function () {
+if ($(this).prop("checked")) {
+$(".event-box").sort(function (a, b) {
+var titleA = $(a).find('.event-title').text();
+var titleB = $(b).find('.event-title').text();
+return titleA.localeCompare(titleB);
+}).appendTo('.col-md-9 .row');
+}
+});
+
+// Filtrage par titre Z-A
+$("#titre-z-a-filter").on("change", function () {
+if ($(this).prop("checked")) {
+$(".event-box").sort(function (a, b) {
+var titleA = $(a).find('.event-title').text();
+var titleB = $(b).find('.event-title').text();
+return titleB.localeCompare(titleA);
+}).appendTo('.col-md-9 .row');
+}
+});
+
+// Filtrage par date
+$("#date-filter").on("change", function () {
+var selectedDate = $(this).val();
+$(".event-box").each(function () {
+var eventDate = $(this).data('date');
+if (selectedDate === "" || eventDate === selectedDate) {
+$(this).show();
+} else {
+$(this).hide();
+}
+});
+});
+
+// Filtrage par catégorie
+$("#categorie-filter").on("change", function () {
+var selectedCategorie = $(this).val();
+$(".event-box").each(function () {
+var eventCategorie = $(this).data('category');
+if (selectedCategorie === "" || eventCategorie === selectedCategorie) {
+$(this).show();
+} else {
+$(this).hide();
+}
+});
+});
+});
+	</script>
+{% endblock %}
+
+{% block navbar %}
+	{{ parent() }}
+{% endblock %}
+
+{% block footer %}
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item">
+					<a href="{{ path('app_event_index_front') }}">Accueil/Events</a>
+				</li>
+			</ol>
+		</nav>
+		<div class="event-text">
+			<h1>Events</h1>
+			<a href="{{ path('app_event_calendar') }}">Consulter le calendrier pour voir les programmes</a>
+		</div>
+		<p>
+			Vous souhaitez assister à un événement de votre artiste préféré avec vos amis, offrir un billet à l'un de vos proches? Avec Terranova, trouvez facilement en quelques clics un billet pour l'événement de votre choix !
+		</p>
+		<div class="search-container">
+			<input type="text" id="search-input" class="search-input" placeholder="Rechercher un événement...">
+			<button id="search-button" class="btn btn-primary">Rechercher</button>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<div class="sidebar">
+					<h2 class="filter-title">Filtrer les événements</h2>
+					<!-- Filtrage par catégorie -->
+					<div class="filter-option">
+						<label for="categorie-filter">Catégorie :</label>
+						<select id="categorie-filter">
+							<option value="">Toutes les catégories</option>
+							{% for category in categories|default([]) %}
+								<option value="{{ category.id }}">{{ category.nom }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<!-- Filtrage par lieu -->
+					<div class="filter-option">
+						<label for="lieu-filter">Lieu :</label>
+						<select id="lieu-filter">
+							<option value="">Tous les lieux</option>
+							{% for lieu in lieux|default([]) %}
+								<option value="{{ lieu }}">{{ lieu }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<!-- Filtrage par prix -->
+					<div class="filter-option">
+						<label for="prix-filter">Prix :</label>
+						<div>
+							<input type="checkbox" id="prix-croissant-filter">
+							<label for="prix-croissant-filter">Prix croissant</label>
+						</div>
+						<div>
+							<input type="checkbox" id="prix-decroissant-filter">
+							<label for="prix-decroissant-filter">Prix décroissant</label>
+						</div>
+					</div>
+					<!-- Filtrage par date -->
+					<div class="filter-option">
+						<label for="date-filter">Date :</label>
+						<input type="date" id="date-filter" class="form-control">
+					</div>
+					<!-- Filtrage par titre -->
+					<div class="filter-option">
+						<label for="titre-filter">Titre :</label>
+						<div>
+							<input type="checkbox" id="titre-a-z-filter">
+							<label for="titre-a-z-filter">A-Z</label>
+						</div>
+						<div>
+							<input type="checkbox" id="titre-z-a-filter">
+							<label for="titre-z-a-filter">Z-A</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-9">
+				<div class="row">
+					{% for event in events|default([]) %}
+						<div class="col-md-4 event-box mb-4" data-category="{{ event.Idcategory }}" data-date="{{ event.dateDebut | date('Y-m-d') }}" data-lieu="{{ event.lieu }}">
+							<img src="{{ asset('uploads/' ~ event.imageEvent) }}" alt="{{ event.titre }}" class="event-image">
+							<div class="event-title">{{ event.titre }}</div>
+							<div class="event-date">{{ event.dateDebut | date('Y-m-d') }}</div>
+							<div class="event-description">{{ event.description }}</div>
+							<div class="event-price-container">
+								<span class="price-label">Prix :</span>
+								<span class="event-price">{{ event.prix }}</span>
+							</div>
+							<a href="{{ path('app_reserver_front_edit' , {'id':event.id}) }}" class="btn btn-primary reserve-link" data-href="{{ path('app_reservation_event_new_front') }}">Réserver</a>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

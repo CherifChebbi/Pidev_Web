@@ -1,0 +1,105 @@
+{% extends 'back/t_base_events.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        /* Custom CSS styles */
+        .container {
+            margin-top: 50px; /* Top margin */
+        }
+        h1 {
+            color: white; /* White title color */
+            text-align: center; /* Center align title */
+            margin-bottom: 30px; /* Bottom margin */
+        }
+        .table th, .table td {
+            color: black; /* Black text color for table cells */
+            vertical-align: middle; /* Center align content vertically */
+        }
+        .table th {
+            width: 30%; /* Set width for table headers */
+        }
+        .table td {
+            width: 70%; /* Set width for table data cells */
+        }
+        img.event-image {
+            max-width: 100px; /* Set maximum width for event images */
+            max-height: 100px; /* Set maximum height for event images */
+        }
+        .btn-container {
+            margin-top: 20px; /* Top margin for button container */
+            text-align: center; /* Center align buttons */
+        }
+    </style>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block title %}
+    Event Details
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Détails de l'événement</h1>
+
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <th>Identifiant</th>
+                    <td>{{ event.id }}</td>
+                </tr>
+                <tr>
+                    <th>Titre</th>
+                    <td>{{ event.titre }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ event.description }}</td>
+                </tr>
+                <tr>
+                    <th>Catégorie</th>
+                    <td>{{ event.Idcategory.nom }}</td>
+                    <!-- Utilisation du nom de la catégorie -->
+                </tr>
+                <tr>
+                    <th>Date Début</th>
+                    <td>{{ event.dateDebut ? event.dateDebut|date('Y-m-d') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Date Fin</th>
+                    <td>{{ event.dateFin ? event.dateFin|date('Y-m-d') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Lieu</th>
+                    <td>{{ event.lieu }}</td>
+                </tr>
+                <tr>
+                    <th>Prix</th>
+                    <td>{{ event.prix }}</td>
+                </tr>
+                <tr>
+                    <th>Image</th>
+                    <td>
+                        {% if event.imageEvent %}
+                            <img src="{{ asset('uploads/' ~ event.imageEvent) }}" alt="Event Image" class="event-image">
+                        {% else %}
+                            No Image
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="btn-container">
+            <a href="{{ path('app_event_index') }}" class="btn btn-secondary mr-3">Retour à la liste</a>
+            <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-warning">Modifier</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'back/t_base_events.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        /* Styles CSS personnalisés */
+        .container {
+            margin-top: 50px; /* Marge en haut */
+        }
+        h1 {
+            color: #fff; /* Couleur du titre en blanc */
+            text-align: center; /* Centrage horizontal du titre */
+            margin-bottom: 30px; /* Marge en bas */
+        }
+        .btn {
+            margin-top: 20px; /* Marge en haut pour les boutons */
+        }
+        .btn-secondary {
+            background-color: #6c757d; /* Couleur de fond du bouton Back to list */
+            color: #fff; /* Couleur du texte du bouton Back to list */
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268; /* Couleur de fond au survol du bouton Back to list */
+        }
+    </style>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block title %}Create new Event{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Créer un nouvel événement</h1>
+
+        {{ include('event/_form.html.twig') }}
+
+        <a href="{{ path('app_event_index') }}" class="btn btn-secondary">Back to list</a>
+    </div>
+{% endblock %}

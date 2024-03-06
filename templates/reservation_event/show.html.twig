@@ -1,0 +1,99 @@
+{% extends 'back/t_base_events.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        /* Custom CSS styles */
+        .container {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333; /* Dark grey */
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .table th {
+            width: 30%;
+            background-color: #f2f2f2;
+            color: #555; /* Dark grey */
+        }
+        .table td {
+            width: 70%;
+        }
+        .btn-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block title %}
+    Reservation Details
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Détails de la réservation</h1>
+
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <th scope="row">Identifiant</th>
+                    <td>{{ reservation_event.id }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Nom</th>
+                    <td>{{ reservation_event.nom }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Email</th>
+                    <td>{{ reservation_event.email }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Numéro de téléphone</th>
+                    <td>{{ reservation_event.numTel }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Date de réservation</th>
+                    <td>{{ reservation_event.dateReservation ? reservation_event.dateReservation|date('Y-m-d') : '' }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="btn-container">
+            <a href="{{ path('app_reservation_event_index') }}" class="btn btn-secondary">Back to list</a>
+            <a href="{{ path('app_reservation_event_edit', {'id': reservation_event.id}) }}" class="btn btn-primary">Edit</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'back/t_base_events.html.twig' %}
+
+{% block css %}
+    {{ parent() }}
+    <style>
+        /* Styles pour le titre */
+        .page-title {
+            font-size: 36px; /* Taille du titre agrandie */
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Styles pour le formulaire */
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styles pour les boutons */
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; /* Permet à la flexbox de passer à la ligne si nécessaire */
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            margin-right: 10px; /* Espacement entre les boutons */
+            margin-bottom: 10px; /* Espacement sous le bouton */
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            margin-bottom: 10px; /* Espacement sous le bouton */
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            margin: 0 auto; /* Centrage horizontal */
+            display: block; /* Permet de prendre toute la largeur */
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block title %}Edit Category{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="page-title">Modifier la Catégorie</h1>
+
+        <div class="form-container">
+            {{ include('category/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+            <div class="btn-container">
+                <div class="btn-group">
+                    <a href="{{ path('app_category_index') }}" class="btn btn-secondary">Retour à la Liste</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

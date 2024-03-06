@@ -1,0 +1,26 @@
+{% extends 'back/t_base_events.html.twig' %}
+
+{% block title %}Edit Event Reservation{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Modifier une réservation</h5>
+                    </div>
+
+                    <div class="card-body">
+                        {# Inclure le formulaire d'édition de la réservation d'événement #}
+                        {{ include('reservation_event/_form.html.twig', {'button_label': 'Update'}) }}
+                    </div>
+
+                    <div class="card-footer bg-light">
+                        <a href="{{ path('app_reservation_event_index') }}" class="btn btn-secondary">Back to list</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

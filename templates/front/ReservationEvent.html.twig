@@ -1,0 +1,109 @@
+{% extends 'extend.html.twig' %}
+
+{% block css %}
+	{{ parent() }}
+	<style>
+		.reservation-container {
+			margin-top: 50px;
+			margin-left: auto; /* Décaler le contenu vers la droite */
+			padding: 20px;
+			border: 2px solid #28a745;
+			border-radius: 10px;
+			background-color: #f8f9fa;
+		}
+
+		.reservation-success {
+			display: none;
+			margin-top: 20px;
+			padding: 15px;
+			border: 2px solid #28a745;
+			border-radius: 10px;
+			background-color: #d4edda;
+			color: #155724;
+		}
+	</style>
+{% endblock %}
+
+
+{% block js %}
+	{{ parent() }}
+	<script>
+		const reservationForm = document.querySelector('.reservation-form form');
+
+reservationForm.addEventListener('submit', function (event) {
+event.preventDefault();
+
+fetch('{{ path('app_reservation_event_new_front') }}', {
+method: 'POST',
+body: new FormData(reservationForm)
+}).then(response => {
+if (response.ok) {
+const successMessage = document.querySelector('.reservation-success');
+successMessage.style.display = 'block';
+
+// Si la soumission réussit, masquez le formulaire
+reservationForm.style.display = 'none';
+} else {
+console.error('Submission failed:', response.statusText);
+}
+}).catch(error => console.error('Error:', error));
+});
+	</script>
+{% endblock %}
+
+
+{% block navbar %}
+	{{ parent() }}
+{% endblock %}
+
+{% block footer %}
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="reservation-container">
+					<h1 class="text-center mb-4">Réserver un événement</h1>
+					<div class="reservation-success alert alert-success" role="alert" style="display: none;">
+						Réservation effectuée avec succès! Vous recevrez une confirmation par e-mail et par SMS.
+					</div>
+					<div class="reservation-form">
+						{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+						{{ form_errors(form) }}
+
+						<div class="mb-3">
+							{{ form_row(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Nom'}}) }}
+							{{ form_errors(form.nom) }}
+						</div>
+
+						<div class="mb-3">
+							{{ form_row(form.email, {'attr': {'class': 'form-control', 'placeholder': 'E-mail'}}) }}
+							{{ form_errors(form.email) }}
+						</div>
+
+						<div class="mb-3">
+							{{ form_row(form.num_tel, {'attr': {'class': 'form-control', 'placeholder': 'Numéro de téléphone'}}) }}
+							{{ form_errors(form.num_tel) }}
+						</div>
+
+						<div class="mb-3 ">
+							{{ form_row(form.date_reservation, {'attr': {'class': '', 'placeholder': 'Date de réservation' }}) }}
+							{{ form_errors(form.date_reservation) }}
+						</div>
+
+
+						<div class="mb-3" style="display: none;">
+							{{ form_row(form.id_event, {'attr': {'class': 'form-control', 'placeholder': 'ID de l\'événement'}}) }}
+                        {{ form_errors(form.id_event) }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mx-auto mt-3">Confirmer</button> <!-- Ajout de la classe mx-auto pour centrer horizontalement et mt-3 pour l'espace en haut -->
+                    {{ form_end(form) }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}

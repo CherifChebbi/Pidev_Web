@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* Custom CSS for the button */
+      .btn-container {
+        text-align: left;
+        margin-bottom: 20px;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #1f2d3d; /* Bleu foncé */
+        color: #fff; /* White text color */
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn:hover {
+        background-color: #394b5e; /* Teinte légèrement plus foncée sur hover */
+      }
+    </style>
+    
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        let calendarElt = document.getElementById('calendar')
+        let calendar = new FullCalendar.Calendar(calendarElt, {
+          initialView: 'dayGridMonth',
+          locale: 'FR',
+          headerToolbar: {
+            start:'prev,next today',
+            center: 'title',
+            end: 'dayGridMonth,timeGridWeek'
+          },
+          events: {{data|raw}},
+          editable: true,
+          eventResizableFromStart: true
+        })
+        calendar.render()
+      })
+    </script>
+  </head>
+  <body>
+    <div class="btn-container">
+      <button class="btn" onclick="window.location.href = '{{ path('app_event_index_front')}}'">Retour</button> <!-- Utiliser un bouton avec un onclick pour la redirection -->
+    </div>
+    
+    <div id='calendar'></div>
+    {{dump(data)}}
+  </body>
+</html>

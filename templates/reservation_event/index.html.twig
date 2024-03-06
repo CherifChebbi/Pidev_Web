@@ -1,0 +1,177 @@
+{% extends 'back/t_base_events.html.twig' %}
+
+{% block css %}
+	{{ parent() }}
+	<style>
+		/* Custom CSS styles */
+		.container {
+			margin-top: 50px;
+			margin-bottom: 50px;
+		}
+		h1 {
+			color: #333;
+			text-align: center;
+			margin-bottom: 30px;
+		}
+		th {
+			color: #333;
+			background-color: #f7f7f7;
+			font-weight: bold;
+			font-size: 14px;
+			text-align: center;
+		}
+		td {
+			color: #666;
+			max-width: 200px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			font-size: 12px;
+			text-align: center;
+		}
+		.btn {
+			border-radius: 20px;
+			padding: 8px 20px;
+			transition: background-color 0.3s ease;
+			font-size: 12px;
+		}
+		.btn:hover {
+			opacity: 0.8;
+		}
+		.btn-primary {
+			background-color: #007bff;
+			border-color: #007bff;
+			color: #fff;
+		}
+		.btn-primary:hover {
+			background-color: #0056b3;
+		}
+		.btn-success {
+			background-color: #28a745;
+			border-color: #28a745;
+			color: #fff;
+		}
+		.btn-success:hover {
+			background-color: #218838;
+		}
+		.btn-danger {
+			background-color: #dc3545;
+			border-color: #dc3545;
+			color: #fff;
+		}
+		.btn-danger:hover {
+			background-color: #c82333;
+		}
+		.btn-warning {
+			background-color: #ffc107;
+			border-color: #ffc107;
+			color: #333;
+		}
+		.btn-warning:hover {
+			background-color: #e0a800;
+		}
+	</style>
+{% endblock %}
+
+{% block js %}
+	{{ parent() }}
+	<script>
+		function filterEvents() {
+var input,
+filter,
+table,
+tr,
+td,
+i,
+txtValue;
+input = document.getElementById("searchInput");
+filter = input.value.toUpperCase();
+table = document.getElementById("reservationTable");
+tr = table.getElementsByTagName("tr");
+for (i = 0; i < tr.length; i++) {
+td = tr[i].getElementsByTagName("td")[1];
+if (td) {
+txtValue = td.textContent || td.innerText;
+if (txtValue.toUpperCase().indexOf(filter) > -1) {
+tr[i].style.display = "";
+} else {
+tr[i].style.display = "none";
+}
+}
+}
+}
+
+function searchEvents() {
+filterEvents();
+}
+	</script>
+{% endblock %}
+
+{% block navbar %}
+	{{ parent() }}
+{% endblock %}
+
+{% block title %}
+	Liste des réservations
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1>Liste des réservations</h1>
+
+		<!-- Barre de recherche -->
+		<div class="input-group mb-3">
+			<input type="text" id="searchInput" class="form-control" placeholder="Rechercher par nom" aria-label="Rechercher par nom" aria-describedby="button-addon2">
+			<div class="input-group-append">
+				<button class="btn btn-primary" type="button" id="button-addon2" onclick="searchEvents()">Rechercher</button>
+			</div>
+		</div>
+
+		<!-- Tableau des réservations -->
+		<div class="table-responsive">
+			<table class="table table-striped" id="reservationTable">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Nom de l'événement</th>
+						<th>Email</th>
+						<th>Numéro de téléphone</th>
+						<th>Date de réservation</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for reservation_event in reservation_events %}
+						<tr>
+							<td>{{ reservation_event.id }}</td>
+							<td>{{ reservation_event.idEvent.titre }}</td>
+							<td>{{ reservation_event.email }}</td>
+							<td>{{ reservation_event.numTel }}</td>
+							<td>{{ reservation_event.dateReservation ? reservation_event.dateReservation|date('Y-m-d') : 'N/A' }}</td>
+							<td>
+
+								<a href="{{ path('app_reservation_event_show', {'id': reservation_event.id}) }}" class="btn btn-primary">Show</a>
+								<a href="{{ path('app_reservation_event_edit', {'id': reservation_event.id}) }}" class="btn btn-warning">Edit</a>
+								<form action="{{ path('app_reservation_event_delete', {'id': reservation_event.id}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this reservation?')">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation_event.id) }}">
+									<button type="submit" class="btn btn-danger">Delete</button>
+								</form>
+							</td>
+							<td>
+								<a href="{{ path('pdf_generate', {'id': reservation_event.id}) }}" class="btn btn-secondary">Télécharger PDF</a>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6">Aucun enregistrement trouvé</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<a href="{{ path('app_reservation_event_new') }}" class="btn btn-success">Créer une nouvelle réservation</a>
+		<a href="{{ path('stats_reservations') }}" class="btn btn-info mt-3">Voir les statistiques</a>
+
+	</div>
+{% endblock %}
