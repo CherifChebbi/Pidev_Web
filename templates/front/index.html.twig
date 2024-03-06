@@ -1,0 +1,333 @@
+<!doctype html>
+<html class="no-js" lang="en">
+	{% block css %}
+		<head>
+			<!-- meta data -->
+			<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+			<!--font-family-->
+			<link
+			href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"> <!-- title of site -->
+			{% block title %}
+				<title>Terranova</title>
+			{% endblock %}
+
+			<!-- For favicon png -->
+			<link
+			rel="shortcut icon" type="image/icon" href="{{asset('assets/front/logo/favicon.png')}}"/>
+
+			<!--font-awesome.min.css-->
+			<link
+			rel="stylesheet" href="{{asset('assets/front/css/font-awesome.min.css')}}">
+
+			<!--linear icon css-->
+			<link
+			rel="stylesheet" href="{{asset('assets/front/css/linearicons.css')}}">
+
+			<!--animate.css-->
+			<link
+			rel="stylesheet" href="{{asset('assets/front/css/animate.css')}}">
+
+			<!--flaticon.css-->
+			<link
+			rel="stylesheet" href="{{asset('assets/front/css/flaticon.css')}}">
+
+			<!--slick.css-->
+			<link rel="stylesheet" href="{{asset('assets/front/css/slick.css')}}">
+			<link
+			rel="stylesheet" href="{{asset('assets/front/css/slick-theme.css')}}">
+
+			<!--bootstrap.min.css-->
+			<link
+			rel="stylesheet" href="{{asset('assets/front/css/bootstrap.min.css')}}">
+
+			<!-- bootsnav -->
+			<link
+			rel="stylesheet" href="{{asset('assets/front/css/bootsnav.css')}}">
+
+			<!--style.css-->
+			<link
+			rel="stylesheet" href="{{asset('assets/front/css/style.css')}}">
+
+			<!--responsive.css-->
+			<link rel="stylesheet" href="{{asset('assets/front/css/responsive.css')}}">
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+			<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+
+			<!--[if lt IE 9]>
+																		<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+																		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+															        <![endif]-->
+
+		</head>
+	{% endblock %}
+
+	<!--[if lte IE 9]>
+							            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+							        <![endif]-->
+	{% block navbar %}
+
+		<!--header-top start -->
+		<header id="header-top" class="header-top">
+			<ul>
+				<li>
+					<div class="header-top-left">
+						<ul>
+							<li class="select-opt">
+								
+							</li>
+							<li class="select-opt">
+								<a href="#">
+									<span class="lnr lnr-magnifier"></span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li class="head-responsive-right pull-right">
+					<div class="header-top-right">
+						<ul>
+							
+							<li class="header-top-contact">
+								<a href="#">sign in</a>
+							</li>
+							<li class="header-top-contact">
+								<a href="#">register</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+
+		</header>
+		<!--/.header-top-->
+		<!--header-top end -->
+
+		<!-- top-area Start -->
+			<section class="top-area"> <div
+				class="header-area">
+				<!-- Start Navigation -->
+				<nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy" data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+
+					<div
+						class="container">
+
+						<!-- Start Header Navigation -->
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+								<i class="fa fa-bars"></i>
+							</button>
+							<a class="navbar-brand" href="index.html">TERRA<span>NOVA</span>
+							</a>
+
+						</div>
+						<!--/.navbar-header-->
+						<!-- End Header Navigation -->
+
+						<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse menu-ui-design" id="navbar-menu"> <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+								<li class=" scroll active">
+									<a href="#home">home</a>
+								</li>
+								<li class="scroll">
+									<a href="#works">Pays</a>
+								</li>
+								<li class="scroll">
+									<a href="#explore">Hébergement</a>
+								</li>
+								<li class="scroll">
+									<a href="#reviews">Restaurants</a>
+								</li>
+								<li class="scroll">
+									<a href="#blog">Events</a>
+								</li>
+								<li class="scroll">
+									<a href="#contact">Contact</a>
+								</li>
+							</ul>
+							<!--/.nav -->
+						</div>
+						<!-- /.navbar-collapse -->
+					</div>
+					<!--/.container-->
+				</nav>
+				<!--/nav-->
+				<!-- End Navigation -->
+			</div>
+			<!--/.header-area-->
+			<div class="clearfix"></div>
+
+		</section>
+		<!-- /.top-area-->
+		<!-- top-area End -->
+	{% endblock %}
+	{% block body %}
+
+		<!--welcome-hero start -->
+		<section id="home" class="welcome-hero">
+			<div class="container">
+				<div class="welcome-hero-txt">
+					
+				</div>
+				
+			</div>
+		</section>
+		<!--/.welcome-hero-->
+		<!--welcome-hero end -->
+
+		<!--list-topics start -->
+			
+			<!--/.container-->
+
+		</section>
+		<!--/.list-topics-->
+		<!--list-topics end-->
+
+		<!--works start -->
+			
+				<!--/.section-header-->
+				
+			<!--/.container-->
+
+		</section>
+		<!--/.works-->
+		<!--works end -->
+
+		<!--explore start -->
+			
+		
+			<!DOCTYPE html>
+<html>
+<head>
+    <title>Category Index</title>
+    <style>
+	
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card img {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .btn-reservation {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .btn-reservation:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Category Index</h1>
+
+        <div class="row">
+            {% for category in categories %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ asset('uploads/' ~ category.image) }}" class="card-img-top" alt="{{ category.nom }}" style="max-height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ category.nom }}</h5>
+                        <p class="card-text">{{ category.description }}</p>
+                        <a href="{{ path('app_reservation_new', {'id': category.id}) }}" class="btn btn-reservation">Reservation</a>
+                        
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p>No records found</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+
+
+    
+</div>
+
+		<!--/subscription-->
+		<!--subscription end -->
+	{% endblock %}
+
+	{% block footer %}
+
+		<!--footer start-->
+		
+				<!--/.hm-footer-copyright-->
+			</div>
+			<!--/.container-->
+
+			<div id="scroll-Top">
+				<div class="return-to-top">
+					<i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+				</div>
+
+			</div>
+			<!--/.scroll-Top-->
+
+		</footer>
+		<!--/.footer-->
+		<!--footer end-->
+	{% endblock %}
+
+	{% block js %}
+		<!-- Include all js compiled plugins (below), or include individual files as needed -->
+
+		<script src="{{asset('assets/front/js/jquery.js')}}"></script>
+
+		<!--modernizr.min.js-->
+		<script src="{{asset('https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js')}}"></script>
+
+		<!--bootstrap.min.js-->
+		<script src="{{asset('assets/front/js/bootstrap.min.js')}}"></script>
+
+		<!-- bootsnav js -->
+		<script src="{{asset('assets/front/js/bootsnav.js')}}"></script>
+
+		<!--feather.min.js-->
+		<script src="{{asset('assets/front/js/feather.min.js')}}"></script>
+
+		<!-- counter js -->
+		<script src="{{asset('assets/front/js/jquery.counterup.min.js')}}"></script>
+		<script src="{{asset('assets/front/js/waypoints.min.js')}}"></script>
+
+		<!--slick.min.js-->
+		<script src="{{asset('assets/front/js/slick.min.js')}}"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js')}}"></script>
+
+		<!--Custom JS-->
+		<script src="{{asset('assets/front/js/custom.js')}}"></script>
+	{% endblock %}
+</html></body></html>

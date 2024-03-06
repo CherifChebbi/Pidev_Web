@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hebergement index{% endblock %}
+{% block search %}
+  <form method="POST" action="{{path('app_search')}}">
+            <div class="input-group">
+             
+              <input type="text" name="query" class="form-control" placeholder="Type here...">
+               <button type="submit"><span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span></button>
+            </div>
+            </form>
+            {% endblock %}
+{% block body %}
+<div style="padding-left: 25%;">
+<div style="padding-top: 13%;">
+<div class="container mt-4">
+
+    <h1>Hebergement index</h1>
+
+    <div id="stats-container">
+    <div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">Nombre d'Hebergements</div>
+      <div class="card-body">
+        <canvas id="bar-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">Hebergement vs Reservation</div>
+      <div class="card-body">
+        <canvas id="pie-chart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+  // Bar chart
+  var ctx1 = document.getElementById('bar-chart').getContext('2d');
+  var chart1 = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: [{% for h in hebergementsS %}'{{ h.nom }}'{% endfor %}],
+      datasets: [{
+        label: 'N° Reservation/Hotel',
+        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+        borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+        borderWidth: 1,
+        data: [{% for h in hebergementsS %}{{h.reservations|length}} {% endfor %}]
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            fontColor: '#ccc'
+          },
+          gridLines: {
+            color: '#ccc'
+          }
+        }],
+        xAxes: [{
+          ticks: {
+            fontColor: '#ccc'
+          },
+          gridLines: {
+            color: '#ccc'
+          }
+        }]
+      },
+      legend: {
+        labels: {
+          fontColor: '#ccc'
+        }
+      }
+    }
+  });
+
+  // Pie chart
+  var ctx2 = document.getElementById('pie-chart').getContext('2d');
+  var chart2 = new Chart(ctx2, {
+    type: 'pie',
+    data: {
+      labels: ['Hebergements', 'Reservations'],
+      datasets: [{
+        label: 'Number',
+         backgroundColor: ['#d9534f', '#f0ad4e'],
+        borderColor: '#fff',
+         data: [{{ hebergementsS|length }}, {{ res|length }}]
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Hebergement vs Reservations',
+        fontColor: '#ccc'
+      },
+      legend: {
+        labels: {
+          fontColor: '#ccc'
+        }
+        
+      }
+      
+    },width: 150,
+    height: 100
+  });
+  
+  </script>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for h in hebergements %}
+            <tr>
+                <td>{{ h.id }}</td>
+                <td>{{ h.nom }}</td>
+                <td>{{ h.description }}</td>
+                 <td>{{ h.categorie.nom }}</td>
+                <td>
+                    <a href="{{ path('app_hebergement_show', {'id': h.id}) }}" class="btn btn-info btn-sm">Show</a>
+                    <a href="{{ path('app_hebergement_edit', {'id': h.id}) }}" class="btn btn-primary btn-sm">Edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_hebergement_new') }}" class="btn btn-success">Create New</a>
+</div>
+{% endblock %}
