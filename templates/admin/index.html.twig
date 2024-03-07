@@ -129,7 +129,8 @@
     <div class="d-flex justify-content-center">
         <button class="btn  print-button" onclick="window.location.href='{{ path('app_userPDF') }}'"></button>
     </div>
-    <div class="navigation.flex.justify-content.mb-8">
-        {{ knp_pagination_render(users) }}
-        </div>
+    <div class="navigation flex justify-content mb-8">
+    {{ knp_pagination_render(users) }}
+</div>
+
 {% endblock %}

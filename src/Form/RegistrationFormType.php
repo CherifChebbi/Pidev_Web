@@ -93,7 +93,7 @@ class RegistrationFormType extends AbstractType
                 ],
                 'label' => 'Mot de passe : '
             ])
-           // ->add('captcha', ReCaptchaType::class)
+            ->add('captcha', ReCaptchaType::class)
             
         ;
     }

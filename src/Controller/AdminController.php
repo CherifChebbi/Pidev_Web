@@ -51,7 +51,7 @@ class AdminController extends AbstractController
             $data = $userRepository->findAll();
             $users = $paginatorInterface->paginate(
                 $data,
-                $request->query->getInt('page',2),
+                $request->query->getInt('page',1),
                 2
             );
         }
