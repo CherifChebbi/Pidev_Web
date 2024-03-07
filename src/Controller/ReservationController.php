@@ -19,7 +19,7 @@ use Symfony\Component\Mime\Email;
 #[Route('/reservation')]
 class ReservationController extends AbstractController
 {
-    #[Route('/', name: 'app_reservation_index', methods: ['GET'])]
+    #[Route('/', name: 'app_reservation_index_r', methods: ['GET'])]
     public function index(ReservationRepository $reservationRepository): Response
     {
         return $this->render('reservation/index.html.twig', [
@@ -28,7 +28,7 @@ class ReservationController extends AbstractController
     }
     
 
-    #[Route('/new/{id}', name: 'app_reservation_new', methods: ['GET', 'POST'])]
+    #[Route('/new/{id}', name: 'app_reservation_new_r', methods: ['GET', 'POST'])]
 public function new(Request $request, EntityManagerInterface $entityManager, Restaurant $restaurant): Response
 {
     $reservation = new Reservation();
@@ -79,7 +79,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Res
             $mailer->send($emailMessage);
         }
 
-        return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_reservation_index_r', [], Response::HTTP_SEE_OTHER);
     }
 
     return $this->renderForm('reservation/new.html.twig', [
@@ -88,7 +88,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Res
     ]);
 }
 
-    #[Route('/{id}', name: 'app_reservation_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_reservation_show_r', methods: ['GET'])]
     public function show(Reservation $reservation): Response
     {
         return $this->render('reservation/show.html.twig', [
@@ -96,7 +96,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Res
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_reservation_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_reservation_edit_r', methods: ['GET', 'POST'])]
     public function edit(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ReservationType::class, $reservation);
@@ -105,7 +105,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Res
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_reservation_index_r', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('reservation/edit.html.twig', [
@@ -114,7 +114,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Res
         ]);
     }
 
-    #[Route('/{id}', name: 'app_reservation_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_reservation_delete_r', methods: ['POST'])]
     public function delete(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$reservation->getId(), $request->request->get('_token'))) {
@@ -122,7 +122,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, Res
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_reservation_index_r', [], Response::HTTP_SEE_OTHER);
     }
 
 

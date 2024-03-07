@@ -92,7 +92,7 @@
             <td>{{ reservation.nbrPersonne }}</td>
             <td>{{ reservation.restaurant.nom }}</td>
             <td class="btn-container">
-                <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}" class="btn btn-info btn-sm">Afficher</a>
+                <a href="{{ path('app_reservation_show_r', {'id': reservation.id}) }}" class="btn btn-info btn-sm">Afficher</a>
                 <a href="{{ path('app_restaurant_front', {'id': reservation.id}) }}" class="btn btn-success btn-sm">Retourner</a>
                 {{ include('reservation/_delete_form.html.twig') }}
             </td>

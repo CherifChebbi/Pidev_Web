@@ -30,9 +30,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_reservation_index') }}">back to list</a>
+    <a href="{{ path('app_reservation_index_r') }}">back to list</a>
 
-    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
+    <a href="{{ path('app_reservation_edit_r', {'id': reservation.id}) }}">edit</a>
     <a href="{{ path('app_reservation_invoice', {'id': reservation.id}) }}" class="btn btn-primary">Generate PDF</a>
     
 
