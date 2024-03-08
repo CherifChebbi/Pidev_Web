@@ -36,7 +36,7 @@
                 // Send AJAX request to like restaurant
                 $.ajax({
                     type: 'POST', 'GET',
-                    url: '/restaurant/' + postId + '/like',
+                    url: '/restaurant' + postId + '/like',
                     success: function (response) {
                         // Update like count on success
                         $('.like-count[data-post-id="' + postId + '"]').text(response.likes);

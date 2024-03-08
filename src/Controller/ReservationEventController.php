@@ -40,7 +40,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ReservationEventController extends AbstractController
 {
     
-    #[Route('/', name: 'app_reservation_event_index', methods: ['GET'])]
+    #[Route('/ff', name: 'app_reservation_event_index', methods: ['GET'])]
     public function index(ReservationEventRepository $reservationEventRepository): Response
     {
         // Récupérer les réservations avec les événements associés

@@ -15,6 +15,10 @@ services:
             $paysRepository: '@App\Repository\PaysRepository'
             $villeRepository: '@App\Repository\VilleRepository'
             $monumentRepository: '@App\Repository\MonumentRepository'
+    App\Controller\CalendarController:
+        autowire: true
+        autoconfigure: true
+
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
