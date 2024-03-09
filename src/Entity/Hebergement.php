@@ -28,7 +28,7 @@ class Hebergement
 
     
 
-    #[ORM\OneToMany(mappedBy: 'hebergement', targetEntity: Reservation::class, cascade: ["remove"])]
+    #[ORM\OneToMany(mappedBy: 'hebergement', targetEntity: Reservation::class)]
     private Collection $reservations;
 
     #[ORM\ManyToOne(inversedBy: 'hebergements')]

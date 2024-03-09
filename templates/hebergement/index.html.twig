@@ -47,13 +47,13 @@
   var chart1 = new Chart(ctx1, {
     type: 'bar',
     data: {
-      labels: [{% for h in hebergementsS %}'{{ h.nom }}'{% endfor %}],
+      labels: [{% for h in hebergementsS %}'{{ h.nom }}',{% endfor %}],
       datasets: [{
         label: 'N° Reservation/Hotel',
         backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
         borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
         borderWidth: 1,
-        data: [{% for h in hebergementsS %}{{h.reservations|length}} {% endfor %}]
+        data: [{% for h in hebergementsS %}{{h.reservations|length}}, {% endfor %}]
       }]
     },
     options: {
