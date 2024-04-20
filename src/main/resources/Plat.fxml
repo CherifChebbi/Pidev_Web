@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="586.0" prefWidth="824.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.DashboardController">
+    <children>
+        <TextField fx:id="nom" layoutX="263.0" layoutY="54.0" prefHeight="26.0" prefWidth="398.0" promptText="Plat Name" />
+        <TextField fx:id="image" layoutX="263.0" layoutY="89.0" prefHeight="26.0" prefWidth="398.0" />
+        <TextField fx:id="prix" layoutX="263.0" layoutY="131.0" prefHeight="26.0" prefWidth="397.0" />
+        <Text layoutX="204.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom" />
+        <Text layoutX="201.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Image" />
+        <Text layoutX="207.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prix" />
+        <ComboBox fx:id="restaurantComboBox" layoutX="263.0" layoutY="15.0" onAction="#selectrestaurant" prefHeight="26.0" prefWidth="398.0" />
+        <Button layoutX="250.0" layoutY="197.0" mnemonicParsing="false" onAction="#ajouter" prefHeight="26.0" prefWidth="104.0" text="Ajouter Plat" />
+        <Button layoutX="426.0" layoutY="197.0" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="104.0" text="Modifier Plat" />
+        <Button layoutX="601.0" layoutY="196.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="26.0" prefWidth="104.0" text="Supprimer Plat" />
+        <VBox fx:id="vboxPlats" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+            <!-- This VBox will be populated dynamically by the controller -->
+        </VBox>
+        <Text layoutX="193.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant" />
+        <Button fx:id="platbutton" layoutX="9.0" layoutY="197.0" mnemonicParsing="false" onAction="#moove" prefHeight="26.0" prefWidth="140.0" text="Configurer Restaurant" />
+        <Button layoutX="674.0" layoutY="89.0" mnemonicParsing="false" onAction="#selectImage" prefHeight="26.0" prefWidth="82.0" text="select image" />
+      <VBox layoutX="54.0" layoutY="240.0" prefHeight="307.0" prefWidth="714.0" />
+    </children>
+</AnchorPane>

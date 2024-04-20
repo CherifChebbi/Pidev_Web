@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.FontWeight?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.control.ScrollPane?>
+<AnchorPane prefHeight="634.0" prefWidth="825.0" styleClass="styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ReservationManagement">
+    <children>
+        <AnchorPane prefHeight="634.0" prefWidth="825.0" style="-fx-background-color: #f0f0f0;">
+            <children>
+                <Text layoutX="36.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Restaurant:" fill="#4e4e4e">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Text>
+                <ComboBox fx:id="idres" layoutX="164.0" layoutY="14.0" prefHeight="26.0" prefWidth="274.0" />
+
+                <Text layoutX="36.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom:" fill="#4e4e4e">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="nom" layoutX="164.0" layoutY="64.0" prefHeight="26.0" prefWidth="274.0" />
+
+                <Text layoutX="36.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:" fill="#4e4e4e">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="email" layoutX="164.0" layoutY="115.0" prefHeight="26.0" prefWidth="274.0" />
+
+                <Text layoutX="36.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" fill="#4e4e4e">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Text>
+                <DatePicker fx:id="datePicker" layoutX="164.0" layoutY="164.0" prefHeight="26.0" prefWidth="274.0" />
+
+                <Text layoutX="36.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre Personne:" fill="#4e4e4e">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="nbrpersonne" layoutX="164.0" layoutY="220.0" prefHeight="26.0" prefWidth="274.0" />
+
+                <Button layoutX="530.0" layoutY="27.0" mnemonicParsing="false" onAction="#ajouter" prefHeight="26.0" prefWidth="158.0" text="Réserver Restaurant" style="-fx-background-color: linear-gradient(to bottom, #ff7171, #ff5050); -fx-text-fill: white; -fx-font-weight: bold;">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                    <effect>
+                        <DropShadow />
+                    </effect>
+                </Button>
+                <Button layoutX="528.0" layoutY="77.0" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="158.0" text="Modifier Reservation" style="-fx-background-color: linear-gradient(to bottom, #ffd45f, #ffc61a); -fx-text-fill: white; -fx-font-weight: bold;">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                    <effect>
+                        <DropShadow />
+                    </effect>
+                </Button>
+                <Button layoutX="529.0" layoutY="128.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="26.0" prefWidth="158.0" text="Supprimer Reservation" style="-fx-background-color: linear-gradient(to bottom, #4db8ff, #0099ff); -fx-text-fill: white; -fx-font-weight: bold;">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                    <effect>
+                        <DropShadow />
+                    </effect>
+                </Button>
+
+
+                <ScrollPane fx:id="reservationScrollPane" layoutX="47.0" layoutY="287.0" prefHeight="305.0" prefWidth="727.0">
+                    <!-- Add content inside the ScrollPane -->
+                </ScrollPane>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

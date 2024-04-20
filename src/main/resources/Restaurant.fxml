@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="725.0" prefWidth="929.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.RestaurantManagement">
+    <children>
+        <Accordion layoutX="68.0" layoutY="86.0" />
+        <GridPane layoutX="126.0" layoutY="34.0" prefHeight="104.0" prefWidth="461.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="37.60001220703125" minHeight="10.0" prefHeight="37.60001220703125" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <TextField fx:id="nom" promptText="Entrer le nom du restaurant" />
+                <TextField fx:id="localisation" promptText="Enter localisation du restaurant" GridPane.rowIndex="1" />
+            </children>
+        </GridPane>
+        <GridPane layoutX="126.0" layoutY="189.0" prefHeight="65.0" prefWidth="259.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <TextArea fx:id="description" prefHeight="39.0" prefWidth="272.0" promptText="Entrer la description du restaurant" />
+            </children>
+        </GridPane>
+        <Button layoutX="14.0" layoutY="312.0" mnemonicParsing="false" onAction="#ajouter" prefHeight="26.0" prefWidth="129.0" text="Ajouter Restaurant" />
+        <Text layoutX="21.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Localisation:" />
+        <Text layoutX="23.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Image:" />
+        <TextField fx:id="image" layoutX="134.0" layoutY="140.0" prefHeight="26.0" prefWidth="259.0" promptText="Enter image path" GridPane.rowIndex="2" />
+
+        <Text layoutX="22.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" />
+        <Button layoutX="180.0" layoutY="311.0" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="129.0" text="Modifier Restaurant" />
+        <Button layoutX="345.0" layoutY="311.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="26.0" prefWidth="137.0" text="Supprimer Restaurant" />
+        <ImageView fx:id="imageView" fitHeight="100" fitWidth="150" layoutX="126.0" layoutY="140.0" preserveRatio="true" />
+        <Button layoutX="495.0" layoutY="140.0" mnemonicParsing="false" onAction="#selectImage" prefHeight="26.0" prefWidth="93.0" text="Select Image" />
+
+
+        <TableView fx:id="afficher" layoutX="60.0" layoutY="369.0" prefHeight="314.0" prefWidth="773.0">
+            <columns>
+                <TableColumn fx:id="idcol" prefWidth="75.0" text="ID" />
+                <TableColumn fx:id="nomcol" prefWidth="170.3999481201172" text="Nom" />
+                <TableColumn fx:id="locationcol" prefWidth="150.4000244140625" text="localisation" />
+                <TableColumn fx:id="imagecol" prefWidth="259.2000732421875" text="Image" />
+                <TableColumn fx:id="descriptioncol" prefWidth="118.4000244140625" text="Description" />
+            </columns>
+        </TableView>
+        <Button fx:id="switchToPlatButton" layoutX="516.0" layoutY="312.0" mnemonicParsing="false" onAction="#switchToPlat" prefHeight="26.0" prefWidth="129.0" text="Configurer Plat" />
+        <Text layoutX="21.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom" />
+    </children>
+</AnchorPane>

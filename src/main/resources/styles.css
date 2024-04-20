@@ -1,0 +1,36 @@
+/* styles.css */
+.root {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #d9d9d9, #000000);
+}
+
+.top-pane {
+    -fx-background-color: #336699;
+}
+
+.title-label {
+    -fx-text-fill: white;
+}
+
+.content-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 20px;
+}
+
+.button-pane {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
