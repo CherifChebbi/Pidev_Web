@@ -8,10 +8,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class MainFX extends Application {
+public class MainFront extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(MainFX.class.getResource("/Dashboard.fxml"));
+        FXMLLoader loader = new FXMLLoader(MainFX.class.getResource("/Front.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         stage.setTitle("Teranova");

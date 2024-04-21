@@ -23,15 +23,14 @@ public class ServiceReservation implements Ireservation<Reservation> {
 
     @Override
     public void ajouter(Reservation reservation) throws SQLException {
-        String req = "INSERT INTO reservation (idR, nom, email, date, nbr_personne) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement pre = connection.prepareStatement(req)) {
-            pre.setInt(1, reservation.getRestaurantId());
-            pre.setString(2, reservation.getNom());
-            pre.setString(3, reservation.getEmail());
-            pre.setString(4, reservation.getDate());
-            pre.setInt(5, reservation.getNbrPersonne());
-            pre.executeUpdate();
-            System.out.println("Reservation added successfully!");
+        try (Connection connection = MyDB.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO reservation (idR, nom, email, date, nbr_personne) VALUES (?, ?, ?, ?, ?)")) {
+            preparedStatement.setInt(1, reservation.getRestaurantId());
+            preparedStatement.setString(2, reservation.getNom());
+            preparedStatement.setString(3, reservation.getEmail());
+            preparedStatement.setString(4, reservation.getDate());
+            preparedStatement.setInt(5, reservation.getNbrPersonne());
+            preparedStatement.executeUpdate();
         }
     }
 
@@ -89,4 +88,6 @@ public class ServiceReservation implements Ireservation<Reservation> {
 
         return reservations;
     }
+
+
 }

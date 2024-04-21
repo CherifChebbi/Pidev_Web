@@ -14,51 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceRestaurant implements Irestaurant<Restaurant> {
-    public int getRestaurantIdByName(String name) throws SQLException {
-        int restaurantId = -1; // Default value if not found
-        String query = "SELECT idR FROM restaurant WHERE nom = ?";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, name);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    restaurantId = resultSet.getInt("id");
-                }
-            }
-        }
-
-        return restaurantId;
-    }
 
     // Method to insert a Plat into the database
-    public void insertPlat(Plat plat) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
 
-        try {
-            // Establish connection
-            connection = MyDB.getInstance().getConnection();
-
-            // Prepare the SQL statement
-            String sql = "INSERT INTO plat (id, nom, image, prix) VALUES (?, ?, ?, ?)";
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, plat.getId());
-            preparedStatement.setString(2, plat.getNom());
-            preparedStatement.setString(3, plat.getImage());
-            preparedStatement.setFloat(4, plat.getPrix());
-
-            // Execute the update
-            preparedStatement.executeUpdate();
-        } finally {
-            // Close resources
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
-        }
-    }
 
 
 
@@ -85,7 +44,7 @@ public class ServiceRestaurant implements Irestaurant<Restaurant> {
     }
 
     @Override
-    public void modifier(Restaurant restaurant) throws SQLException {
+    public void modifier (Restaurant restaurant) throws SQLException {
         String req = "UPDATE restaurant SET nom=?, localisation=?, image=?, description=? WHERE idR=?";
         try (PreparedStatement pre = connection.prepareStatement(req)) {
             pre.setString(1, restaurant.getNom());
@@ -106,11 +65,20 @@ public class ServiceRestaurant implements Irestaurant<Restaurant> {
 
     @Override
     public void supprimer(Restaurant restaurant) throws SQLException {
-        String req = "DELETE FROM restaurant WHERE idR=?";
-        try (PreparedStatement pre = connection.prepareStatement(req)) {
-            pre.setInt(1, restaurant.getIdR()); // Assuming id is the primary key
+        String deleteReservationsQuery = "DELETE FROM reservation WHERE idR = ?";
+        String deleteRestaurantQuery = "DELETE FROM restaurant WHERE idR = ?";
 
-            int affectedRows = pre.executeUpdate();
+        try (PreparedStatement deleteReservationsStatement = connection.prepareStatement(deleteReservationsQuery);
+             PreparedStatement deleteRestaurantStatement = connection.prepareStatement(deleteRestaurantQuery)) {
+
+            // First, delete associated records in the reservation table
+            deleteReservationsStatement.setInt(1, restaurant.getIdR());
+            deleteReservationsStatement.executeUpdate();
+
+            // Then, delete the restaurant record
+            deleteRestaurantStatement.setInt(1, restaurant.getIdR());
+            int affectedRows = deleteRestaurantStatement.executeUpdate();
+
             if (affectedRows == 1) {
                 System.out.println("Restaurant deleted successfully!");
             } else {
@@ -120,26 +88,47 @@ public class ServiceRestaurant implements Irestaurant<Restaurant> {
     }
 
 
-    public ObservableList<Restaurant> afficher() throws SQLException {
-        String req = "SELECT * FROM restaurant";
-        ObservableList<Restaurant> list = FXCollections.observableArrayList();
-        PreparedStatement pre= connection.prepareStatement(req);
-        ResultSet res = pre.executeQuery();
 
-        while (res.next()) {
-            Restaurant restaurant = new Restaurant();
-            restaurant.setIdR(res.getInt("idR"));
-            // res.getInt("IDformation"),
-            // res.getInt("iduser"),
-            restaurant.setNom( res.getString("nom"));
-            restaurant.setLocalisataion( res.getString("localisation"));
-            restaurant.setImage( res.getString("image"));
-            restaurant.setDescription( res.getString("description"));
-            list.add(restaurant);
+    public ObservableList<Restaurant> afficher (String nameFilter, String locationFilter) throws SQLException {
+        String query = "SELECT * FROM restaurant";
+        List<Restaurant> restaurants = new ArrayList<>();
 
+        // If filters are provided, add them to the query
+        if (nameFilter != null && !nameFilter.isEmpty()) {
+            query += " WHERE nom LIKE '%" + nameFilter + "%'";
+        }
+        if (locationFilter != null && !locationFilter.isEmpty()) {
+            if (nameFilter != null && !nameFilter.isEmpty()) {
+                query += " AND";
+            } else {
+                query += " WHERE";
+            }
+            query += " localisation LIKE '%" + locationFilter + "%'";
         }
 
-        return list ;
+        // Initialize the connection here
+        try (Connection connection = MyDB.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Restaurant restaurant = new Restaurant();
+                restaurant.setIdR(resultSet.getInt("idR"));
+                restaurant.setNom(resultSet.getString("nom"));
+                restaurant.setLocalisataion(resultSet.getString("localisation"));
+                restaurant.setImage(resultSet.getString("image"));
+                restaurant.setDescription(resultSet.getString("description"));
+                restaurants.add(restaurant);
+            }
+        } // Connection is closed automatically when try block is exited
+
+        return FXCollections.observableArrayList(restaurants);
+    }
+
+
+    public ObservableList<Restaurant> afficher() throws SQLException {
+        // Call the overloaded method with no filters
+        return afficher(null, null);
     }
 
 
@@ -179,4 +168,43 @@ public class ServiceRestaurant implements Irestaurant<Restaurant> {
 
         return restaurantNames;
     }
+
+
+
+
+
+
+
+
+    public int getRestaurantIdByName(String name) throws SQLException {
+        int restaurantId = -1; // Default value if not found
+        String query = "SELECT idR FROM restaurant WHERE nom = ?";
+
+        try (Connection connection = MyDB.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, name);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    restaurantId = resultSet.getInt("idR");
+                }
+            }
+        }
+
+        return restaurantId;
+    }
+
+    // Method to insert a Plat into the database
+    public void insertPlat(Plat plat) throws SQLException {
+        try (Connection connection = MyDB.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO plat (id, nom, image, prix) VALUES (?, ?, ?, ?)")) {
+            preparedStatement.setInt(1, plat.getId());
+            preparedStatement.setString(2, plat.getNom());
+            preparedStatement.setString(3, plat.getImage());
+            preparedStatement.setFloat(4, plat.getPrix());
+            preparedStatement.executeUpdate();
+        }
+    }
+
+
+
 }

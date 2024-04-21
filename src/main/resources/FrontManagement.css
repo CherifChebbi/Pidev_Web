@@ -1,0 +1,41 @@
+/* Style for the ImageView */
+
+
+/* Style for the Label */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+/* Style for the GridPane cells */
+/* styles.css */
+
+/* GridPane styles */
+.grid-pane {
+    -fx-padding: 20px; /* Add padding around the GridPane */
+}
+
+/* ImageView styles */
+.image-view {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0, 0);
+    -fx-background-color: #AAAA; /* White background */
+    -fx-padding: 20px; /* Add padding */
+    -fx-border-color: #CCCCCC; /* Border color */
+    -fx-border-width: 5px; /* Border width */
+    -fx-fit-width: 150px; /* Set fixed width */
+    -fx-fit-height: 100px; /* Set fixed height */
+}
+
+/* Button styles */
+.button {
+    -fx-background-color: #4CAF50; /* Set button background color */
+    -fx-text-fill: white; /* Set text color */
+    -fx-font-size: 14px; /* Set font size */
+    -fx-padding: 10px 20px; /* Add padding to the buttons */
+}
+
+/* Pagination styles */
+.pagination {
+    -fx-alignment: CENTER; /* Center align the pagination */
+}
+
