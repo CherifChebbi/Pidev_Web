@@ -63,35 +63,40 @@ class EventController extends AbstractController
 
 
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $event = new Event();
-        $form = $this->createForm(EventType::class, $event);
-        $form->handleRequest($request);
+public function new(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $event = new Event();
+    $form = $this->createForm(EventType::class, $event);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('image_event')->getData();
+    if ($form->isSubmitted() && $form->isValid()) {
+        $imageFile = $form->get('image_event')->getData();
 
-            if ($imageFile) {
-                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+        if ($imageFile) {
+            // Récupérer le nom d'origine du fichier
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // Générer un nom de fichier unique en ajoutant un timestamp
+            $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
 
-                $event->setImageEvent($newFilename);
-                $imageFile->move(
-                    $this->getParameter('kernel.project_dir').'/public/uploads',
-                    $newFilename
-                );
-            }
-            $entityManager->persist($event);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
+            // Définir le nom de fichier sur l'entité Event
+            $event->setImageEvent($newFilename);
+            // Déplacer le fichier téléchargé vers le répertoire public/uploads
+            $imageFile->move(
+                $this->getParameter('kernel.project_dir').'/public/uploads',
+                $newFilename
+            );
         }
+        $entityManager->persist($event);
+        $entityManager->flush();
 
-        return $this->renderForm('event/new.html.twig', [
-            'event' => $event,
-            'form' => $form,
-        ]);
+        return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->renderForm('event/new.html.twig', [
+        'event' => $event,
+        'form' => $form,
+    ]);
+}
 
     #[Route('/{id}', name: 'app_event_show', methods: ['GET'])]
     public function show(Event $event): Response
@@ -104,35 +109,40 @@ class EventController extends AbstractController
 
 
     #[Route('/{id}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Event $event, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(EventType::class, $event);
-        $form->handleRequest($request);
+public function edit(Request $request, Event $event, EntityManagerInterface $entityManager): Response
+{
+    $form = $this->createForm(EventType::class, $event);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Gérer l'éventuelle modification de l'image
-            $imageFile = $form->get('image_event')->getData();
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Gérer l'éventuelle modification de l'image
+        $imageFile = $form->get('image_event')->getData();
 
-            if ($imageFile) {
-                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+        if ($imageFile) {
+            // Si un nouveau fichier est téléchargé, utilisez le nom d'origine comme base
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // Générer un nom de fichier unique en ajoutant un timestamp
+            $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
 
-                $event->setImageEvent($newFilename);
-                $imageFile->move(
-                    $this->getParameter('kernel.project_dir').'/public/uploads',
-                    $newFilename
-                );
-            }
-
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
+            // Définir le nouveau nom de fichier sur l'entité Event
+            $event->setImageEvent($newFilename);
+            // Déplacer le fichier téléchargé vers le répertoire public/uploads
+            $imageFile->move(
+                $this->getParameter('kernel.project_dir').'/public/uploads',
+                $newFilename
+            );
         }
 
-        return $this->renderForm('event/edit.html.twig', [
-            'event' => $event,
-            'form' => $form,
-        ]);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->renderForm('event/edit.html.twig', [
+        'event' => $event,
+        'form' => $form,
+    ]);
+}
 
     #[Route('/{id}', name: 'app_event_delete', methods: ['POST'])]
     public function delete(Request $request, Event $event, EntityManagerInterface $entityManager): Response

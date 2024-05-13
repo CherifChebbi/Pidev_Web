@@ -72,13 +72,19 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
 
          //upload de l image
         $imageFile = $form->get('img_monument')->getData();     
-            if ($imageFile) {
-                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+        if ($imageFile) {
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // Utilisez l'extension originale de l'image
+            $newFilename = $originalFilename.'.'.$imageFile->guessExtension();
+            
+            // Déplacez l'image vers le répertoire désiré
+            $imageFile->move(
+                $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
+                $newFilename
+            );
+    
+            // Enregistrez le nom de fichier dans votre entité
                 $monument->setImgMonument($newFilename);
-                $imageFile->move(
-                    $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
-                    $newFilename
-                );
             }
         // Récupérez le pays associé à la ville
         $ville = $monument->getVilles();
@@ -140,13 +146,17 @@ public function edit(Request $request, Monument $monument, EntityManagerInterfac
         //upload de l'image du monument
         $imageFile = $form->get('img_monument')->getData();     
         if ($imageFile) {
-            $newFilename = uniqid().'.'.$imageFile->guessExtension();
-
-            $monument->setImgMonument($newFilename);
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // Utilisez l'extension originale de l'image
+            $newFilename = $originalFilename.'.'.$imageFile->guessExtension();
+            
+            // Déplacez l'image vers le répertoire désiré
             $imageFile->move(
                 $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
                 $newFilename
             );
+            $monument->setImgMonument($newFilename);
+
         }
         // Récupérer l'ancienne ville associée au monument avant les modifications
         $oldVille = $entityManager->getUnitOfWork()->getOriginalEntityData($monument)['villes'];

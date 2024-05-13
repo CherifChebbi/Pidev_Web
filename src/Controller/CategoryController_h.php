@@ -33,13 +33,18 @@ class CategoryController_h extends AbstractController
             $imageFile = $form->get('image')->getData();
 
             if ($imageFile) {
-                $newFilename = uniqid().'.'.$imageFile->guessExtension();
-
-                $category->setImage($newFilename);
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // Utilisez l'extension originale de l'image
+                $newFilename = $originalFilename.'.'.$imageFile->guessExtension();
+                
+                // Déplacez l'image vers le répertoire désiré
                 $imageFile->move(
                     $this->getParameter('kernel.project_dir').'/public/uploads',
                     $newFilename
                 );
+
+                $category->setImage($newFilename);
+
             }
 
             $entityManager->persist($category);

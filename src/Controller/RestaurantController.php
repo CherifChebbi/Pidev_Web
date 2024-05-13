@@ -67,13 +67,16 @@ class RestaurantController extends AbstractController
             $imageFile = $form->get('image')->getData();
 
             if ($imageFile) {
-                $newFilename = uniqid().'.'.$imageFile->guessExtension();
-
-                $restaurant->setImage($newFilename);
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // Utilisez l'extension originale de l'image
+                $newFilename = $originalFilename.'.'.$imageFile->guessExtension();
+                
+                // Déplacez l'image vers le répertoire désiré
                 $imageFile->move(
-                    $this->getParameter('kernel.project_dir').'/public/uploads',
+                    $this->getParameter('kernel.project_dir').'/public/uploads/',
                     $newFilename
                 );
+                $restaurant->setImage($newFilename);
             }
             $entityManager->persist($restaurant);
             $entityManager->flush();

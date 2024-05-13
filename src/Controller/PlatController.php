@@ -33,13 +33,16 @@ class PlatController extends AbstractController
             $imageFile = $form->get('image')->getData();
 
             if ($imageFile) {
-                $newFilename = uniqid().'.'.$imageFile->guessExtension();
-
-                $plat->setImage($newFilename);
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // Utilisez l'extension originale de l'image
+                $newFilename = $originalFilename.'.'.$imageFile->guessExtension();
+                
+                // Déplacez l'image vers le répertoire désiré
                 $imageFile->move(
-                    $this->getParameter('kernel.project_dir').'/public/uploads',
+                    $this->getParameter('kernel.project_dir').'/public/uploads/',
                     $newFilename
                 );
+                $plat->setImage($newFilename);
             }
             
             $entityManager->persist($plat);

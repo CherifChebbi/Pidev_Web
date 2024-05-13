@@ -107,16 +107,21 @@ public function new(Request $request, EntityManagerInterface $entityManager, Vil
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        //upload de l'image de la ville
+        //upload de l image
         $imageFile = $form->get('img_ville')->getData();     
         if ($imageFile) {
-            $newFilename = uniqid().'.'.$imageFile->guessExtension();
-
-            $ville->setImgVille($newFilename);
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // Utilisez l'extension originale de l'image
+            $newFilename = $originalFilename.'.'.$imageFile->guessExtension();
+            
+            // Déplacez l'image vers le répertoire désiré
             $imageFile->move(
                 $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
                 $newFilename
             );
+            // Enregistrez le nom de fichier dans votre entité
+            $ville->setImgVille($newFilename);
+
         }
 
         // Récupérez le pays associé à la ville
@@ -184,13 +189,16 @@ public function edit(Request $request, Ville $ville, EntityManagerInterface $ent
          //upload de l image
         $imageFile = $form->get('img_ville')->getData();     
         if ($imageFile) {
-            $newFilename = uniqid().'.'.$imageFile->guessExtension();
-
-            $ville->setImgVille($newFilename);
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // Utilisez l'extension originale de l'image
+            $newFilename = $originalFilename.'.'.$imageFile->guessExtension();
+            
+            // Déplacez l'image vers le répertoire désiré
             $imageFile->move(
                 $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
                 $newFilename
             );
+            $ville->setImgVille($newFilename);
         }
         // Récupères l'ancien pays associé à la ville avant les modifications
         $oldPays = $entityManager->getUnitOfWork()->getOriginalEntityData($ville)['pays'];

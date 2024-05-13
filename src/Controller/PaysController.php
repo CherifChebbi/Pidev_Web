@@ -112,12 +112,18 @@ class PaysController extends AbstractController
             //upload de l image
             $imageFile = $form->get('img_pays')->getData();     
             if ($imageFile) {
-                $newFilename = uniqid().'.'.$imageFile->guessExtension();
-                $pay->setImgPays($newFilename);
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // Utilisez l'extension originale de l'image
+                $newFilename = $originalFilename.'.'.$imageFile->guessExtension();
+                
+                // Déplacez l'image vers le répertoire désiré
                 $imageFile->move(
                     $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
                     $newFilename
                 );
+            
+                // Enregistrez le nom de fichier dans votre entité
+                $pay->setImgPays($newFilename);
             }
             // Vérification de l'unicité du pays
             $existingPays = $paysRepository->findOneBy(['nom_pays' => $pay->getNomPays()]);
@@ -159,9 +165,13 @@ class PaysController extends AbstractController
             $imageFile = $form->get('img_pays')->getData();
             if ($imageFile) {
                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = uniqid('', true).'.'.$imageFile->guessExtension();
+                // Utilisez l'extension originale de l'image
+                $newFilename = $originalFilename.'.'.$imageFile->guessExtension();
+                
+                // Déplacez l'image vers le répertoire désiré
                 $imageFile->move(
-                    $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',$newFilename
+                    $this->getParameter('kernel.project_dir').'/public/assets/BACK/img/Pays/',
+                    $newFilename
                 );
                 $pay->setImgPays($newFilename);
             }
