@@ -10,3 +10,6 @@ En combinant les fonctionnalités de découverte et de réservation, TerraNova o
 L'un des points forts de TerraNova réside dans son intégration complète de fonctionnalités de réservation pour les restaurants, les hôtels et les événements. En plus d'une interface utilisateur conviviale, le projet propose un tableau de bord administratif permettant la gestion des opérations courantes via des fonctionnalités CRUD et l'intégration d'APIs pour des fonctionnalités et des services avancés.
 
 TerraNova représente une fusion réussie entre la découverte et la réservation, offrant une expérience complète et intuitive pour les utilisateurs passionnés de voyages et d'exploration.
+
+![index2](https://github.com/CherifChebbi/Pidev_Web/assets/101277386/586b2130-5463-4ac2-8ace-fef6e60bb974)
+
